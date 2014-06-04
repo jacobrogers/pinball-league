@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<style>
+	.remove { color: red;}
+	.h3 { margin-bottom: 10px;}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div ng-controller="CreateGroupsCtrl">
+	<div ng-repeat="group in groups"> 
+		<div class="page-header">
+  			<div class="h3">Group {$ $index+1 $} <a href=""><small ng-click="removeGroup(group)">X</small></a></div>
+		</div>
+		<div class="row">
+			<div class="col-md-4"
+				<ol>
+					<li ng-repeat="player in group.players">
+						<span>{$ player.name $}</span>
+						<a href="" class="remove" ng-click="removePlayer(group, player)">X</a>
+					</li>
+				<ol>
+				<select ng-model="group.selectedPlayer" ng-options="player.name for player in players"></select>
+				<button type="button" ng-click="addPlayer(group)" class="btn btn-default" ng-disabled="!group.selectedPlayer || group.players.length >= 4">Add Player</button>
+			</div>
+			<div class="col-md-4">
+				<ul>
+					<li ng-repeat="table in group.tables">
+						<span>{$ table.name $}</span>
+						<a href="" class="remove" ng-click="removeTable(group, table)">X</a>
+					</li>
+				<ul>
+				<select ng-model="group.selectedTable" ng-options="table.name for table in tables"></select>
+				<button type="button" ng-click="addTable(group)" class="btn btn-default" ng-disabled="!group.selectedTable || group.tables.length >= 3">Add Table</button>	
+			</div>
+		</div>
+	</div>
+	<button type="button" ng-click="addGroup()" class="btn btn-default" ng-disabled="players.length==0">Add Group</button>
+</div>
+
+{% endblock %}
+
+{% block javascript_src %}
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+{{ block.super }}
+<script src="http://codef0rmer.github.io/angular-dragdrop/angular-dragdrop.min.js"></script>
+<script>
+	'use scrict';
+
+	angular.module('app', ['ngDragDrop'])
+	.config(['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{$');
+    $interpolateProvider.endSymbol('$}');
+	}])
+	.controller('CreateGroupsCtrl', ['$scope', '$http', function($scope, $http) {
+		$scope.groups = [];
+		$http.get('/api/players').success(function(data) {
+			$scope.players = data;
+		});
+		$http.get('/api/tables').success(function(data) {
+			$scope.tables = data;
+		});
+
+		var remove = function(array, value) {
+			var i = array.indexOf(value);
+			if(i != -1) array.splice(i, 1);
+		};
+
+  		$scope.addPlayer = function(group) {
+  			group.players.push(group.selectedPlayer);
+  			remove($scope.players, group.selectedPlayer);
+  			group.selectedPlayer = null;
+  		};	
+
+  		$scope.removePlayer = function(group, player) {
+  			remove(group.players, player);
+  			$scope.players.push(player);
+  		};
+
+  		$scope.addTable = function(group) {
+  			group.tables.push(group.selectedTable);
+  			group.selectedTable = null;
+  		};	
+
+  		$scope.removeTable = function(group, table) {
+  			remove(group.tables, table);
+  			$scope.tables.push(table);
+  		};
+
+  		$scope.addGroup = function() {
+  			$scope.groups.push({players: [], tables: []});
+  		};
+
+  		$scope.removeGroup = function(group) {
+  			for (var i in group.players) {
+  				$scope.players.push(group.players[i]);
+  			}
+  			remove($scope.groups, group);
+  		};
+
+	}]);
+</script>
+{% endblock %}
