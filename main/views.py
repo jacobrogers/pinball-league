@@ -28,8 +28,8 @@ def fetch_tables(request):
     return json_response(Table.objects.all().values())
 
 def tables_page(request):
-    tables = Table.objects.all()
-    return render(request, 'tables.html', tables)
+    model = {'tables': Table.objects.all()}
+    return render(request, 'tables.html', model)
 
 def create_groups(request):
     return render(request, "create_group.html", {})

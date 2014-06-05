@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>IPDB</th>
+			<th>Pinside</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for table in tables %}
+		<tr>
+			<td>{{table.name}}</td>
+			<td><a href="http://ipdb.org/machine.cgi?id={{table.ipdb_id}}" target="_blank">IFDB</a></td>
+			<td><a href="http://pinside.com/pinball/archive/{{table.pinside_name}}" target="_blank">Pinside</a></td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+{% block javascript_src %}
+{{ block.super }}
+{% endblock %}
