@@ -17,6 +17,7 @@ api_urls = patterns('',
 
 urlpatterns = patterns('',
 	main_view('tables', 'tables_page'),
+	main_view('players', 'players_page'),
 	main_view('createGroups', 'create_groups'),
     url(r'^admin/', include(admin.site.urls)),
 )
