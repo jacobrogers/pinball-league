@@ -20,7 +20,7 @@ urlpatterns = patterns('',
 	main_view('players', 'players_page'),
 	main_view('createGroups', 'create_groups'),
     url(r'^admin/', include(admin.site.urls)),
-    (r'^', 'main.views.index'),
+    url(r'^$', 'main.views.index'),
 )
 
 urlpatterns = urlpatterns + api_urls + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
