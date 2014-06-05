@@ -27,6 +27,9 @@ def fetch_players(request):
 def fetch_tables(request):
     return json_response(Table.objects.all().values())
 
+def index(request):
+    return render(request, 'base.html', {})
+
 def players_page(request):
     model = {'players': Player.objects.all()}
     return render(request, 'players.html', model)
