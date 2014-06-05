@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Game Initials</th>
+			<th>IFPA Profile</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for player in players %}
+		<tr>
+			<td>{{player.name}}</td>
+			<td>{{player.signature}}</td>
+			<td>{%if player.ifpa_id %}
+				<a href="http://www.ifpapinball.com/player.php?p={{player.ifpa_id}}" target="_blank">IFDB</a>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+{% block javascript_src %}
+{{ block.super }}
+{% endblock %}
