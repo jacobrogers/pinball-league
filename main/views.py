@@ -28,15 +28,15 @@ def fetch_tables(request):
     return json_response(Table.objects.all().values())
 
 def index(request):
-    return render(request, 'base.html', {})
+    return render(request, 'base.html', {'homeTab': 'active'})
 
 def players_page(request):
-    model = {'players': Player.objects.all()}
+    model = {'players': Player.objects.all(), 'playersTab': 'active'}
     return render(request, 'players.html', model)
     
 def tables_page(request):
-    model = {'tables': Table.objects.all()}
-    return render(request, 'tables.html', model)
+    tables = Table.objects.all()
+    return render(request, 'tables.html', {'tables': tables, 'tablesTab': 'active'})
 
 def create_groups(request):
     return render(request, "create_group.html", {})
