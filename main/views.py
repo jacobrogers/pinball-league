@@ -36,7 +36,20 @@ def fetch_groups(request, week):
             player = {'id': gm.player.id, 'name': gm.player.name}
             group['games'].append({'table': table, 'player': player})
         groups.append(group)
-    return HttpResponse(json.dumps(groups), content_type="application/json")
+    return json_response(model)
+
+def fetch_group(request):
+    group = request.GET.get('group')
+    week = request.GET.get('week')
+    groupObj = Group.objects.get(week=week, group=group)
+    games = []
+    for gm in groupObj.games.all():
+        table = {'id': gm.table.id, 'name': gm.table.name}
+        player = {'id': gm.player.id, 'name': gm.player.name}
+        games.append({'table': table, 'player': player})
+    
+    model = {'group': group, 'week': week, 'game': games}
+    return json_response(model)
 
 def index(request):
     return render(request, 'base.html', {'homeTab': 'active'})

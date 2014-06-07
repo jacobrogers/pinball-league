@@ -14,6 +14,7 @@ api_urls = patterns('',
 	main_view('api/tables', 'fetch_tables'),
 	main_view('api/saveGroups', 'save_groups'),
 	main_view('api/groups/(?P<week>.+)', 'fetch_groups'),
+	main_view('api/group', 'fetch_group'),
 )
 
 urlpatterns = patterns('',
