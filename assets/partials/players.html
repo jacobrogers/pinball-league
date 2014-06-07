@@ -1,0 +1,18 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Game Initials</th>
+			<th>IFPA Profile</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="player in players">
+			<td>{$player.name$}</td>
+			<td>{$player.signature$}</td>
+			<td>
+				<a ng-if="player.ifpa_id" ng-href="http://www.ifpapinball.com/player.php?p={$player.ifpa_id$}" target="_blank">IFDB</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

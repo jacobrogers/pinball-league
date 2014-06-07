@@ -13,12 +13,10 @@ api_urls = patterns('',
 	main_view('api/players', 'fetch_players'),
 	main_view('api/tables', 'fetch_tables'),
 	main_view('api/saveGroups', 'save_groups'),
+	main_view('api/groups/(?P<week>.+)', 'fetch_groups'),
 )
 
 urlpatterns = patterns('',
-	main_view('tables', 'tables_page'),
-	main_view('players', 'players_page'),
-	main_view('createGroups', 'create_groups'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'main.views.index'),
 )

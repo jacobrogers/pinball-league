@@ -27,6 +27,17 @@ def fetch_players(request):
 def fetch_tables(request):
     return json_response(Table.objects.all().values())
 
+def fetch_groups(request, week):
+    groups = []
+    for g in Group.objects.filter(week=week):
+        group = {'group': g.group, 'week': g.week, 'games': []}
+        for gm in g.games.all():
+            table = {'id': gm.table.id, 'name': gm.table.name}
+            player = {'id': gm.player.id, 'name': gm.player.name}
+            group['games'].append({'table': table, 'player': player})
+        groups.append(group)
+    return HttpResponse(json.dumps(groups), content_type="application/json")
+
 def index(request):
     return render(request, 'base.html', {'homeTab': 'active'})
 
@@ -40,6 +51,9 @@ def tables_page(request):
 
 def create_groups(request):
     return render(request, "create_group.html", {})
+
+def show_groups(request, week):
+    return render(request, 'show_groups.html', {})
 
 @ensure_csrf_cookie
 def save_groups(request):

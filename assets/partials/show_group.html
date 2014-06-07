@@ -1,0 +1,19 @@
+<div ng-repeat="group in groups">
+	<div class="h2">Group {$ group.group $}</div>
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<th>Player</th>
+				<th>Table</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="game in group.games | orderBy:'table.name'">
+				<td>{$ game.player.name $}</td>
+				<td>{$ game.table.name $}</td>
+				<td><input type="number" ng-model="game.score"/></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

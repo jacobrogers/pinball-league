@@ -37,6 +37,9 @@ class Group(models.Model):
 	week = models.IntegerField()
 	group = models.IntegerField()
 
+	def as_json(self):
+		return dict(week=self.week, group=self.group, games=self.games)
+		
 	def __unicode__(self):
 		return 'Week %i Group %i' % (self.week,self.group)
 
