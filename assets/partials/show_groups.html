@@ -1,7 +1,4 @@
-<div ng-controller="ShowGroupsCtrl" 
-	 class="row panel panel-primary" 
-	 ng-repeat="group in groups.groups"
-	 ng-click="showGroup(group)" >
+<div class="row panel panel-primary" ng-repeat="group in groups.groups" ng-click="showGroup(group)" >
 	<div class="panel-heading" ng-click="showGroup(group)">Group {$ group.group $}</div>
 	<ul class="col-sm-6 list-group">
 		<li ng-repeat="player in group.players" class="list-group-item">{$ player.name $}</li>

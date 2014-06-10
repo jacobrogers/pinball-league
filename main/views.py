@@ -1,25 +1,22 @@
 from django.shortcuts import render
-import json, datetime
 from django.http import HttpResponse
-from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from main.models import Player, Group, Table, League_Game
+from main.util import json_response
 
-class JSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if hasattr(obj, 'isoformat'): #handles both date and datetime objects
-            return obj.isoformat()
-        elif isinstance(obj, datetime.datetime):
-            return int(mktime(obj.timetuple()))
-        else:
-            return json.JSONEncoder.default(self, obj)
+def basic_json(value):
+    return {'id': value.id, 'name': value.name}
 
-def to_json(value):
-    return json.dumps(value, cls=JSONEncoder)
+def json_game(game):
+    table = basic_json(game.table)
+    player = basic_json(game.player)
+    return {'id': game.id, 'table': table, 'player': player}
 
-def json_response(results):
-    return HttpResponse(to_json(results), content_type="application/json")
+def json_group(group, games):
+    tables = [basic_json(table) for table in {game.table for game in games}]
+    players = [basic_json(player) for player in {game.player for game in games}]
+    return {'group': group, 'tables': tables, 'players': players}
 
 def fetch_players(request):
     return json_response(list(Player.objects.all().values()))
@@ -28,24 +25,15 @@ def fetch_tables(request):
     return json_response(list(Table.objects.all().values()))
 
 def fetch_groups(request, week):
-    def create_group(group, games):
-        tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in games}]
-        players = [{'id': player.id, 'name': player.name} for player in {game.player for game in games}]
-        return {'group': group, 'tables': tables, 'players': players}
-
-    groups = [create_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
+    groups = [json_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
     return json_response({'week': week, 'groups': groups})
 
 def fetch_group(request):
-    def create_game(game):
-        table = {'id': game.table.id, 'name': game.table.name}
-        player = {'id': game.player.id, 'name': game.player.name}
-        return {'id': game.id, 'table': table, 'player': player}
-
-    group = request.GET.get('group')
-    week = request.GET.get('week')
-    games = [create_game(game) for game in Group.objects.get(week=week, group=group).games.all()]
-    return json_response({'group': group, 'week': week, 'games': games})
+    group = Group.objects.get(week=request.GET.get('group'), group=request.GET.get('week'))
+    gameObjs = group.games.all()
+    games = [json_game(game) for game in gameObjs]
+    tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in gameObjs}]
+    return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
 def index(request):
     return render(request, 'base.html', {'homeTab': 'active'})
