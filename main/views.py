@@ -16,57 +16,39 @@ class JSONEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 def to_json(value):
-    return json.dumps(list(value), cls=JSONEncoder)
+    return json.dumps(value, cls=JSONEncoder)
 
 def json_response(results):
     return HttpResponse(to_json(results), content_type="application/json")
 
 def fetch_players(request):
-    return json_response(Player.objects.all().values())
+    return json_response(list(Player.objects.all().values()))
 
 def fetch_tables(request):
-    return json_response(Table.objects.all().values())
+    return json_response(list(Table.objects.all().values()))
 
 def fetch_groups(request, week):
-    groups = []
-    for g in Group.objects.filter(week=week):
-        group = {'group': g.group, 'week': g.week, 'games': []}
-        for gm in g.games.all():
-            table = {'id': gm.table.id, 'name': gm.table.name}
-            player = {'id': gm.player.id, 'name': gm.player.name}
-            group['games'].append({'table': table, 'player': player})
-        groups.append(group)
-    return json_response(model)
+    def create_group(group, games):
+        tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in games}]
+        players = [{'id': player.id, 'name': player.name} for player in {game.player for game in games}]
+        return {'group': group, 'tables': tables, 'players': players}
+
+    groups = [create_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
+    return json_response({'week': week, 'groups': groups})
 
 def fetch_group(request):
+    def create_game(game):
+        table = {'id': game.table.id, 'name': game.table.name}
+        player = {'id': game.player.id, 'name': game.player.name}
+        return {'id': game.id, 'table': table, 'player': player}
+
     group = request.GET.get('group')
     week = request.GET.get('week')
-    groupObj = Group.objects.get(week=week, group=group)
-    games = []
-    for gm in groupObj.games.all():
-        table = {'id': gm.table.id, 'name': gm.table.name}
-        player = {'id': gm.player.id, 'name': gm.player.name}
-        games.append({'table': table, 'player': player})
-    
-    model = {'group': group, 'week': week, 'game': games}
-    return json_response(model)
+    games = [create_game(game) for game in Group.objects.get(week=week, group=group).games.all()]
+    return json_response({'group': group, 'week': week, 'games': games})
 
 def index(request):
     return render(request, 'base.html', {'homeTab': 'active'})
-
-def players_page(request):
-    model = {'players': Player.objects.all(), 'playersTab': 'active'}
-    return render(request, 'players.html', model)
-    
-def tables_page(request):
-    tables = Table.objects.all()
-    return render(request, 'tables.html', {'tables': tables, 'tablesTab': 'active'})
-
-def create_groups(request):
-    return render(request, "create_group.html", {})
-
-def show_groups(request, week):
-    return render(request, 'show_groups.html', {})
 
 @ensure_csrf_cookie
 def save_groups(request):
