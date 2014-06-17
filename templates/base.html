@@ -30,7 +30,9 @@
 	            	<li ng-class="navClass('week')" class="dropdown">
 	            		<a href="" class="dropdown-toggle" data-toggle="dropdown">Weeks <b class="caret"></b></a>
 	            		<ul class="dropdown-menu">
-				            <li><a href="#/week/1">Week 1</a></li>
+	            			{% for week in weeks %}
+				            <li><a href="#/week/{{week}}">Week {{week}}</a></li>
+				            {% endfor %}
           				</ul>
 	            	</li>
 	            	<li ng-class="navClass('players')"><a href="#/players">Players</a></li>

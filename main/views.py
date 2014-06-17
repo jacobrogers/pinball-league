@@ -36,7 +36,8 @@ def fetch_group(request):
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
 def index(request):
-    return render(request, 'base.html', {'homeTab': 'active'})
+    weeks = [group.week for group in Group.objects.distinct('week')]
+    return render(request, 'base.html', {'weeks': weeks})
 
 @ensure_csrf_cookie
 def save_groups(request):
