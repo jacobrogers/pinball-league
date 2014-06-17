@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-
+import json
 from main.models import Player, Group, Table, League_Game
 from main.util import json_response
 
@@ -11,7 +11,7 @@ def basic_json(value):
 def json_game(game):
     table = basic_json(game.table)
     player = basic_json(game.player)
-    return {'id': game.id, 'table': table, 'player': player}
+    return {'id': game.id, 'table': table, 'player': player, 'score': game.score}
 
 def json_group(group, games):
     tables = [basic_json(table) for table in {game.table for game in games}]
@@ -29,7 +29,7 @@ def fetch_groups(request, week):
     return json_response({'week': week, 'groups': groups})
 
 def fetch_group(request):
-    group = Group.objects.get(week=request.GET.get('group'), group=request.GET.get('week'))
+    group = Group.objects.get(week=request.GET.get('week'), group=request.GET.get('group'))
     gameObjs = group.games.all()
     games = [json_game(game) for game in gameObjs]
     tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in gameObjs}]
@@ -56,6 +56,18 @@ def save_groups(request):
                 game.table = table
                 game.group = group
                 game.save()
+        return HttpResponse(status=201)
+    else:
+        return HttpResponse(status=400)
+
+@ensure_csrf_cookie
+def save_games(request):
+    if request.method == 'POST':
+        payload = json.loads(request.POST.dict().keys()[0])
+        for game in payload['games']:
+            savedGame = League_Game.objects.get(id=game['id'])
+            savedGame.score = game['score']
+            savedGame.save()
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
