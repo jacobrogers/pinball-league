@@ -7,9 +7,9 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 
 	route('/tables', 'tables.html', 'TablesCtrl');
 	route('/players', 'players.html', 'PlayersCtrl');
-	route('/createGroups', 'create_group.html', 'CreateGroupsCtrl');
-	route('/week/:week/group/:group', 'show_group.html', 'ShowGroupCtrl');
-	route('/week/:week', 'show_groups.html', 'ShowGroupsCtrl');
+	route('/createGroups', 'create_week.html', 'CreateWeekCtrl');
+	route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
+	route('/week/:week', 'week.html', 'WeekCtrl');
 	route('/', 'index.html', 'IndexCtrl');
 	$routeProvider.otherwise({redirectTo: '/'});
 })

@@ -1,0 +1,15 @@
+<div class="h2">Group {$ group.group $}</div>
+<div class="row panel panel-primary" ng-repeat="table in group.tables">
+	<div class="panel-heading">{$ table.name $}</div>
+	<table class="table">
+		<tfoot>
+			<tr><td colspan="2"><button type="button" ng-click="saveTable(table)" class="btn btn-primary">Save</button></td></tr>
+		</tfoot>
+		<tbody>
+			<tr ng-repeat="game in group.games | filter:table.name">
+				<td>{$ game.player.name $}</td>
+				<td><input type="number" ng-model="game.score"/></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
