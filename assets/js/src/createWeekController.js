@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('controllers')
-.controller('CreateGroupsCtrl', ['$scope', '$http', function($scope, $http) {
+.controller('CreateWeekCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.groups = [];
 	$scope.week = 1;
 

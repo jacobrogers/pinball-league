@@ -33,6 +33,7 @@
 	            			{% for week in weeks %}
 				            <li><a href="#/week/{{week}}">Week {{week}}</a></li>
 				            {% endfor %}
+				            <li><a href="#/createGroups">Create Week</a></li>
           				</ul>
 	            	</li>
 	            	<li ng-class="navClass('players')"><a href="#/players">Players</a></li>
@@ -56,7 +57,7 @@
 	<script src="{{STATIC_URL}}js/src/config.js"></script>
 	<script src="{{STATIC_URL}}js/src/playersController.js"></script>
 	<script src="{{STATIC_URL}}js/src/tablesController.js"></script>
-	<script src="{{STATIC_URL}}js/src/createGroupsController.js"></script>
+	<script src="{{STATIC_URL}}js/src/createWeekController.js"></script>
 	<script src="{{STATIC_URL}}js/src/weekController.js"></script>
 	<script src="{{STATIC_URL}}js/src/groupController.js"></script>
 	{% endblock %}

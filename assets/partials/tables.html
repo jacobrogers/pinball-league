@@ -7,7 +7,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="table in tables">
+		<tr ng-repeat="table in tables | orderBy:'name'">
 			<td>{$ table.name $}</td>
 			<td><a ng-href="http://ipdb.org/machine.cgi?id={$ table.ipdb_id $}" target="_blank">IFDB</a></td>
 			<td><a ng-href="http://pinside.com/pinball/archive/{$ table.pinside_name $}" target="_blank">Pinside</a></td>
