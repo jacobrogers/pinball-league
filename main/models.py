@@ -1,15 +1,5 @@
 from django.db import models
 
-class League_Season(models.Model):
-	start_date = models.DateField()
-	weeks = models.IntegerField()
-	
-	def __unicode__(self):
-		return '%s %s' % (self.start_date, self.weeks)
-
-	class Meta:
-		db_table = 'seasons'
-
 class Table(models.Model):
 	name = models.CharField(max_length=50)
 	ipdb_id = models.IntegerField()
@@ -60,3 +50,14 @@ class League_Game(models.Model):
 
 	class Meta:
 		db_table = 'league_games'
+
+class Ranking(models.Model):
+	week = models.IntegerField()
+	player = models.ForeignKey(Player)
+	rank = models.IntegerField()
+
+	def __unicode__(self):
+		return 'Week %i Player %s Rank %i' % (self.week, self.player.name, self.rank)
+
+	class Meta:
+		db_table = 'rankings'

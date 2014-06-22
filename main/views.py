@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import json
-from main.models import Player, Group, Table, League_Game
+from main.models import Player, Group, Table, League_Game, Ranking
 from main.util import json_response
 
 def basic_json(value):
@@ -57,6 +57,14 @@ def save_groups(request):
                 game.table = table
                 game.group = group
                 game.save()
+            for player in players:
+                ranking = Ranking()
+                ranking.player = player
+                ranking.week = week
+                for p in g['players']:
+                    if p['id'] == player.id:
+                        ranking.rank = p['rank']
+                ranking.save()
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)

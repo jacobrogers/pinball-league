@@ -17,6 +17,19 @@ angular.module('controllers')
 		if(i != -1) array.splice(i, 1);
 	};
 
+	var findRank = function(group, player) {
+		var rank = 0, groupIndex = $scope.groups.indexOf(group);
+		for (var i=0; i<=groupIndex; i++) {
+			var players = $scope.groups[i].players;
+			if (i!==groupIndex) {
+				rank += players.length;
+			} else {
+				rank += players.indexOf(player) + 1;
+			}
+		}
+		return rank;
+	};
+
 	$scope.addPlayer = function(group) {
 		group.players.push(group.selectedPlayer);
 		remove($scope.players, group.selectedPlayer);
@@ -52,9 +65,14 @@ angular.module('controllers')
 	};
 
 	$scope.saveGroups = function() {
-		for (i in $scope.groups) {
-			delete $scope.groups[i].selectedPlayer;
-			delete $scope.groups[i].selectedTable;
+		for (var i in $scope.groups) {
+			var group = $scope.groups[i];
+			delete group.selectedPlayer;
+			delete group.selectedTable;
+			for (var j in group.players) {
+				var player = group.players[j];
+				player.rank = findRank(group, player);
+			}
 		}
 		$http.post('/api/saveGroups', {week: $scope.week, groups: $scope.groups})
 			.success(function(data) {
