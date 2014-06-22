@@ -1,0 +1,75 @@
+- fields: {ipdb_id: 2684, name: Twilight Zone, pinside_name: twilight-zone, status: Active}
+  model: main.table
+  pk: 47
+- fields: {ipdb_id: 5134, name: World Poker Tour, pinside_name: world-poker-tour,
+    status: Active}
+  model: main.table
+  pk: 48
+- fields: {ipdb_id: 4787, name: 'Terminator 3: Rise of the Machines', pinside_name: terminator-3-rise-of-the-machines,
+    status: Active}
+  model: main.table
+  pk: 49
+- fields: {ipdb_id: 5822, name: X-Men Pro, pinside_name: x-men, status: Active}
+  model: main.table
+  pk: 50
+- fields: {ipdb_id: 2493, name: Tales From The Crypt, pinside_name: tales-from-the-crypt,
+    status: Active}
+  model: main.table
+  pk: 51
+- fields: {ipdb_id: 5767, name: AC/DC Pro, pinside_name: ac-dc, status: Active}
+  model: main.table
+  pk: 52
+- fields: {ipdb_id: 4444, name: South Park, pinside_name: south-park, status: Active}
+  model: main.table
+  pk: 53
+- fields: {ipdb_id: 6028, name: Metallica Pro, pinside_name: metallica, status: Active}
+  model: main.table
+  pk: 54
+- fields: {ipdb_id: 5938, name: The Avengers Pro, pinside_name: the-avengers, status: Active}
+  model: main.table
+  pk: 55
+- fields: {ifpa_id: null, name: Josh Noble, signature: JBO}
+  model: main.player
+  pk: 47
+- fields: {ifpa_id: null, name: Adam McKinnie, signature: ZED}
+  model: main.player
+  pk: 48
+- fields: {ifpa_id: null, name: Daniel Carpenter, signature: DC}
+  model: main.player
+  pk: 49
+- fields: {ifpa_id: 22206, name: Jacob Rogers, signature: JMR}
+  model: main.player
+  pk: 50
+- fields: {ifpa_id: null, name: Steven Franke, signature: null}
+  model: main.player
+  pk: 51
+- fields: {ifpa_id: null, name: Stefanie McCollum, signature: null}
+  model: main.player
+  pk: 52
+- fields: {ifpa_id: null, name: Robert Ryan, signature: null}
+  model: main.player
+  pk: 53
+- fields: {ifpa_id: null, name: Daniel Goett, signature: null}
+  model: main.player
+  pk: 54
+- fields: {ifpa_id: null, name: Nathan Goett, signature: null}
+  model: main.player
+  pk: 55
+- fields: {ifpa_id: null, name: Kyle Felling, signature: null}
+  model: main.player
+  pk: 56
+- fields: {ifpa_id: null, name: Jordan Lamb, signature: null}
+  model: main.player
+  pk: 57
+- fields: {ifpa_id: null, name: Sam Nelson, signature: null}
+  model: main.player
+  pk: 58
+- fields: {ifpa_id: null, name: Jeremy Calton, signature: null}
+  model: main.player
+  pk: 59
+- fields: {ifpa_id: null, name: Wes Upchurch, signature: null}
+  model: main.player
+  pk: 60
+- fields: {ifpa_id: null, name: Lonnie McDonald, signature: null}
+  model: main.player
+  pk: 61
