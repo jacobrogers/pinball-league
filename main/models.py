@@ -55,6 +55,7 @@ class Ranking(models.Model):
 	week = models.IntegerField()
 	player = models.ForeignKey(Player)
 	rank = models.IntegerField()
+	points = models.IntegerField(default=0)
 
 	def __unicode__(self):
 		return 'Week %i Player %s Rank %i' % (self.week, self.player.name, self.rank)

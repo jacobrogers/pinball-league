@@ -15,8 +15,9 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 .controller('IndexCtrl', ['$scope','$http', function($scope,$http) {
     $http.get('/api/overview')
         .success(function(data) {
-            $scope.rankings = data;
-            $scope.hasRankings = data.length > 0;
+            $scope.hasRankings = data.rankings.length > 0;
+            $scope.rankings = data.rankings;
+            $scope.week = data.week;
         });
 }])
 .controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
