@@ -79,13 +79,46 @@ def save_groups(request):
     else:
         return HttpResponse(status=400)
 
+def decide_points(scores, score):
+    if score == scores[0]:
+        return 3
+    if score == scores[-1]:
+        return 0
+    if score == scores[1]:
+        return 2
+    return 1
+
+def decide_bonus_points(scores, score):
+    if len(scores) == 2:
+        if score == scores[0]:
+            return 1 if score > scores[1]*3 else 0
+        if score == scores[1]:
+            return 0 if scores[0] > scores[1]*3 else 1
+    else:
+        if score == scores[0]:
+            return 1 if score > scores[1]+scores[2] else 0
+        if len(scores) == 3:
+            if score == scores[2]:
+                return 0 if scores[0] > scores[1]+scores[2] else 1
+        if len(scores) == 4:
+            if score == scores[1]:
+                return 1 if score > scores[2]+scores[3] else 0
+            if score == scores[2]:
+                return 0 if scores[0] > scores[1]+scores[2] else 1
+            if score == scores[3]:
+                return 0 if scores[1] > scores[2]+scores[3] else 1
+        return 0
+
 @ensure_csrf_cookie
 def save_games(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])
-        for game in payload['games']:
+        games = payload['games']
+        scores = sorted([game['score'] for game in games])
+        for game in games:
             savedGame = League_Game.objects.get(id=game['id'])
             savedGame.score = game['score']
+            savedGame.points = decide_points(scores, savedGame.score)
             savedGame.save()
         return HttpResponse(status=201)
     else:
