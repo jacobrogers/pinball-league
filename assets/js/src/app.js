@@ -4,7 +4,6 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 	var route = function(path, partial, controller) {
 		$routeProvider.when(path, {templateUrl: '/static/partials/'+partial, controller: controller});
 	};
-
 	route('/tables', 'tables.html', 'TablesCtrl');
 	route('/players', 'players.html', 'PlayersCtrl');
 	route('/createGroups', 'create_week.html', 'CreateWeekCtrl');
@@ -13,7 +12,12 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 	route('/', 'index.html', 'IndexCtrl');
 	$routeProvider.otherwise({redirectTo: '/'});
 })
-.controller('IndexCtrl', ['$scope', function($scope) {
+.controller('IndexCtrl', ['$scope','$http', function($scope,$http) {
+    $http.get('/api/overview')
+        .success(function(data) {
+            $scope.rankings = data;
+            $scope.hasRankings = data.length > 0;
+        });
 }])
 .controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
 	$scope.navClass = function (page) {
