@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('controllers')
-.controller('CreateWeekCtrl', ['$scope', '$http', function($scope, $http) {
+.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', function($scope, $http, $route, $location) {
 	$scope.groups = [];
 	$scope.week = 1;
 
@@ -15,19 +15,6 @@ angular.module('controllers')
 	var remove = function(array, value) {
 		var i = array.indexOf(value);
 		if(i != -1) array.splice(i, 1);
-	};
-
-	var findRank = function(group, player) {
-		var rank = 0, groupIndex = $scope.groups.indexOf(group);
-		for (var i=0; i<=groupIndex; i++) {
-			var players = $scope.groups[i].players;
-			if (i!==groupIndex) {
-				rank += players.length;
-			} else {
-				rank += players.indexOf(player) + 1;
-			}
-		}
-		return rank;
 	};
 
 	$scope.addPlayer = function(group) {
@@ -64,11 +51,27 @@ angular.module('controllers')
 		remove($scope.groups, group);
 	};
 
+	var findRank = function(group, player) {
+		var rank = 0, groupIndex = $scope.groups.indexOf(group);
+		for (var i=0; i<=groupIndex; i++) {
+			var players = $scope.groups[i].players;
+			if (i!==groupIndex) {
+				rank += players.length;
+			} else {
+				rank += players.indexOf(player) + 1;
+			}
+		}
+		return rank;
+	};
+
 	$scope.saveGroups = function() {
 		for (var i in $scope.groups) {
 			var group = $scope.groups[i];
 			delete group.selectedPlayer;
 			delete group.selectedTable;
+		}
+		for (var i in $scope.groups) {
+			var group = $scope.groups[i];
 			for (var j in group.players) {
 				var player = group.players[j];
 				player.rank = findRank(group, player);
@@ -76,7 +79,10 @@ angular.module('controllers')
 		}
 		$http.post('/api/saveGroups', {week: $scope.week, groups: $scope.groups})
 			.success(function(data) {
-				console.log('saved');
+				$location.path('/');
+			})
+			.error(function(data, status, headers, config) {
+				$scope.error = true;
 			});
 	};
 }])
