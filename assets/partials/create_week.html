@@ -13,6 +13,7 @@
 				</li>
 			<ol>
 			<select ng-model="group.selectedPlayer" ng-options="player.name for player in players"></select>
+			<br/>
 			<button type="button" ng-click="addPlayer(group)" class="btn btn-default" ng-disabled="!group.selectedPlayer || group.players.length >= 4">Add Player</button>
 		</div>
 		<div class="col-md-4">
@@ -23,6 +24,7 @@
 				</li>
 			<ul>
 			<select ng-model="group.selectedTable" ng-options="table.name for table in tables"></select>
+			<br/>
 			<button type="button" ng-click="addTable(group)" class="btn btn-default" ng-disabled="!group.selectedTable || group.tables.length >= 3">Add Table</button>	
 		</div>
 	</div>
