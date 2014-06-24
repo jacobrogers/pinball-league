@@ -79,6 +79,7 @@ angular.module('controllers')
 		}
 		$http.post('/api/saveGroups', {week: $scope.week, groups: $scope.groups})
 			.success(function(data) {
+				$route.reload();
 				$location.path('/');
 			})
 			.error(function(data, status, headers, config) {

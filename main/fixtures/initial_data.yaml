@@ -61,7 +61,7 @@
 - fields: {ifpa_id: null, name: Jordan Lamb, signature: null}
   model: main.player
   pk: 57
-- fields: {ifpa_id: null, name: Sam Nelson, signature: null}
+- fields: {ifpa_id: 22782, name: Sam Nelson, signature: null}
   model: main.player
   pk: 58
 - fields: {ifpa_id: null, name: Jeremy Calton, signature: null}
