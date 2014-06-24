@@ -47,7 +47,7 @@ def overview(request):
 
 def index(request):
     weeks = [group.week for group in Group.objects.distinct('week')]
-    return render(request, 'base.html', {'weeks': weeks})
+    return render(request, 'base.html', {'weeks': weeks, 'nextWeek': max(weeks)+1})
 
 @ensure_csrf_cookie
 def save_groups(request):

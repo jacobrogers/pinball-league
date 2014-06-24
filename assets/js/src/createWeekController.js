@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('controllers')
-.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', function($scope, $http, $route, $location) {
+.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', function($scope, $http, $route, $location, $routeParams) {
 	$scope.groups = [];
-	$scope.week = 1;
+	$scope.week = $routeParams.week;
 
 	$http.get('/api/players').success(function(data) {
 		$scope.players = data;

@@ -6,7 +6,7 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 	};
 	route('/tables', 'tables.html', 'TablesCtrl');
 	route('/players', 'players.html', 'PlayersCtrl');
-	route('/createGroups', 'create_week.html', 'CreateWeekCtrl');
+	route('/createWeek/:week', 'create_week.html', 'CreateWeekCtrl');
 	route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
 	route('/week/:week', 'week.html', 'WeekCtrl');
 	route('/', 'index.html', 'IndexCtrl');
