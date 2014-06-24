@@ -11,7 +11,7 @@ def basic_json(value):
 def json_game(game):
     table = basic_json(game.table)
     player = basic_json(game.player)
-    return {'id': game.id, 'table': table, 'player': player, 'score': game.score}
+    return {'id': game.id, 'table': table, 'player': player, 'score': game.score, 'league_points': game.league_points, 'bonus_points': game.bonus_points}
 
 def json_group(group, games):
     tables = [basic_json(table) for table in {game.table for game in games}]
@@ -114,12 +114,15 @@ def save_games(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])
         games = payload['games']
-        scores = sorted([game['score'] for game in games])
+        scores = sorted([game['score'] for game in games],reverse=True)
+        points = []
         for game in games:
             savedGame = League_Game.objects.get(id=game['id'])
             savedGame.score = game['score']
-            savedGame.points = decide_points(scores, savedGame.score)
+            savedGame.league_points = decide_points(scores, savedGame.score)
+            savedGame.bonus_points = decide_bonus_points(scores, savedGame.score)
+            points.append({'id': game['id'], 'league_points': savedGame.league_points, 'bonus_points': savedGame.bonus_points})
             savedGame.save()
-        return HttpResponse(status=201)
+        return json_response(points, 201)
     else:
         return HttpResponse(status=400)

@@ -14,5 +14,5 @@ class JSONEncoder(json.JSONEncoder):
 def to_json(value):
     return json.dumps(value, cls=JSONEncoder)
 
-def json_response(results):
-    return HttpResponse(to_json(results), content_type="application/json")
+def json_response(results, status=200):
+    return HttpResponse(to_json(results), status=status, content_type="application/json")
