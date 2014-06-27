@@ -4,6 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import json
 from main.models import Player, Group, Table, League_Game, Ranking
 from main.util import json_response
+from main.domain import decide_points, decide_bonus_points, group_players
 
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
@@ -36,14 +37,21 @@ def fetch_group(request):
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
 def overview(request):
-    from django.db.models import F, Max
-    week = 0
+    print 'hello'
+    week = max([ranking.week for ranking in Ranking.objects.all()])
+    print week
     rankings = []
-    for rank in Ranking.objects.annotate(max_week=Max('week')).filter(week=F('max_week')):
-        week = rank.week
-        rankings.append({'rank': rank.rank, 'player': rank.player.name, 'points': rank.points})
-    
+    print Ranking.objects.filter(week=week)
+    for rank in Ranking.objects.filter(week=week):
+        rankings.append({'rank': rank.rank, 'player': rank.player.name, 'points': rank.points, 'week': rank.week})
     return json_response({'rankings': rankings, 'week':week})
+
+def setup_week(request, week):
+    from django.db.models import Sum
+    players = League_Game.objects.filter(group__week=int(week)-1).values('player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points')).order_by('-points')
+    model = [{'id': points['player'], 'name': points['player__name'], 'league_points': points['points']} for points in players]
+    groups = group_players(model)
+    return json_response(groups)
 
 def index(request):
     weeks = [group.week for group in Group.objects.distinct('week')]
@@ -75,40 +83,12 @@ def save_groups(request):
                 for p in g['players']:
                     if p['id'] == player.id:
                         ranking.rank = p['rank']
+                        if 'league_points' in p:
+                            ranking.points = p['league_points']
                 ranking.save()
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
-
-def decide_points(scores, score):
-    if score == scores[0]:
-        return 3
-    if score == scores[-1]:
-        return 0
-    if score == scores[1]:
-        return 2
-    return 1
-
-def decide_bonus_points(scores, score):
-    if len(scores) == 2:
-        if score == scores[0]:
-            return 1 if score > scores[1]*3 else 0
-        if score == scores[1]:
-            return 0 if scores[0] > scores[1]*3 else 1
-    else:
-        if score == scores[0]:
-            return 1 if score > scores[1]+scores[2] else 0
-        if len(scores) == 3:
-            if score == scores[2]:
-                return 0 if scores[0] > scores[1]+scores[2] else 1
-        if len(scores) == 4:
-            if score == scores[1]:
-                return 1 if score > scores[2]+scores[3] else 0
-            if score == scores[2]:
-                return 0 if scores[0] > scores[1]+scores[2] else 1
-            if score == scores[3]:
-                return 0 if scores[1] > scores[2]+scores[3] else 1
-        return 0
 
 @ensure_csrf_cookie
 def save_games(request):

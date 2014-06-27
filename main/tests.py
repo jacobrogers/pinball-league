@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from views import decide_points, decide_bonus_points
+from domain import decide_points, decide_bonus_points, create_groups
 
 class PointSystemTestCase(TestCase):
 
@@ -74,3 +74,15 @@ class PointSystemTestCase(TestCase):
         self.assertEqual(0, decide_bonus_points(scores, 6))
         self.assertEqual(1, decide_bonus_points(scores, 4))
         self.assertEqual(1, decide_bonus_points(scores, 3))
+
+class SetupWeekTestCase(TestCase):
+
+    def test_create_groups_of_four(self):
+        players = [{'rank': rank} for rank in range(1,9)]
+
+        groups = create_groups(players)
+
+        self.assertEqual(2, len(groups))
+
+        for group in groups: 
+            self.assertEqual(4, len(group['players']))

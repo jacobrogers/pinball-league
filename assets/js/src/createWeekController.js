@@ -2,12 +2,18 @@
 
 angular.module('controllers')
 .controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', function($scope, $http, $route, $location, $routeParams) {
-	$scope.groups = [];
+	$scope.groups = $scope.players = [];
 	$scope.week = $routeParams.week;
 
-	$http.get('/api/players').success(function(data) {
-		$scope.players = data;
+	var playersPath = ($scope.week == 1) ? 'api/players' : '/api/createWeek/'+$scope.week;	
+	$http.get(playersPath).success(function(data) {
+		if ($scope.week == 1) {
+			$scope.players = data;
+		} else {
+			$scope.groups = data;
+		}
 	});
+
 	$http.get('/api/tables').success(function(data) {
 		$scope.tables = data;
 	});
