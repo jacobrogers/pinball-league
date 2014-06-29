@@ -37,18 +37,15 @@ def fetch_group(request):
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
 def overview(request):
-    print 'hello'
     week = max([ranking.week for ranking in Ranking.objects.all()])
-    print week
     rankings = []
-    print Ranking.objects.filter(week=week)
     for rank in Ranking.objects.filter(week=week):
         rankings.append({'rank': rank.rank, 'player': rank.player.name, 'points': rank.points, 'week': rank.week})
     return json_response({'rankings': rankings, 'week':week})
 
 def setup_week(request, week):
     from django.db.models import Sum
-    players = League_Game.objects.filter(group__week=int(week)-1).values('player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points')).order_by('-points')
+    players = League_Game.objects.all().values('player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points')).order_by('-points')
     model = [{'id': points['player'], 'name': points['player__name'], 'league_points': points['points']} for points in players]
     groups = group_players(model)
     return json_response(groups)
