@@ -23,7 +23,20 @@ def fetch_players(request):
     return json_response(list(Player.objects.all().values()))
 
 def fetch_tables(request):
-    return json_response(list(Table.objects.all().values()))
+    def best_game(table):
+        print table
+        print 'hello'
+        games = League_Game.objects.filter(table__id=table['id']).order_by('-score')
+        if len(games) > 0:
+            print games
+            high_score = games[0]
+            return {'player': high_score.player.name, 'score': high_score.score, 'week': high_score.group.week}
+        else:
+            return {}
+    tables = list(Table.objects.all().values())
+    for table in tables:
+        table['best_game'] = best_game(table)
+    return json_response(tables)
 
 def fetch_groups(request, week):
     groups = [json_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]

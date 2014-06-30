@@ -1,16 +1,10 @@
-<table class="table">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>IPDB</th>
-			<th>Pinside</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat="table in tables | orderBy:'name'">
-			<td>{$ table.name $}</td>
-			<td><a ng-href="http://ipdb.org/machine.cgi?id={$ table.ipdb_id $}" target="_blank">IFDB</a></td>
-			<td><a ng-href="http://pinside.com/pinball/archive/{$ table.pinside_name $}" target="_blank">Pinside</a></td>
-		</tr>
-	</tbody>
-</table>
+<div class="panel panel-default" ng-repeat="table in tables | orderBy:'name'">
+	<div class="panel-heading">{$ table.name $}</div>
+	<div class="panel-body">
+		<a ng-href="http://ipdb.org/machine.cgi?id={$ table.ipdb_id $}" target="_blank">IFDB</a>
+		<br/>
+		<a ng-href="http://pinside.com/pinball/archive/{$ table.pinside_name $}" target="_blank">Pinside</a>
+		<br />
+		<span>Best Game: {$ table.best_game.player $} {$ table.best_game.score $}<span>
+	</div>
+</div>
