@@ -1,8 +1,8 @@
-from django.test import TestCase
+import unittest
 
-from domain import decide_points, decide_bonus_points, create_groups
+from domain import decide_points, decide_bonus_points, group_players, decide_movement, group_players
 
-class PointSystemTestCase(TestCase):
+class PointSystemTestCase(unittest.TestCase):
 
     def test_four_player_group(self):
         scores = [4,3,2,1]
@@ -75,14 +75,37 @@ class PointSystemTestCase(TestCase):
         self.assertEqual(1, decide_bonus_points(scores, 4))
         self.assertEqual(1, decide_bonus_points(scores, 3))
 
-class SetupWeekTestCase(TestCase):
+class SetupWeekTestCase(unittest.TestCase):
 
-    def test_create_groups_of_four(self):
-        players = [{'rank': rank} for rank in range(1,9)]
+    def player(self, group, name, points):
+        return {'name': name, 'league_points': points}
 
-        groups = create_groups(players)
+    def test_decide_movement_in_four_player_group(self):
+        players = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12), self.player(1,'m',6)]
 
-        self.assertEqual(2, len(groups))
+        decide_movement(players)
 
-        for group in groups: 
-            self.assertEqual(4, len(group['players']))
+        self.assertEqual('up', players[0]['direction'])
+        self.assertEqual('up', players[2]['direction'])
+        self.assertEqual('down', players[1]['direction'])
+        self.assertEqual('down', players[3]['direction'])
+
+    def test_decide_movement_in_three_player_group(self):
+        players = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12)]
+
+        decide_movement(players)
+
+        self.assertEqual('stay', players[0]['direction'])
+        self.assertEqual('down', players[1]['direction'])
+        self.assertEqual('up', players[2]['direction'])
+
+    def test_decide_groups_four_players(self):
+        group1 = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12), self.player(1,'m',6)]
+        group2 = [self.player(2,'a',10), self.player(2,'b',8), self.player(2,'c',12), self.player(2,'d',6)]
+        groups = {1: group1, 2: group2}
+        
+        new_group = group_players(groups)
+
+        self.assertEqual(2, len(new_group))
+        self.assertItemsEqual(new_group[1], [group1[0], group1[2], group2[0], group2[2]])
+        self.assertItemsEqual(new_group[2], [group1[1], group1[3], group2[1], group2[3]])

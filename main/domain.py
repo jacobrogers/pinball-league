@@ -28,13 +28,28 @@ def decide_bonus_points(scores, score):
                 return 0 if scores[1] > scores[2]+scores[3] else 1
         return 0
 
-def group_players(players):
-    def grouper(iterable, n, fillvalue=None):
-        "Collect data into fixed-length chunks or blocks"
-        from itertools import izip_longest
-        # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx
-        args = [iter(iterable)] * n
-        return izip_longest(fillvalue=fillvalue, *args)
-    
-    return [{'players': group, 'tables': []} for group in grouper(players, 4)]
-
+def decide_movement(group):
+        players = sorted(group, key=lambda (player): player['league_points'])
+        players[0]['direction'] = 'down'
+        players[-1]['direction'] = 'up'
+        if len(players) == 4:
+            players[1]['direction'] = 'down'
+            players[2]['direction'] = 'up'
+        elif len(players) == 3:
+            players[1]['direction'] = 'stay'
+        
+def group_players(groups):
+    group_cnt = max(groups.keys())
+    new_groups = {group: [] for group in groups.keys()}
+    for (group, players) in groups.iteritems():
+        decide_movement(players)
+        for player in players:
+            if player['direction'] == 'up':
+                groupIndex = group-1 if group > 1 else group
+                new_groups[groupIndex].append(player)
+            elif player['direction'] == 'down':
+                groupIndex = group+1 if group < group_cnt else group
+                new_groups[groupIndex].append(player)
+    for group in new_groups.keys():
+        new_groups[group] = sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points'])
+    return new_groups

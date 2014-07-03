@@ -5,12 +5,16 @@ angular.module('controllers')
 	$scope.groups = $scope.players = [];
 	$scope.week = $routeParams.week;
 
-	var playersPath = ($scope.week == 1) ? 'api/players' : '/api/createWeek/'+$scope.week;	
+	var playersPath = ($scope.week == 1) ? 'api/players' : '/api/setupWeek/'+$scope.week;	
 	$http.get(playersPath).success(function(data) {
 		if ($scope.week == 1) {
 			$scope.players = data;
 		} else {
-			$scope.groups = data;
+			console.log(data);
+			for (var i in data) {
+				$scope.groups.push({players: data[i], tables: []});
+			}
+			console.log($scope.groups);
 		}
 	});
 

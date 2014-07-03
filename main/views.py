@@ -5,6 +5,7 @@ import json
 from main.models import Player, Group, Table, League_Game, Ranking
 from main.util import json_response
 from main.domain import decide_points, decide_bonus_points, group_players
+from django.db.models import Sum
 
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
@@ -24,11 +25,8 @@ def fetch_players(request):
 
 def fetch_tables(request):
     def best_game(table):
-        print table
-        print 'hello'
         games = League_Game.objects.filter(table__id=table['id']).order_by('-score')
         if len(games) > 0:
-            print games
             high_score = games[0]
             return {'player': high_score.player.name, 'score': high_score.score, 'week': high_score.group.week}
         else:
@@ -57,11 +55,12 @@ def overview(request):
     return json_response({'rankings': rankings, 'week':week})
 
 def setup_week(request, week):
-    from django.db.models import Sum
-    players = League_Game.objects.all().values('player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points')).order_by('-points')
-    model = [{'id': points['player'], 'name': points['player__name'], 'league_points': points['points']} for points in players]
-    groups = group_players(model)
-    return json_response(groups)
+    players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
+    groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
+    for player in players:
+        groups[player['group__group']].append({'name': player['player__name'], 'id': player['player'], 'league_points': player['points']})
+    model = group_players(groups)
+    return json_response(model)
 
 def index(request):
     weeks = [group.week for group in Group.objects.distinct('week')]
@@ -93,8 +92,12 @@ def save_groups(request):
                 for p in g['players']:
                     if p['id'] == player.id:
                         ranking.rank = p['rank']
-                        if 'league_points' in p:
-                            ranking.points = p['league_points']
+                        total_points = 0
+                        for game in League_Game.objects.filter(player=player):
+                            points = game.league_points if game.league_points is not None else 0
+                            bonus_points = game.bonus_points if game.bonus_points is not None else 0
+                            total_points = total_points + (points + bonus_points)
+                        ranking.points = total_points
                 ranking.save()
         return HttpResponse(status=201)
     else:

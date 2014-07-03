@@ -10,6 +10,8 @@
 				<li ng-repeat="player in group.players">
 					<span>{$ player.name $}</span>
 					<span ng-if="player.league_points">- {$ player.league_points $} points</span>
+					<span ng-if="player.direction == 'up'" class="glyphicon glyphicon-arrow-up"></span>
+					<span ng-if="player.direction == 'down'" class="glyphicon glyphicon-arrow-down"></span>
 					<a href="" class="remove" ng-click="removePlayer(group, player)">X</a>
 				</li>
 			<ol>
