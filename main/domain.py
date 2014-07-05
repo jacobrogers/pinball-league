@@ -36,7 +36,7 @@ def decide_movement(group):
             players[1]['direction'] = 'down'
             players[2]['direction'] = 'up'
         elif len(players) == 3:
-            players[1]['direction'] = 'stay'
+            players[1]['direction'] = 'same'
         
 def group_players(groups):
     group_cnt = max(groups.keys())
@@ -50,6 +50,8 @@ def group_players(groups):
             elif player['direction'] == 'down':
                 groupIndex = group+1 if group < group_cnt else group
                 new_groups[groupIndex].append(player)
+            elif player['direction'] == 'same':
+                new_groups[group].append(player)
     for group in new_groups.keys():
         new_groups[group] = sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points'])
     return new_groups

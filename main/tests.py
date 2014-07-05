@@ -95,9 +95,20 @@ class SetupWeekTestCase(unittest.TestCase):
 
         decide_movement(players)
 
-        self.assertEqual('stay', players[0]['direction'])
+        self.assertEqual('same', players[0]['direction'])
         self.assertEqual('down', players[1]['direction'])
         self.assertEqual('up', players[2]['direction'])
+
+    def test_decide_groups_three_players(self):
+        group1 = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12)]
+        group2 = [self.player(2,'a',10), self.player(2,'b',8), self.player(2,'c',12)]
+        groups = {1: group1, 2: group2}
+        
+        new_group = group_players(groups)
+
+        self.assertEqual(2, len(new_group))
+        self.assertItemsEqual(new_group[1], [group1[0], group1[2], group2[2]])
+        self.assertItemsEqual(new_group[2], [group1[1], group2[0], group2[1]])
 
     def test_decide_groups_four_players(self):
         group1 = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12), self.player(1,'m',6)]
