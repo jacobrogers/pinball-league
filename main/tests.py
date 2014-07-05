@@ -99,6 +99,14 @@ class SetupWeekTestCase(unittest.TestCase):
         self.assertEqual('down', players[1]['direction'])
         self.assertEqual('up', players[2]['direction'])
 
+    def test_decide_movement_in_two_player_group(self):
+        players = [self.player(1,'j',10), self.player(1,'k',8)]
+
+        decide_movement(players)
+
+        self.assertEqual('up', players[0]['direction'])
+        self.assertEqual('down', players[1]['direction'])
+
     def test_decide_groups_three_players(self):
         group1 = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12)]
         group2 = [self.player(2,'a',10), self.player(2,'b',8), self.player(2,'c',12)]
