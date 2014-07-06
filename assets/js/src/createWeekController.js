@@ -5,21 +5,31 @@ angular.module('controllers')
 	$scope.groups = $scope.players = [];
 	$scope.week = $routeParams.week;
 
-	var playersPath = ($scope.week == 1) ? 'api/players' : '/api/setupWeek/'+$scope.week;	
-	$http.get(playersPath).success(function(data) {
-		if ($scope.week == 1) {
-			$scope.players = data;
-		} else {
-			for (var i in data) {
-				$scope.groups.push({players: data[i], tables: []});
+	var loadPlayers = function() {
+		var playersPath = ($scope.week == 1) ? 'api/players' : '/api/setupWeek/'+$scope.week;	
+		$http.get(playersPath).success(function(data) {
+			if ($scope.week == 1) {
+				$scope.players = data;
+			} else {
+				for (var i in data) {
+					$scope.groups.push({players: data[i], tables: [], availableTables: tablesCopy()});
+				}
 			}
-		}
-	});
+		});
+	};
 
 	$http.get('/api/tables').success(function(data) {
 		$scope.tables = data;
+		loadPlayers();
 	});
 
+	var tablesCopy = function() {
+		var availableTables = [];
+		for (var i in $scope.tables)
+			availableTables.push($scope.tables[i]);
+		return availableTables;
+
+	}
 	var remove = function(array, value) {
 		var i = array.indexOf(value);
 		if(i != -1) array.splice(i, 1);
@@ -39,17 +49,18 @@ angular.module('controllers')
 	$scope.addTable = function(group) {
 		if (group.tables.indexOf(group.selectedTable) < 0) {
 			group.tables.push(group.selectedTable);
+			remove(group.availableTables, group.selectedTable);
 			group.selectedTable = null;
 		}
 	};	
 
 	$scope.removeTable = function(group, table) {
 		remove(group.tables, table);
-		$scope.tables.push(table);
+		group.availableTables.push(table);
 	};
 
 	$scope.addGroup = function() {
-		$scope.groups.push({players: [], tables: []});
+		$scope.groups.push({players: [], tables: [], availableTables: tablesCopy()});
 	};
 
 	$scope.removeGroup = function(group) {

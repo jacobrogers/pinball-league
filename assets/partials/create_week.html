@@ -27,7 +27,7 @@
 					<a href="" class="remove" ng-click="removeTable(group, table)">X</a>
 				</li>
 			<ul>
-			<select ng-model="group.selectedTable" ng-options="table.name for table in tables"></select>
+			<select ng-model="group.selectedTable" ng-options="table.name for table in group.availableTables"></select>
 			<br/>
 			<button type="button" ng-click="addTable(group)" class="btn btn-default" ng-disabled="!group.selectedTable || group.tables.length >= 3">Add Table</button>	
 		</div>
