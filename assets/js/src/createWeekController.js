@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('controllers')
-.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', function($scope, $http, $route, $location, $routeParams) {
+.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', '$weekService', function($scope, $http, $route, $location, $routeParams, $weekService) {
 	$scope.groups = $scope.players = [];
 	$scope.week = $routeParams.week;
 
@@ -10,11 +10,9 @@ angular.module('controllers')
 		if ($scope.week == 1) {
 			$scope.players = data;
 		} else {
-			console.log(data);
 			for (var i in data) {
 				$scope.groups.push({players: data[i], tables: []});
 			}
-			console.log($scope.groups);
 		}
 	});
 
@@ -91,6 +89,7 @@ angular.module('controllers')
 			.success(function(data) {
 				$route.reload();
 				$location.path('/');
+				$weekService.addWeek($scope.week);
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = true;

@@ -48,7 +48,8 @@ def fetch_group(request):
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
 def overview(request):
-    week = max([ranking.week for ranking in Ranking.objects.all()])
+    rankings = [ranking.week for ranking in Ranking.objects.all()]
+    week = max(rankings) if rankings else 1
     rankings = []
     for rank in Ranking.objects.filter(week=week):
         rankings.append({'rank': rank.rank, 'player': rank.player.name, 'points': rank.points, 'week': rank.week})
@@ -64,8 +65,8 @@ def setup_week(request, week):
 
 def index(request):
     weeks = [group.week for group in Group.objects.distinct('week')]
-    nextWeek = 1 if len(weeks) == 0 else max(weeks)+1
-    return render(request, 'base.html', {'weeks': weeks, 'nextWeek': nextWeek})
+    maxWeek = max(weeks) if weeks else 1
+    return render(request, 'base.html', {'weeks': weeks})
 
 @ensure_csrf_cookie
 def save_groups(request):
