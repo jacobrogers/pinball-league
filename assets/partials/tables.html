@@ -5,6 +5,6 @@
 		<br/>
 		<a ng-href="http://pinside.com/pinball/archive/{$ table.pinside_name $}" target="_blank">Pinside</a>
 		<br />
-		<span>Best Game: {$ table.best_game.player $} {$ table.best_game.score $}<span>
+		<span ng-if="table.best_game.player">Best Game: {$ table.best_game.player $} {$ table.best_game.score $}<span>
 	</div>
 </div>
