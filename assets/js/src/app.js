@@ -45,7 +45,7 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
     }
     $scope.init = function(weeks) {
         for (var i=1; i<=weeks; i++) 
-            $weekService.addWeek(i);
+            $weekService.addWeek(weeks[i]);
     };
 }]);
 
