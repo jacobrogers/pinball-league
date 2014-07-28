@@ -88,6 +88,7 @@ angular.module('controllers')
 			var group = $scope.groups[i];
 			delete group.selectedPlayer;
 			delete group.selectedTable;
+			delete group.availableTables;
 		}
 		for (var i in $scope.groups) {
 			var group = $scope.groups[i];
