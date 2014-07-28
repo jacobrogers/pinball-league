@@ -1,0 +1,2 @@
+export DATABASE_URL=postgres://localhost/pinball_league
+heroku pg:transfer --to orange --from $DATABASE_URL
