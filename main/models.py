@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Table(models.Model):
 	name = models.CharField(max_length=50)
@@ -13,9 +14,9 @@ class Table(models.Model):
 		db_table = 'tables'
 
 class Player(models.Model):
-	name = models.CharField(max_length=100)
 	ifpa_id = models.IntegerField(null=True,blank=True)
 	signature = models.CharField(max_length=3,null=True,blank=True)
+	user = models.ForeignKey(User)
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.name, self.signature)

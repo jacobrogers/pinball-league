@@ -18,6 +18,7 @@ api_urls = patterns('',
 	main_view('api/group', 'fetch_group'),
 	main_view('api/saveGames', 'save_games'),
     main_view('api/overview', 'overview'),
+    main_view('api/signup', 'signup'),
 )
 
 urlpatterns = patterns('',

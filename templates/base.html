@@ -40,6 +40,10 @@
 	            	<li ng-class="navClass('tables')"><a href="#/tables">Tables</a></li>
 	            	<li ng-class="navClass('admin')"><a href="/admin">Admin</a></li>	
 				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#/signup">Signup</a></li>
+					<li><a href="#/login">Login</a></li>
+				</ul>
         	</div><!--/.nav-collapse -->
 		</div>
 	</nav>
@@ -60,6 +64,7 @@
 	<script src="{{STATIC_URL}}js/src/createWeekController.js"></script>
 	<script src="{{STATIC_URL}}js/src/weekController.js"></script>
 	<script src="{{STATIC_URL}}js/src/groupController.js"></script>
+	<script src="{{STATIC_URL}}js/src/signup.js"></script>
 	{% endblock %}
 </body>
 </html>

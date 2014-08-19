@@ -69,6 +69,24 @@ def index(request):
     return render(request, 'base.html', {'weeks': weeks})
 
 @ensure_csrf_cookie
+def signup(request):
+    if request.method == 'POST':
+        from django.contrib.auth.models import User
+        payload = json.loads(request.POST.dict().keys()[0])
+        print payload
+        user = User.objects.create_user(payload['username'], payload['email'], payload['password'])
+        user.first_name = payload['firstName']
+        user.last_name = payload['lastName']
+        user.save()
+        player = Player()
+        player.signature = payload['signature']
+        player.user = user
+        player.save()
+        return HttpResponse(status=201)
+    else:
+        return HttpResponse(status=400)
+
+@ensure_csrf_cookie
 def save_groups(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])

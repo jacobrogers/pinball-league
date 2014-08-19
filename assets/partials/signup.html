@@ -1,0 +1,33 @@
+<div ng-show="error" ng-cloak>
+    <p class="alert alert-danger">There was an error submitting your information.</p>
+</div>
+<form role="form" ng-show="!created">
+    <div class="form-group">
+        <label for="email">Username</label>
+        <input ng-model="user.username" type="text" class="form-control" id="username" />
+    </div>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input ng-model="user.email" type="email" class="form-control" id="email" />
+    </div>
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input ng-model="user.firstName" type="text" class="form-control" id="firstName" />
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input ng-model="user.lastName" type="text" class="form-control" id="lastName" />
+    </div>
+    <div class="form-group">
+        <label for="signature">Game Signature</label>
+        <input ng-model="user.signature" type="text" class="form-control" id="signature" />
+    </div>
+    <div class="form-group">
+        <label for="signature">Password</label>
+        <input ng-model="user.password" type="password" class="form-control" id="password"/>
+    </div>
+    <button type="submit" class="btn btn-default" ng-click="submit(user)">Submit</button>
+</form>
+<div ng-show="created" ng-cloak>
+    <p class="alert alert-success">Welcome to the league!</p>
+</div>

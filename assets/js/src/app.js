@@ -9,6 +9,7 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 	route('/createWeek/:week', 'create_week.html', 'CreateWeekCtrl');
 	route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
 	route('/week/:week', 'week.html', 'WeekCtrl');
+    route('/signup', 'signup.html', 'SignupCtrl');
 	route('/', 'index.html', 'IndexCtrl');
 	$routeProvider.otherwise({redirectTo: '/'});
 })
