@@ -106,7 +106,7 @@ def send_email(request):
     part2 = MIMEText(html, 'html')
 
     username = os.environ['MANDRILL_USERNAME']
-    password = os.environ['MANDRILL_PASSWORD']
+    password = os.environ['MANDRILL_APIKEY']
 
     msg.attach(part1)
     msg.attach(part2)
