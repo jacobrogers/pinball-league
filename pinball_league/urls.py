@@ -24,6 +24,7 @@ api_urls = patterns('',
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^confirmAccount/(?P<id>.+)', 'main.views.confirm_account')
     url(r'^$', 'main.views.index'),
 )
 

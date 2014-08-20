@@ -17,9 +17,10 @@ class Player(models.Model):
 	ifpa_id = models.IntegerField(null=True,blank=True)
 	signature = models.CharField(max_length=3,null=True,blank=True)
 	user = models.ForeignKey(User)
+	confirmed = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.name, self.signature)
+		return '%s %s [%s]' % (self.user.first_name, self.user.last_name, self.signature)
 
 	class Meta:
 		db_table = 'players'

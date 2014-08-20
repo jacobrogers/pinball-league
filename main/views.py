@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import json
 from main.models import Player, Group, Table, League_Game, Ranking
-from main.util import json_response
+from main.util import json_response, send_email
 from main.domain import decide_points, decide_bonus_points, group_players
 from django.db.models import Sum
 
@@ -82,42 +82,13 @@ def signup(request):
         player.signature = payload['signature']
         player.user = user
         player.save()
+        send_email('intervicker@gmail.com', player.id)
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
 
-def send_email(request):
-    import os
-    import smtplib
-
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-    msg = MIMEMultipart('alternative')
-
-    msg['Subject'] = "Hello from Mandrill, Python style!"
-    msg['From']    = "John Doe <john@doe.com>" # Your from name and email address
-    msg['To']      = "intervicker@gmail.com"
-
-    text = "Mandrill speaks plaintext"
-    part1 = MIMEText(text, 'plain')
-
-    html = "<em>Mandrill speaks <strong>HTML</strong></em>"
-    part2 = MIMEText(html, 'html')
-
-    username = os.environ['MANDRILL_USERNAME']
-    password = os.environ['MANDRILL_APIKEY']
-
-    msg.attach(part1)
-    msg.attach(part2)
-
-    s = smtplib.SMTP('smtp.mandrillapp.com', 587)
-
-    s.login(username, password)
-    s.sendmail(msg['From'], msg['To'], msg.as_string())
-
-    s.quit()
-    return HttpResponse(status=200)
+def confirm_account(request, id):
+    return render(request, 'confirmed.html', {})
 
 @ensure_csrf_cookie
 def save_groups(request):
