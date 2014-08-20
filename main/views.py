@@ -117,6 +117,7 @@ def send_email(request):
     s.sendmail(msg['From'], msg['To'], msg.as_string())
 
     s.quit()
+    return HttpResponse(status=200)
 
 @ensure_csrf_cookie
 def save_groups(request):
