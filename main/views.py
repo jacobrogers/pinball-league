@@ -82,7 +82,7 @@ def signup(request):
         player.signature = payload['signature']
         player.user = user
         player.save()
-        send_email(player.email, player.id)
+        send_email(user.email, player.id)
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
