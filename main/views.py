@@ -10,6 +10,13 @@ from django.db.models import Sum
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
 
+def player_name(player):
+    return '%s %s' % (player.user.first_name, player.user.last_name)
+
+def json_player(player):
+    json = {'id': player.id, 'name': player_name(player) }
+    return json
+
 def json_game(game):
     table = basic_json(game.table)
     player = basic_json(game.player)
@@ -21,7 +28,8 @@ def json_group(group, games):
     return {'group': group, 'tables': tables, 'players': players}
 
 def fetch_players(request):
-    return json_response(list(Player.objects.all().values()))
+    players = [json_player(player) for player in Player.objects.all()]
+    return json_response(players)
 
 def fetch_tables(request):
     def best_game(table):
@@ -52,7 +60,7 @@ def overview(request):
     week = max(rankings) if rankings else 1
     rankings = []
     for rank in Ranking.objects.filter(week=week):
-        rankings.append({'rank': rank.rank, 'player': rank.player.name, 'points': rank.points, 'week': rank.week})
+        rankings.append({'rank': rank.rank, 'player': player_name(rank.player), 'points': rank.points, 'week': rank.week})
     return json_response({'rankings': rankings, 'week':week})
 
 def setup_week(request, week):
