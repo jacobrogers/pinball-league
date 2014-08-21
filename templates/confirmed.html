@@ -2,7 +2,11 @@
 
 {% block content %}
 
-<h1>Thanks!  Your account is confirmed.</h1>
+{% if confirmed %}
+<p class="alert alert-success">Thanks!  Your account is confirmed.</p>
+{% else %}
+<p class="alert alert-danger">Error confirming account.</p>
+{% endif %}
 
 {% endblock content %}
 

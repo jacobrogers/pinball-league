@@ -47,11 +47,12 @@
         	</div><!--/.nav-collapse -->
 		</div>
 	</nav>
-	{% block content %}
+	
 	<div class="container">
+		{% block content %}
 		<div ng-view></div>
+		{% endblock content %}
 	</div>
-	{% endblock content %}
 
 	{% block javascript_src %}
 	<script src="{{STATIC_URL}}js/lib/bootstrap/bootstrap.min.js"></script>

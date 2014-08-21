@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-import json
+import json, datetime
 from main.models import Player, Group, Table, League_Game, Ranking
 from main.util import json_response, send_email
 from main.domain import decide_points, decide_bonus_points, group_players
@@ -88,7 +88,16 @@ def signup(request):
         return HttpResponse(status=400)
 
 def confirm_account(request, id):
-    return render(request, 'confirmed.html', {})
+    confirmed = True
+    try:
+        player = Player.objects.get(id=id)
+        player.confirmed = True
+        player.confirmed_date = datetime.datetime.now()
+        player.save()
+    except Player.DoesNotExist:
+        confirmed = False
+
+    return render(request, 'confirmed.html', {'confirmed': confirmed})
 
 @ensure_csrf_cookie
 def save_groups(request):
