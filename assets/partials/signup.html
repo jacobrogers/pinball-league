@@ -26,6 +26,10 @@
         <label for="signature">Password</label>
         <input ng-model="user.password" type="password" class="form-control" id="password"/>
     </div>
+    <div class="form-group">
+        <label for="signature">Confirm Password</label>
+        <input ng-model="user.confirmPassword" type="password" class="form-control" id="confirmPassword"/>
+    </div>
     <button type="submit" class="btn btn-default" ng-click="submit(user)">Submit</button>
 </form>
 <div ng-show="created" ng-cloak>
