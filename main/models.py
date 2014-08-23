@@ -20,6 +20,7 @@ class Player(models.Model):
 	signature = models.CharField(max_length=3,null=True,blank=True)
 	user = models.ForeignKey(User)
 	confirmed = models.BooleanField(default=False)
+	confirmation_token = models.CharField(max_length=16,null=True,blank=True)
 	created = models.DateField(default=datetime.date.today)
 	confirmed_date = models.DateField(null=True,blank=True)
 

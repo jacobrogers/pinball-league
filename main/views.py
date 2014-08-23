@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-import json, datetime
+import json, datetime, os, binascii
 from main.models import Player, Group, Table, League_Game, Ranking
 from main.util import json_response, send_email
 from main.domain import decide_points, decide_bonus_points, group_players
@@ -81,26 +81,29 @@ def signup(request):
     if request.method == 'POST':
         from django.contrib.auth.models import User
         payload = json.loads(request.POST.dict().keys()[0])
-        print payload
         user = User.objects.create_user(payload['username'], payload['email'], payload['password'])
         user.first_name = payload['firstName']
         user.last_name = payload['lastName']
         user.save()
+        confirmation_token = binascii.hexlify(os.urandom(16))
         player = Player()
         player.signature = payload['signature']
         player.user = user
+        player.confirmation_token = confirmation_token
         player.save()
-        send_email(user.email, player.id)
+        send_email(user.email, confirmation_token)
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
 
-def confirm_account(request, id):
+def confirm_account(request):
     confirmed = True
+    token = request.GET.get('t')
     try:
-        player = Player.objects.get(id=id)
+        player = Player.objects.get(confirmation_token=token)
         player.confirmed = True
         player.confirmed_date = datetime.datetime.now()
+        player.confirmation_token = None
         player.save()
     except Player.DoesNotExist:
         confirmed = False
