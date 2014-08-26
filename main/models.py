@@ -19,16 +19,19 @@ class Player(models.Model):
 	ifpa_id = models.IntegerField(null=True,blank=True)
 	signature = models.CharField(max_length=3,null=True,blank=True)
 	user = models.ForeignKey(User)
-	confirmed = models.BooleanField(default=False)
-	confirmation_token = models.CharField(max_length=50,null=True,blank=True)
 	created = models.DateField(default=datetime.date.today)
-	confirmed_date = models.DateField(null=True,blank=True)
 
 	def __unicode__(self):
 		return '%s %s [%s]' % (self.user.first_name, self.user.last_name, self.signature)
 
 	class Meta:
 		db_table = 'players'
+
+class Player_Confirmation(models.Model):
+	username = models.CharField(max_length=50,unique=True)
+	email = models.EmailField()
+	confirmation_token = models.CharField(max_length=50)
+	created = models.DateField(default=datetime.date.today)
 
 class Group(models.Model):
 	week = models.IntegerField()

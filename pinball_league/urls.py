@@ -19,11 +19,12 @@ api_urls = patterns('',
 	main_view('api/saveGames', 'save_games'),
     main_view('api/overview', 'overview'),
     main_view('api/signup', 'signup'),
+    main_view('api/lookupConfirmation/(?P<token>.+)', 'fetch_player_confirmation'),
+    main_view('api/confirm_account/(?P<token>.+)', 'confirm_account'),
 )
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-url(r'^confirmAccount', 'main.views.confirm_account'),
     url(r'^$', 'main.views.index'),
 )
 

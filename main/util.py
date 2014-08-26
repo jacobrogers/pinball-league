@@ -17,6 +17,9 @@ def to_json(value):
 def json_response(results, status=200):
     return HttpResponse(to_json(results), status=status, content_type="application/json")
 
+def json_payload(request):
+    return json.loads(request.POST.dict().keys()[0])
+    
 def send_email(email, token):
     import os
     import smtplib
@@ -30,10 +33,10 @@ def send_email(email, token):
     msg['From']    = "Como Pinball League <como.pinball.league@gmail.com>" # Your from name and email address
     msg['To']      = email
 
-    text = "Mandrill speaks plaintext"
-    part1 = MIMEText(text, 'plain')
+    # text = "Mandrill speaks plaintext"
+    # part1 = MIMEText(text, 'plain')
 
-    html = '<a href="http://como-pinball-league.herokuapp.com/confirmAccount?t=%s">Confirm Account</a>' % token
+    html = '<a href="http://como-pinball-league.herokuapp.com/#/confirmAccount/%s">Confirm Account</a>' % token
     part2 = MIMEText(html, 'html')
 
     username = os.environ['MANDRILL_USERNAME']

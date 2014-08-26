@@ -14,4 +14,26 @@ angular.module('controllers')
                 $scope.error = true;
             });
     };
+}])
+.controller('FinishAccountSetupCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+    console.log('finishing account setup ' + $routeParams.token);
+
+    $http.get('/api/lookupConfirmation/'+$routeParams.token)
+        .success(function(data) {
+            $scope.user = data;
+        }).error(function(data,status,headers,config) {
+            $scope.error = true;
+        });
+
+    $scope.submit = function(user) {
+        if (user.password === user.confirmPassword) {
+            $http.post('api/confirm_account/'+$routeParams.token, $scope.user)
+                .success(function(data) {
+
+                })
+                .error(function(data, status, headers, config) {
+                    $scope.error = true;
+                });
+        }
+    };
 }]);

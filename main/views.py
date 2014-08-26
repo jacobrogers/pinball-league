@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import json, datetime, os, binascii
-from main.models import Player, Group, Table, League_Game, Ranking
-from main.util import json_response, send_email
+from main.models import Player, Group, Table, League_Game, Ranking, Player_Confirmation
+from main.util import json_response, send_email, json_payload
 from main.domain import decide_points, decide_bonus_points, group_players
 from django.db.models import Sum
 
@@ -80,35 +80,47 @@ def index(request):
 def signup(request):
     if request.method == 'POST':
         from django.contrib.auth.models import User
-        payload = json.loads(request.POST.dict().keys()[0])
-        user = User.objects.create_user(payload['username'], payload['email'], payload['password'])
-        user.first_name = payload['firstName']
-        user.last_name = payload['lastName']
-        user.save()
-        confirmation_token = binascii.hexlify(os.urandom(16))
-        player = Player()
-        player.signature = payload['signature']
-        player.user = user
-        player.confirmation_token = confirmation_token
-        player.save()
-        send_email(user.email, confirmation_token)
+        payload = json_payload(request)
+        pc = PlayerConfirmation()
+        pc.username = payload['username']
+        pc.email = payload['email']
+        pc.confirmation_token = binascii.hexlify(os.urandom(16))
+        pc.save()
+        send_email(pc.email, pc.confirmation_token)
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
 
-def confirm_account(request):
-    confirmed = True
+def fetch_player_confirmation(request, token):
     token = request.GET.get('t')
     try:
-        player = Player.objects.get(confirmation_token=token)
-        player.confirmed = True
-        player.confirmed_date = datetime.datetime.now()
-        player.confirmation_token = None
-        player.save()
-    except Player.DoesNotExist:
-        confirmed = False
+        pc = Player_Confirmation.objects.get(confirmation_token=token)
+        return json_response({'token', pc.confirmation_token, 'email': pc.email, 'username': pc.username})
+    except Player_Confirmation.DoesNotExist:
+        return HttpResponse(status=404)
 
-    return render(request, 'confirmed.html', {'confirmed': confirmed})
+def confirm_account(request, token):
+    if request.method == 'POST':
+        try:
+            pc = Player_Confirmation.objects.get(confirmation_token=token)
+        except Player_Confirmation.DoesNotExist:
+            return HttpResponse(status=403)
+        
+        payload = json_payload(request)
+        
+        user = User.objects.create_user(pc.username, pc.email, payload['password'])
+        user.first_name = payload['firstName']
+        user.last_name = payload['lastName']
+        user.save()
+        
+        player = Player()
+        player.signature = payload['signature']
+        player.ifpa_id = payload['ifpa_id'] if 'ifpa_id' in payload else None
+        player.user = user
+        player.save()
+        return HttpResponse(status=201)
+    else:
+        return HttpResponse(status=400)
 
 @ensure_csrf_cookie
 def save_groups(request):

@@ -10,6 +10,7 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
 	route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
 	route('/week/:week', 'week.html', 'WeekCtrl');
     route('/signup', 'signup.html', 'SignupCtrl');
+    route('/confirmAccount/:token', 'finish_account_setup.html', 'FinishAccountSetupCtrl');
 	route('/', 'index.html', 'IndexCtrl');
 	$routeProvider.otherwise({redirectTo: '/'});
 })
