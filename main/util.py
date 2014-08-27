@@ -42,7 +42,7 @@ def send_email(email, token):
     username = os.environ['MANDRILL_USERNAME']
     password = os.environ['MANDRILL_APIKEY']
 
-    msg.attach(part1)
+    # msg.attach(part1)
     msg.attach(part2)
 
     s = smtplib.SMTP('smtp.mandrillapp.com', 587)
