@@ -95,7 +95,7 @@ def fetch_player_confirmation(request, token):
     token = request.GET.get('t')
     try:
         pc = Player_Confirmation.objects.get(confirmation_token=token)
-        return json_response({'token', pc.confirmation_token, 'email': pc.email, 'username': pc.username})
+        return json_response({'token': pc.confirmation_token, 'email': pc.email, 'username': pc.username})
     except Player_Confirmation.DoesNotExist:
         return HttpResponse(status=404)
 
