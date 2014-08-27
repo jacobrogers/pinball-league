@@ -81,7 +81,7 @@ def signup(request):
     if request.method == 'POST':
         from django.contrib.auth.models import User
         payload = json_payload(request)
-        pc = PlayerConfirmation()
+        pc = Player_Confirmation()
         pc.username = payload['username']
         pc.email = payload['email']
         pc.confirmation_token = binascii.hexlify(os.urandom(16))
