@@ -33,6 +33,9 @@ class Player_Confirmation(models.Model):
 	confirmation_token = models.CharField(max_length=50)
 	created = models.DateField(default=datetime.date.today)
 
+	class Meta:
+		db_table = 'account_confirmations'
+
 class Group(models.Model):
 	week = models.IntegerField()
 	group = models.IntegerField()
