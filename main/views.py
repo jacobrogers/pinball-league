@@ -6,6 +6,7 @@ from main.models import Player, Group, Table, League_Game, Ranking, Player_Confi
 from main.util import json_response, send_email, json_payload
 from main.domain import decide_points, decide_bonus_points, group_players
 from django.db.models import Sum
+from django.contrib.auth.models import User
 
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
@@ -79,7 +80,6 @@ def index(request):
 @ensure_csrf_cookie
 def signup(request):
     if request.method == 'POST':
-        from django.contrib.auth.models import User
         payload = json_payload(request)
         pc = Player_Confirmation()
         pc.username = payload['username']
@@ -92,7 +92,6 @@ def signup(request):
         return HttpResponse(status=400)
 
 def fetch_player_confirmation(request, token):
-    token = request.GET.get('t')
     try:
         pc = Player_Confirmation.objects.get(confirmation_token=token)
         return json_response({'token': pc.confirmation_token, 'email': pc.email, 'username': pc.username})
