@@ -103,7 +103,7 @@ def confirm_account(request, token):
         try:
             pc = Player_Confirmation.objects.get(confirmation_token=token)
         except Player_Confirmation.DoesNotExist:
-            return HttpResponse(status=403)
+            return HttpResponse(status=404)
         
         payload = json_payload(request)
         
@@ -117,6 +117,7 @@ def confirm_account(request, token):
         player.ifpa_id = payload['ifpa_id'] if 'ifpa_id' in payload else None
         player.user = user
         player.save()
+        pc.delete()
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
