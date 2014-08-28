@@ -15,9 +15,7 @@ angular.module('controllers')
             });
     };
 }])
-.controller('FinishAccountSetupCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-    console.log('finishing account setup ' + $routeParams.token);
-
+.controller('FinishAccountSetupCtrl', ['$scope', '$http', '$routeParams', '$location', function($scope, $http, $routeParams, $location) {
     $http.get('/api/lookupConfirmation/'+$routeParams.token)
         .success(function(data) {
             $scope.user = data;
@@ -29,7 +27,7 @@ angular.module('controllers')
         if (user.password === user.confirmPassword) {
             $http.post('api/confirm_account/'+$routeParams.token, $scope.user)
                 .success(function(data) {
-
+                    $location.path('/login');
                 })
                 .error(function(data, status, headers, config) {
                     $scope.error = true;
