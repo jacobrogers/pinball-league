@@ -40,8 +40,8 @@
 	            	<li ng-class="navClass('tables')"><a href="#/tables">Tables</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#/signup">Signup</a></li>
-					<li><a href="#/login">Login</a></li>
+					<li ng-class="navClass('signup')"><a href="#/signup">Signup</a></li>
+					<li ng-class="navClass('login')"><a href="#/login">Login</a></li>
 				</ul>
         	</div><!--/.nav-collapse -->
 		</div>
@@ -59,6 +59,7 @@
 	<script src="{{STATIC_URL}}js/lib/angular.min.js"></script>
 	<script src="{{STATIC_URL}}js/lib/angular-cookies.min.js"></script>
 	<script src="{{STATIC_URL}}js/lib/angular-route.min.js"></script>
+	<script src="{{STATIC_URL}}js/lib/angular-resource.min.js"></script>
 	<script src="{{STATIC_URL}}js/src/app.js"></script>
 	<script src="{{STATIC_URL}}js/src/config.js"></script>
 	<script src="{{STATIC_URL}}js/src/playersController.js"></script>
@@ -67,6 +68,7 @@
 	<script src="{{STATIC_URL}}js/src/weekController.js"></script>
 	<script src="{{STATIC_URL}}js/src/groupController.js"></script>
 	<script src="{{STATIC_URL}}js/src/signup.js"></script>
+	<script src="{{STATIC_URL}}js/src/login.js"></script>
 	{% endblock %}
 </body>
 </html>

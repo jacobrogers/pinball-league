@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('authentication', ['ngResouce'])
+angular.module('authentication', ['ngResource'])
 .factory('api', function($resource) {
 	function add_auth_header(data, headersGetter) {
 		var headers = headersGetter();
@@ -9,7 +9,7 @@ angular.module('authentication', ['ngResouce'])
 	return {
 		auth: $resource('/api/auth\\/', {}, { 
 			login: {method: 'POST', transformRequest: add_auth_header},
-			logout: {method, 'DELETE'}
+			logout: {method: 'DELETE'}
 		}),
 		users: $resource('/api/users\\/', {}, {
 			create: {method: 'POST'}
@@ -17,7 +17,7 @@ angular.module('authentication', ['ngResouce'])
 	};
 })
 .controller('LoginCtrl', ['$scope','$http','api', function($scope,$http,api) {	
-	$('#username').checkAndTriggerAutoFillEvent();
+	// $('#username').checkAndTriggerAutoFillEvent();
 
 	$scope.getCredentials = function() {
 		return {username: $scope.username, password: $scope.password};
@@ -35,10 +35,9 @@ angular.module('authentication', ['ngResouce'])
 	$scope.logout = function() {
 		$event.preventDefault();
 		api.users.create($scope.getCredentials())
-			.promise.then($scopce.login)
+			.promise.then($scope.login)
 			.catch(function(data) {
 				alert(data.data.username);
 			});
-		}
 	};
-});
+}]);

@@ -1,6 +1,6 @@
 'use scrict';
 
-angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function($routeProvider) {
+angular.module('app', ['ngCookies','ngRoute','controllers', 'config','authentication'], function($routeProvider) {
 	var route = function(path, partial, controller) {
 		$routeProvider.when(path, {templateUrl: '/static/partials/'+partial, controller: controller});
 	};
@@ -37,7 +37,7 @@ angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function(
         });
 }])
 .controller('NavCtrl', ['$scope', '$location', '$weekService', function($scope, $location, $weekService) {
-	$scope.navClass = function (page) {
+	$scope.navClass = function(page) {
         var currentRoute = $location.path().substring(1) || 'home';
         return page === currentRoute ? 'active' : '';
     };

@@ -175,3 +175,42 @@ def save_games(request):
         return json_response(points, 201)
     else:
         return HttpResponse(status=400)
+
+from rest_framework.authentication import BasicAuthentication
+ 
+class QuietBasicAuthentication(BasicAuthentication):
+    # disclaimer: once the user is logged in, this should NOT be used as a
+    # substitute for SessionAuthentication, which uses the django session cookie,
+    # rather it can check credentials before a session cookie has been granted.
+    def authenticate_header(self, request):
+        return 'xBasic realm="%s"' % self.www_authenticate_realm
+
+from rest_framework.serializers import ModelSerializer
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['password', 'first_name', 'last_name', 'email',]
+        write_only_fields = ['password',]
+
+    def restore_object(self, attrs, instance=None):
+        user = Super(UserSerializer, self).restore_object(attrs, instance)
+        user.set_password(attrs['password'])
+        return user
+
+
+from django.contrib.auth import login, logout
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
+class AuthView(APIView):
+    authentication_classes = (QuietBasicAuthentication,)
+
+    def post(self, request, *args, **kwargs):
+        login(request, request.user)
+        return Response(UserSerializer(request.user).data)
+ 
+    def delete(self, request, *args, **kwargs):
+        logout(request)
+        return Response({})

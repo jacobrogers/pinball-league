@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-
+from main import views
 admin.autodiscover()
 
 def main_view(path, action):
@@ -25,6 +25,7 @@ api_urls = patterns('',
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
     url(r'^$', 'main.views.index'),
 )
 
