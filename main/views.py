@@ -252,7 +252,21 @@ class WeekView(View):
     def get(self, request, week):
         return render(request, 'week.html', {})
 
+from django.contrib.auth import authenticate, login
 class LoginView(View):
 
     def get(self, request):
         return render(request, 'login.html', {'confirmed': request.GET.get('confirmed')})
+    
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/')
+            else:
+                return render(request, 'login.html', {'status': 'notActive'})
+        else:
+            return render(request, 'login.html', {'status': 'failed'})
