@@ -204,7 +204,7 @@ class SignupView(View):
             pc.save()
             if 'USE_LOCAL_DB' not in os.environ:
                 send_email(pc.email, pc.confirmation_token) 
-            return render(request, 'signup_accepted.html', {})
+            return render(request, 'signup_accepted.html', {'email': pc.email})
         else:
             return render(request, 'signup.html', {'form': form})
 
