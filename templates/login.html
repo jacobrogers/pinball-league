@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-offset-2 col-md-8">
+    {% if confirmed %}
+    <div>
+        <p class="alert alert-success">Your account has been created.  You can now log in.</p>
+    </div>
+    {% endif %}
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-4">
+          <input ng-model="username" type="text" class="form-control" id="username" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-4">
+          <input ng-model="password" type="password" class="form-control" id="password" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default">Log In</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-offset-2 col-md-8">
+    <form class="form-horizontal" role="form" action="/confirmAccount/{{token}}" method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-group">
+        <label for="username" class="col-sm-3 control-label">Username:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="firstName" disabled value="{{player_confirmation.username}}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-3 control-label">Email:</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="firstName" disabled value="{{player_confirmation.email}}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.first_name.errors }}
+        <label for="firstName" class="col-sm-3 control-label">First Name</label>
+        <div class="col-sm-5">
+          {{ form.first_name }}
+          <!-- <input ng-model="user.firstName" type="text" class="form-control" id="firstName" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.last_name.errors }}
+        <label for="lastName" class="col-sm-3 control-label">Last Name</label>
+        <div class="col-sm-5">
+          {{ form.last_name }}
+          <!-- <input ng-model="user.lastName" type="text" class="form-control" id="lastName" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.signature.errors }}
+        <label for="signature" class="col-sm-3 control-label">Game Signature:</label>
+        <div class="col-sm-2">
+          {{ form.signature }}
+          <!-- <input ng-model="user.signature" type="text" class="form-control" id="signature" placeholder="ABC" maxlength="3" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.ifpa_id.errors }}
+        <label for="ifpaId" class="col-sm-3 control-label">IFPA ID:</label>
+        <div class="col-sm-4">
+          {{ form.ifpa_id }}
+          <!-- <input ng-model="user.ifpaId" type="text" class="form-control" id="ifpaId" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.password.errors }}
+        <label for="password" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-5">
+          {{ form.password }}
+          <!-- <input ng-model="user.password" type="password" class="form-control" id="password" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        {{ form.confirm_password.errors }}
+        <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
+        <div class="col-sm-5">
+          {{ form.confirm_password }}
+          <!-- <input ng-model="user.confirmPassword" type="password" class="form-control" id="confirmPassword" /> -->
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

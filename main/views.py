@@ -73,9 +73,10 @@ def setup_week(request, week):
     return json_response(model)
 
 def index(request):
+    print 'hello'
     weeks = [group.week for group in Group.objects.distinct('week')]
     maxWeek = max(weeks) if weeks else 1
-    return render(request, 'base.html', {'weeks': weeks})
+    return render(request, 'index.html', {'weeks': weeks})
 
 @ensure_csrf_cookie
 def signup(request):
@@ -225,3 +226,55 @@ class PlayerView(View):
     def get(self, request):
         players = Player.objects.all()
         return render(request, 'players.html', {'players': players})
+
+from main.forms import SignupForm
+class SignupView(View):
+
+    def get(self, request):
+        form = SignupForm()
+        return render(request, 'signup.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            pc = Player_Confirmation()
+            pc.username = form.cleaned_data['username']
+            pc.email = form.cleaned_data['email']
+            pc.confirmation_token = binascii.hexlify(os.urandom(16))
+            pc.save()
+            # send_email(pc.email, pc.confirmation_token) 
+            return render(request, 'signup_accepted.html', {})
+        else:
+            return render(request, 'signup.html', {'form': form})
+
+from main.forms import AccountConfirmationForm
+class ConfirmAccountView(View):
+
+    def get(self, request, token):
+        pc = Player_Confirmation.objects.get(confirmation_token=token)
+        form = AccountConfirmationForm()
+        return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
+
+    def post(self, request, token):
+        form = AccountConfirmationForm(request.POST)
+        if form.is_valid():
+            try:
+                pc = Player_Confirmation.objects.get(confirmation_token=token)
+            except Player_Confirmation.DoesNotExist:
+                return HttpResponse(status=404)
+
+            user = User.objects.create_user(pc.username, pc.email, form.cleaned_data['password'])
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
+            
+            player = Player()
+            player.signature = form.cleaned_data['signature']
+            player.ifpa_id = form.cleaned_data['ifpa_id']
+            player.user = user
+            player.save()
+            pc.delete()
+            return render(request, 'login.html', {'confirmed': True})
+        else:
+            pc = Player_Confirmation.objects.get(confirmation_token=token)
+            return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
