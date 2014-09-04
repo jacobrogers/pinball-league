@@ -203,7 +203,6 @@ from django.contrib.auth import login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
 class AuthView(APIView):
     authentication_classes = (QuietBasicAuthentication,)
 
@@ -214,3 +213,15 @@ class AuthView(APIView):
     def delete(self, request, *args, **kwargs):
         logout(request)
         return Response({})
+
+from django.views.generic import View
+
+class TableView(View):
+    def get(self, request):
+        tables = Table.objects.all()
+        return render(request, 'tables.html', {'tables': tables})
+
+class PlayerView(View):
+    def get(self, request):
+        players = Player.objects.all()
+        return render(request, 'players.html', {'players': players})

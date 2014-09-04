@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for table in tables %}
+<div class="panel panel-default">
+    <div class="panel-heading">{{ table.name }}</div>
+    <div class="panel-body">
+        <a href="http://ipdb.org/machine.cgi?id={{ table.ipdb_id }}" target="_blank">IFDB</a>
+        <br/>
+        <a href="http://pinside.com/pinball/archive/{{ table.pinside_name }}" target="_blank">Pinside</a>
+        <br />
+        {% if table.best_game %}
+        <span ng-if="table.best_game.player">Best Game: {{ table.best_game.player }} {{ table.best_game.score }}<span>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

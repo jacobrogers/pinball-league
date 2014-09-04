@@ -21,6 +21,10 @@ class Player(models.Model):
 	user = models.ForeignKey(User)
 	created = models.DateField(default=datetime.date.today)
 
+	@property
+	def name(self):
+		return '%s %s' % (self.user.first_name, self.user.last_name)
+		
 	def __unicode__(self):
 		return '%s %s [%s]' % (self.user.first_name, self.user.last_name, self.signature)
 

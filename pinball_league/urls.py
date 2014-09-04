@@ -10,8 +10,8 @@ def main_view(path, action):
 	return url(r'^%s' % (path), 'main.views.%s' % (action))
 
 api_urls = patterns('',
-	main_view('api/players', 'fetch_players'),
-	main_view('api/tables', 'fetch_tables'),
+	# main_view('api/players', 'fetch_players'),
+	# main_view('api/tables', 'fetch_tables'),
 	main_view('api/saveGroups', 'save_groups'),
 	main_view('api/week/(?P<week>.+)', 'fetch_groups'),
     main_view('api/setupWeek/(?P<week>.+)', 'setup_week'),
@@ -25,6 +25,8 @@ api_urls = patterns('',
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^tables', views.TableView.as_view()),
+    url(r'^players', views.PlayerView.as_view()),
     url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
     url(r'^$', 'main.views.index'),
 )
