@@ -12,7 +12,7 @@ def basic_json(value):
     return {'id': value.id, 'name': value.name}
 
 def json_player(player):
-    json = {'id': player.id, 'name': player_name(player) }
+    json = {'id': player.id, 'name': player.name }
     return json
 
 def json_game(game):
@@ -30,16 +30,16 @@ def fetch_players(request):
     return json_response(players)
 
 def fetch_tables(request):
-    def best_game(table):
-        games = League_Game.objects.filter(table__id=table['id']).order_by('-score')
-        if len(games) > 0:
-            high_score = games[0]
-            return {'player': high_score.player.name, 'score': high_score.score, 'week': high_score.group.week}
-        else:
-            return {}
+    # def best_game(table):
+    #     games = League_Game.objects.filter(table__id=table['id']).order_by('-score')
+    #     if len(games) > 0:
+    #         high_score = games[0]
+    #         return {'player': high_score.player.name, 'score': high_score.score, 'week': high_score.group.week}
+    #     else:
+    #         return {}
     tables = list(Table.objects.all().values())
-    for table in tables:
-        table['best_game'] = best_game(table)
+    # for table in tables:
+    #     table['best_game'] = best_game(table)
     return json_response(tables)
 
 def fetch_groups(request, week):
@@ -73,51 +73,6 @@ def index(request):
     weeks = [group.week for group in Group.objects.distinct('week')]
     maxWeek = max(weeks) if weeks else 1
     return render(request, 'index.html', {'weeks': weeks})
-
-@ensure_csrf_cookie
-def signup(request):
-    if request.method == 'POST':
-        payload = json_payload(request)
-        pc = Player_Confirmation()
-        pc.username = payload['username']
-        pc.email = payload['email']
-        pc.confirmation_token = binascii.hexlify(os.urandom(16))
-        pc.save()
-        send_email(pc.email, pc.confirmation_token)
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
-
-def fetch_player_confirmation(request, token):
-    try:
-        pc = Player_Confirmation.objects.get(confirmation_token=token)
-        return json_response({'token': pc.confirmation_token, 'email': pc.email, 'username': pc.username})
-    except Player_Confirmation.DoesNotExist:
-        return HttpResponse(status=404)
-
-def confirm_account(request, token):
-    if request.method == 'POST':
-        try:
-            pc = Player_Confirmation.objects.get(confirmation_token=token)
-        except Player_Confirmation.DoesNotExist:
-            return HttpResponse(status=404)
-        
-        payload = json_payload(request)
-        
-        user = User.objects.create_user(pc.username, pc.email, payload['password'])
-        user.first_name = payload['firstName']
-        user.last_name = payload['lastName']
-        user.save()
-        
-        player = Player()
-        player.signature = payload['signature']
-        player.ifpa_id = payload['ifpa_id'] if 'ifpa_id' in payload else None
-        player.user = user
-        player.save()
-        pc.delete()
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
 
 @ensure_csrf_cookie
 def save_groups(request):
@@ -283,3 +238,13 @@ class ConfirmAccountView(View):
         else:
             pc = Player_Confirmation.objects.get(confirmation_token=token)
             return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
+
+class SetupWeekView(View):
+
+    def get(self, request, week):
+        return render(request, 'setup_week.html', {'week': week})
+
+class WeekView(View):
+
+    def get(self, request, week):
+        return render(request, 'week.html', {})

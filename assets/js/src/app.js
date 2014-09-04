@@ -1,19 +1,19 @@
 'use scrict';
 
-angular.module('app', ['ngCookies','ngRoute','controllers', 'config','authentication'], function($routeProvider) {
-	var route = function(path, partial, controller) {
-		$routeProvider.when(path, {templateUrl: '/static/partials/'+partial, controller: controller});
-	};
-	route('/tables', 'tables.html', 'TablesCtrl');
-	route('/players', 'players.html', 'PlayersCtrl');
-	route('/createWeek/:week', 'create_week.html', 'CreateWeekCtrl');
-	route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
-	route('/week/:week', 'week.html', 'WeekCtrl');
-    route('/signup', 'signup.html', 'SignupCtrl');
-    route('/confirmAccount/:token', 'finish_account_setup.html', 'FinishAccountSetupCtrl');
-    route('/login', 'login.html', 'LoginCtrl');
-	route('/', 'index.html', 'IndexCtrl');
-	$routeProvider.otherwise({redirectTo: '/'});
+angular.module('app', ['ngCookies','ngRoute','controllers', 'config'], function($routeProvider) {
+	// var route = function(path, partial, controller) {
+	// 	$routeProvider.when(path, {templateUrl: '/static/partials/'+partial, controller: controller});
+	// };
+	// route('/tables', 'tables.html', 'TablesCtrl');
+	// route('/players', 'players.html', 'PlayersCtrl');
+	// route('/createWeek/:week', 'create_week.html', 'SetupWeekCtrl');
+	// route('/week/:week/group/:group', 'group.html', 'GroupCtrl');
+	// route('/week/:week', 'week.html', 'WeekCtrl');
+ //    route('/signup', 'signup.html', 'SignupCtrl');
+ //    route('/confirmAccount/:token', 'finish_account_setup.html', 'FinishAccountSetupCtrl');
+ //    route('/login', 'login.html', 'LoginCtrl');
+	// route('/', 'index.html', 'IndexCtrl');
+	// $routeProvider.otherwise({redirectTo: '/'});
 })
 .service('$weekService', function() {
     var _weeks = [];

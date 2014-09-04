@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('controllers')
-.controller('CreateWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', '$weekService', function($scope, $http, $route, $location, $routeParams, $weekService) {
+.controller('SetupWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', '$weekService', function($scope, $http, $route, $location, $routeParams, $weekService) {
 	$scope.groups = $scope.players = [];
-	$scope.week = $routeParams.week;
+
+	$scope.init = function(week) {
+		$scope.week = week;
+	};
 
 	var loadPlayers = function() {
-		var playersPath = ($scope.week == 1) ? 'api/players' : '/api/setupWeek/'+$scope.week;	
+		var playersPath = ($scope.week == 1) ? '/api/players' : '/api/setupWeek/'+$scope.week;	
 		$http.get(playersPath).success(function(data) {
 			if ($scope.week == 1) {
 				$scope.players = data;
@@ -99,9 +102,7 @@ angular.module('controllers')
 		}
 		$http.post('/api/saveGroups', {week: $scope.week, groups: $scope.groups})
 			.success(function(data) {
-				$route.reload();
-				$location.path('/');
-				$weekService.addWeek($scope.week);
+				$scope.weekSetup = true;
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = true;
