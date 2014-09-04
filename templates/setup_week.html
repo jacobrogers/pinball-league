@@ -18,21 +18,24 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <ol>
-                        <li ng-repeat="player in group.players">
-                            <span>{$ player.name $}</span>
-                            <span ng-if="player.league_points >= 0">- {$ player.league_points $} points</span>
-                            <span ng-if="player.direction == 'up'" class="glyphicon glyphicon-arrow-up"></span>
-                            <span ng-if="player.direction == 'down'" class="glyphicon glyphicon-arrow-down"></span>
-                            <span ng-if="player.direction == 'same'" class="glyphicon glyphicon-minus"></span>
-                            <a href="" class="remove" ng-click="removePlayer(group, player)">X</a>
-                        </li>
-                    <ol>
-                    <select ng-model="group.selectedPlayer" ng-options="player.name for player in players">
-                        <option value="">Select Player</option>
-                    </select>
-                    <br/>
-                    <button type="button" ng-click="addPlayer(group)" class="btn btn-default" ng-disabled="!group.selectedPlayer || group.players.length >= 4">Add Player</button>
+                    <div>
+                        <ol>
+                            <li ng-repeat="player in group.players">
+                                <span>{$ player.name $}</span>
+                                <span ng-if="player.league_points >= 0">- {$ player.league_points $} points</span>
+                                <span ng-if="player.direction == 'up'" class="glyphicon glyphicon-arrow-up"></span>
+                                <span ng-if="player.direction == 'down'" class="glyphicon glyphicon-arrow-down"></span>
+                                <span ng-if="player.direction == 'same'" class="glyphicon glyphicon-minus"></span>
+                                <a href="" class="remove" ng-click="removePlayer(group, player)">X</a>
+                            </li>
+                        <ol>
+                        <select ng-model="group.selectedPlayer" ng-options="player.name for player in players">
+                            <option value="">Select Player</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="button" ng-click="addPlayer(group)" class="btn btn-default" ng-disabled="!group.selectedPlayer || group.players.length >= 4">Add Player</button>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <ul>

@@ -202,7 +202,8 @@ class SignupView(View):
             pc.email = form.cleaned_data['email']
             pc.confirmation_token = binascii.hexlify(os.urandom(16))
             pc.save()
-            # send_email(pc.email, pc.confirmation_token) 
+            if 'USE_LOCAL_DB' not in os.environ:
+                send_email(pc.email, pc.confirmation_token) 
             return render(request, 'signup_accepted.html', {})
         else:
             return render(request, 'signup.html', {'form': form})
