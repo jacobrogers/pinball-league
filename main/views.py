@@ -11,9 +11,6 @@ from django.contrib.auth.models import User
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
 
-def player_name(player):
-    return '%s %s' % (player.user.first_name, player.user.last_name)
-
 def json_player(player):
     json = {'id': player.id, 'name': player_name(player) }
     return json
@@ -73,7 +70,6 @@ def setup_week(request, week):
     return json_response(model)
 
 def index(request):
-    print 'hello'
     weeks = [group.week for group in Group.objects.distinct('week')]
     maxWeek = max(weeks) if weeks else 1
     return render(request, 'index.html', {'weeks': weeks})
@@ -199,7 +195,6 @@ class UserSerializer(ModelSerializer):
         user.set_password(attrs['password'])
         return user
 
-
 from django.contrib.auth import login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -216,6 +211,16 @@ class AuthView(APIView):
         return Response({})
 
 from django.views.generic import View
+
+class IndexView(View):
+    def get(self, request):
+        weeks = [group.week for group in Group.objects.distinct('week')]
+        maxWeek = max(weeks) if weeks else 1
+
+        rankings = [ranking.week for ranking in Ranking.objects.all()]
+        week = max(rankings) if rankings else 1
+        rankings = Ranking.objects.filter(week=week)
+        return render(request, 'index.html', {'weeks': weeks, 'rankings': rankings})
 
 class TableView(View):
     def get(self, request):
