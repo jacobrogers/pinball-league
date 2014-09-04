@@ -189,13 +189,14 @@ class PlayerView(View):
 
 from main.forms import SignupForm
 class SignupView(View):
+    form_class = SignupForm
 
     def get(self, request):
-        form = SignupForm()
+        form = self.form_class()
         return render(request, 'signup.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = SignupForm(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             pc = Player_Confirmation()
             pc.username = form.cleaned_data['username']
