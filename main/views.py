@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import json, datetime, os, binascii
@@ -204,6 +204,8 @@ class SignupView(View):
             pc.save()
             if 'USE_LOCAL_DB' not in os.environ:
                 send_email(pc.email, pc.confirmation_token) 
+            else:
+                print pc.confirmation_token
             return render(request, 'signup_accepted.html', {'email': pc.email})
         else:
             return render(request, 'signup.html', {'form': form})
@@ -235,7 +237,7 @@ class ConfirmAccountView(View):
             player.user = user
             player.save()
             pc.delete()
-            return render(request, 'login.html', {'confirmed': True})
+            return redirect('/login?confirmed=true')
         else:
             pc = Player_Confirmation.objects.get(confirmation_token=token)
             return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
@@ -249,3 +251,8 @@ class WeekView(View):
 
     def get(self, request, week):
         return render(request, 'week.html', {})
+
+class LoginView(View):
+
+    def get(self, request):
+        return render(request, 'login.html', {'confirmed': request.GET.get('confirmed')})
