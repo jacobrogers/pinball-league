@@ -213,14 +213,16 @@ class SignupView(View):
 
 from main.forms import AccountConfirmationForm
 class ConfirmAccountView(View):
+    form_class = AccountConfirmationForm
 
     def get(self, request, token):
         pc = Player_Confirmation.objects.get(confirmation_token=token)
-        form = AccountConfirmationForm()
+        form = form_class()
         return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
 
     def post(self, request, token):
-        form = AccountConfirmationForm(request.POST)
+        form = form_class(request.POST)
+        
         if form.is_valid():
             try:
                 pc = Player_Confirmation.objects.get(confirmation_token=token)
