@@ -2,4 +2,27 @@
 
 {% block content %}
 
+<div class="h3">Week {{ week }}</div>
+{% for group in groups %}
+<div class="row panel panel-primary">
+    <div class="panel-heading">Group {{ group.group }}</div>
+    <div class="panel-body">
+    <ul class="col-sm-6 list-group">
+        {% for game in group.games.all %}
+        <li class="list-group-item">{{ game.player }}</li>
+        {% endfor %}
+    </ul>
+    <ul class="col-sm-6 list-group">
+        {% for game in group.games.all %}
+        <li class="list-group-item">{{ game.table.name }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div class="panel-footer">
+        <a href="enterScores" class="btn btn-primary">Enter Scores</a>
+    </div>
+</div>
+
+{% endfor %}
+
 {% endblock %}

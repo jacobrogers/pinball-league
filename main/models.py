@@ -26,7 +26,7 @@ class Player(models.Model):
 		return '%s %s' % (self.user.first_name, self.user.last_name)
 		
 	def __unicode__(self):
-		return '%s %s [%s]' % (self.user.first_name, self.user.last_name, self.signature)
+		return self.name
 
 	class Meta:
 		db_table = 'players'

@@ -69,11 +69,6 @@ def setup_week(request, week):
     model = group_players(groups)
     return json_response(model)
 
-def index(request):
-    weeks = [group.week for group in Group.objects.distinct('week')]
-    maxWeek = max(weeks) if weeks else 1
-    return render(request, 'index.html', {'weeks': weeks})
-
 @ensure_csrf_cookie
 def save_groups(request):
     if request.method == 'POST':
@@ -137,7 +132,9 @@ class IndexView(View):
 
         rankings = [ranking.week for ranking in Ranking.objects.all()]
         week = max(rankings) if rankings else 1
+        print week
         rankings = Ranking.objects.filter(week=week)
+        print rankings
         return render(request, 'index.html', {'weeks': weeks, 'rankings': rankings})
 
 class TableView(View):
@@ -219,7 +216,9 @@ class SetupWeekView(View):
 class WeekView(View):
 
     def get(self, request, week):
-        return render(request, 'week.html', {})
+        # groups = [json_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
+        groups = Group.objects.filter(week=week)
+        return render(request, 'week.html', {'week': week, 'groups': groups})
 
 from django.contrib.auth import authenticate, login, logout
 class LoginView(View):

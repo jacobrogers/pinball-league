@@ -30,7 +30,9 @@ urlpatterns = patterns('',
     url(r'^week/(?P<week>.+)', views.WeekView.as_view()),
     url(r'^login', views.LoginView.as_view(), name='login'),
     url(r'^logout', views.LogoutView.as_view(), name='logout'),
-    url(r'^$', 'main.views.index', name='home'),
+    url(r'^week/(?P<week>.+)', views.WeekView.as_view(), name='week'),
+    url(r'^week/(?P<week>.+)/group/(?P<group>.+)', views.WeekView.as_view(), name='week'),
+    url(r'^$', views.IndexView.as_view(), name='home'),
 )
 
 urlpatterns = urlpatterns + api_urls + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
