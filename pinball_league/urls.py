@@ -18,9 +18,6 @@ api_urls = patterns('',
 	main_view('api/group', 'fetch_group'),
 	main_view('api/saveGames', 'save_games'),
     main_view('api/overview', 'overview'),
-    # main_view('api/signup', 'signup'),
-    # main_view('api/lookupConfirmation/(?P<token>.+)', 'fetch_player_confirmation'),
-    # main_view('api/confirm_account/(?P<token>.+)', 'confirm_account'),
 )
 
 urlpatterns = patterns('',
@@ -32,7 +29,6 @@ urlpatterns = patterns('',
     url(r'^setupWeek/(?P<week>.+)', views.SetupWeekView.as_view()),
     url(r'^week/(?P<week>.+)', views.WeekView.as_view()),
     url(r'^login', views.LoginView.as_view(), name='login'),
-    # url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
     url(r'^$', 'main.views.index', name='home'),
 )
 

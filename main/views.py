@@ -128,43 +128,6 @@ def save_games(request):
     else:
         return HttpResponse(status=400)
 
-from rest_framework.authentication import BasicAuthentication
- 
-class QuietBasicAuthentication(BasicAuthentication):
-    # disclaimer: once the user is logged in, this should NOT be used as a
-    # substitute for SessionAuthentication, which uses the django session cookie,
-    # rather it can check credentials before a session cookie has been granted.
-    def authenticate_header(self, request):
-        return 'xBasic realm="%s"' % self.www_authenticate_realm
-
-from rest_framework.serializers import ModelSerializer
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['password', 'first_name', 'last_name', 'email',]
-        write_only_fields = ['password',]
-
-    def restore_object(self, attrs, instance=None):
-        user = Super(UserSerializer, self).restore_object(attrs, instance)
-        user.set_password(attrs['password'])
-        return user
-
-from django.contrib.auth import login, logout
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-class AuthView(APIView):
-    authentication_classes = (QuietBasicAuthentication,)
-
-    def post(self, request, *args, **kwargs):
-        login(request, request.user)
-        return Response(UserSerializer(request.user).data)
- 
-    def delete(self, request, *args, **kwargs):
-        logout(request)
-        return Response({})
-
 from django.views.generic import View
 
 class IndexView(View):
@@ -217,12 +180,12 @@ class ConfirmAccountView(View):
 
     def get(self, request, token):
         pc = Player_Confirmation.objects.get(confirmation_token=token)
-        form = form_class()
+        form = self.form_class()
         return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
 
     def post(self, request, token):
-        form = form_class(request.POST)
-        
+        form = self.form_class(request.POST)
+
         if form.is_valid():
             try:
                 pc = Player_Confirmation.objects.get(confirmation_token=token)
@@ -273,3 +236,4 @@ class LoginView(View):
                 return render(request, 'login.html', {'status': 'notActive'})
         else:
             return render(request, 'login.html', {'status': 'failed'})
+
