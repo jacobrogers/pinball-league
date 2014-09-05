@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('controllers')
-.controller('SetupWeekCtrl', ['$scope', '$http', '$route', '$location', '$routeParams', '$weekService', function($scope, $http, $route, $location, $routeParams, $weekService) {
+.controller('SetupWeekCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.groups = $scope.players = [];
 
 	$scope.init = function(week) {

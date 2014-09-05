@@ -102,6 +102,7 @@ def save_games(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])
         games = payload['games']
+        print games
         scores = sorted([game['score'] for game in games],reverse=True)
         points = []
         for game in games:
