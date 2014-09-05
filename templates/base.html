@@ -40,8 +40,12 @@
 	            	<li {% block nav-tables %}{% endblock %}><a href="{% url 'tables' %}">Tables</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					{% if user.is_authenticated %}
+					<li><a href="{% url 'logout' %}">Logout</a></li>
+					{% else %}
 					<li {% block nav-register %}{% endblock %}><a href="{% url 'register' %}">Register</a></li>
 					<li {% block nav-login %}{% endblock %}><a href="{% url 'login' %}">Login</a></li>
+					{% endif %}
 				</ul>
         	</div><!--/.nav-collapse -->
 		</div>

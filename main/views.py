@@ -218,7 +218,7 @@ class WeekView(View):
     def get(self, request, week):
         return render(request, 'week.html', {})
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 class LoginView(View):
 
     def get(self, request):
@@ -236,4 +236,10 @@ class LoginView(View):
                 return render(request, 'login.html', {'status': 'notActive'})
         else:
             return render(request, 'login.html', {'status': 'failed'})
+
+class LogoutView(View):
+
+    def get(self, request):
+        logout(request)
+        return redirect('/')
 

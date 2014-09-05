@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^setupWeek/(?P<week>.+)', views.SetupWeekView.as_view()),
     url(r'^week/(?P<week>.+)', views.WeekView.as_view()),
     url(r'^login', views.LoginView.as_view(), name='login'),
+    url(r'^logout', views.LogoutView.as_view(), name='logout'),
     url(r'^$', 'main.views.index', name='home'),
 )
 
