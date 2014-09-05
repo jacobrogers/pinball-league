@@ -210,7 +210,10 @@ class ConfirmAccountView(View):
 
 class SetupWeekView(View):
 
-    def get(self, request, week):
+    def get(self, request):
+        from django.db.models import Max
+        groups = Group.objects.all().aggregate(Max('week'))   
+        week = groups['week__max']+1 if groups['week__max'] else 1
         return render(request, 'setup_week.html', {'week': week})
 
 class WeekView(View):
