@@ -3,14 +3,11 @@
 angular.module('controllers')
 .controller('GroupCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 	$scope.init = function(week, group) {
-		$scope.week = week;
-		$scope.group = group;
-	};
-
-	$http.get('/api/group', {params: {'group': $routeParams.group, 'week': $routeParams.week}})
+		$http.get('/api/group', {params: {'group': group, 'week': week}})
 		.success(function(data) {
 			$scope.group = data;
 		});
+	};
 
 	$scope.saveTable = function(table) {
 		var gamesToSave = $scope.group.games.filter(function(game) { return game.table.name === table.name });

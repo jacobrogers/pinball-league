@@ -59,6 +59,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block javascript_src %}
+{{ block.super }}
 <script src="{{STATIC_URL}}js/src/createWeekController.js"></script>
 {% endblock %}

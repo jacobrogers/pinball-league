@@ -213,7 +213,9 @@ class WeekView(View):
 
 class GroupView(View):
 
-    def get(self, request, week, group):
+    def get(self, request):
+        (week, group) = (request.GET.get('week'), request.GET.get('group'))
+        print week,group
         return render(request, 'group.html', {'week': week, 'group': group})
 
 from django.contrib.auth import authenticate, login, logout
