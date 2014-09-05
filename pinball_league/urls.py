@@ -25,15 +25,15 @@ api_urls = patterns('',
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^tables', views.TableView.as_view()),
-    url(r'^players', views.PlayerView.as_view()),
-    url(r'^signup', views.SignupView.as_view()),
+    url(r'^tables', views.TableView.as_view(), name='tables'),
+    url(r'^players', views.PlayerView.as_view(), name='players'),
+    url(r'^register', views.SignupView.as_view(), name='register'),
     url(r'^confirmAccount/(?P<token>.+)', views.ConfirmAccountView.as_view()),
     url(r'^setupWeek/(?P<week>.+)', views.SetupWeekView.as_view()),
     url(r'^week/(?P<week>.+)', views.WeekView.as_view()),
-    url(r'^login', views.LoginView.as_view()),
-    url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
-    url(r'^$', 'main.views.index'),
+    url(r'^login', views.LoginView.as_view(), name='login'),
+    # url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
+    url(r'^$', 'main.views.index', name='home'),
 )
 
 urlpatterns = urlpatterns + api_urls + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

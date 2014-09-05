@@ -28,7 +28,7 @@
     		</div>
     		<div class="navbar-collapse collapse">
 	        	<ul class="nav navbar-nav" ng-controller="NavCtrl" ng-init="init({{weeks}})">
-	            	<li ng-class="navClass('home')"><a href="/">Home</a></li>
+	            	<li><a href="{% url 'home' %}">Home</a></li>
 	            	<li ng-class="navClass('week')" class="dropdown">
 	            		<a href="" class="dropdown-toggle" data-toggle="dropdown">Weeks <b class="caret"></b></a>
 	            		<ul class="dropdown-menu">
@@ -36,12 +36,12 @@
 				            <li><a href="" ng-click="createNextWeek()">Create Next Week</a></li>
           				</ul>
 	            	</li>
-	            	<li ng-class="navClass('players')"><a href="/players">Players</a></li>
-	            	<li ng-class="navClass('tables')"><a href="/tables">Tables</a></li>
+	            	<li><a href="{% url 'players' %}">Players</a></li>
+	            	<li><a href="{% url 'tables' %}">Tables</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li ng-class="navClass('signup')"><a href="/signup">Signup</a></li>
-					<li ng-class="navClass('login')"><a href="/login">Login</a></li>
+					<li><a href="{% url 'register' %}">Register</a></li>
+					<li><a href="{% url 'login' %}">Login</a></li>
 				</ul>
         	</div><!--/.nav-collapse -->
 		</div>
