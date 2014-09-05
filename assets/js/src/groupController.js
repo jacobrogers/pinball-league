@@ -2,6 +2,11 @@
 
 angular.module('controllers')
 .controller('GroupCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+	$scope.init = function(week, group) {
+		$scope.week = week;
+		$scope.group = group;
+	};
+
 	$http.get('/api/group', {params: {'group': $routeParams.group, 'week': $routeParams.week}})
 		.success(function(data) {
 			$scope.group = data;

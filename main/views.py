@@ -11,10 +11,6 @@ from django.contrib.auth.models import User
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
 
-def json_player(player):
-    json = {'id': player.id, 'name': player.name }
-    return json
-
 def json_game(game):
     table = basic_json(game.table)
     player = basic_json(game.player)
@@ -26,7 +22,7 @@ def json_group(group, games):
     return {'group': group, 'tables': tables, 'players': players}
 
 def fetch_players(request):
-    players = [json_player(player) for player in Player.objects.all()]
+    players = [basic_json(player) for player in Player.objects.all()]
     return json_response(players)
 
 def fetch_tables(request):
@@ -41,10 +37,6 @@ def fetch_tables(request):
     # for table in tables:
     #     table['best_game'] = best_game(table)
     return json_response(tables)
-
-def fetch_groups(request, week):
-    groups = [json_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
-    return json_response({'week': week, 'groups': groups})
 
 def fetch_group(request):
     group = Group.objects.get(week=request.GET.get('week'), group=request.GET.get('group'))
@@ -216,9 +208,13 @@ class SetupWeekView(View):
 class WeekView(View):
 
     def get(self, request, week):
-        # groups = [json_group(group.group, group.games.all()) for group in Group.objects.filter(week=week)]
         groups = Group.objects.filter(week=week)
         return render(request, 'week.html', {'week': week, 'groups': groups})
+
+class GroupView(View):
+
+    def get(self, request, week, group):
+        return render(request, 'group.html', {'week': week, 'group': group})
 
 from django.contrib.auth import authenticate, login, logout
 class LoginView(View):

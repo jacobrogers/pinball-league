@@ -13,11 +13,8 @@ api_urls = patterns('',
 	main_view('api/players', 'fetch_players'),
 	main_view('api/tables', 'fetch_tables'),
 	main_view('api/saveGroups', 'save_groups'),
-	main_view('api/week/(?P<week>.+)', 'fetch_groups'),
     main_view('api/setupWeek/(?P<week>.+)', 'setup_week'),
-	main_view('api/group', 'fetch_group'),
 	main_view('api/saveGames', 'save_games'),
-    main_view('api/overview', 'overview'),
 )
 
 urlpatterns = patterns('',
@@ -30,8 +27,8 @@ urlpatterns = patterns('',
     url(r'^week/(?P<week>.+)', views.WeekView.as_view()),
     url(r'^login', views.LoginView.as_view(), name='login'),
     url(r'^logout', views.LogoutView.as_view(), name='logout'),
+    url(r'^week/(?P<week>.+)/group/(?P<group>.+)', views.GroupView.as_view(), name='group'),
     url(r'^week/(?P<week>.+)', views.WeekView.as_view(), name='week'),
-    url(r'^week/(?P<week>.+)/group/(?P<group>.+)', views.WeekView.as_view(), name='week'),
     url(r'^$', views.IndexView.as_view(), name='home'),
 )
 
