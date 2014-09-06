@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('controllers')
-.controller('GroupCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+.controller('GroupCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.init = function(week, group) {
+		$scope.groupNumber = group;
+		$scope.week = week;
 		$http.get('/api/group', {params: {'group': group, 'week': week}})
 		.success(function(data) {
 			$scope.group = data;
@@ -11,7 +13,7 @@ angular.module('controllers')
 
 	$scope.saveTable = function(table) {
 		var gamesToSave = $scope.group.games.filter(function(game) { return game.table.name === table.name });
-		$http.post('/api/saveGames', {games: gamesToSave})
+		$http.post('/api/saveGames', {games: gamesToSave, week: $scope.week, group: $scope.groupNumber})
 			.success(function(data) {
 				for (var i in data) {
 					var gamePoints = data[i];

@@ -97,12 +97,19 @@ def save_groups(request):
     else:
         return HttpResponse(status=400)
 
-@ensure_csrf_cookie
+def user_can_enter_scores(user, group, week):
+    player = Player.objects.filter(user=user)
+    modelGroup = Group.objects.filter(group=group, week=week)
+    games = League_Game.objects.filter(player=player, group=modelGroup)
+    return True if games or user.is_superuser else False
+
+from django.contrib.auth.decorators import login_required
+@ensure_csrf_cookie 
+@login_required
 def save_games(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])
         games = payload['games']
-        print games
         scores = sorted([game['score'] for game in games],reverse=True)
         points = []
         for game in games:
@@ -216,8 +223,8 @@ class GroupView(View):
 
     def get(self, request):
         (week, group) = (request.GET.get('week'), request.GET.get('group'))
-        print week,group
-        return render(request, 'group.html', {'week': week, 'group': group})
+        canEnterScores = user_can_enter_scores(request.user, week, group) if request.user.is_authenticated() else False
+        return render(request, 'group.html', {'week': week, 'group': group, 'canEnterScores': canEnterScores})
 
 from django.contrib.auth import authenticate, login, logout
 class LoginView(View):

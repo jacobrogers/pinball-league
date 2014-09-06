@@ -3,7 +3,7 @@
 {% block content %}
 
 <div ng-controller="GroupCtrl" ng-init="init({{week}},{{group}})">
-    <div class="h2">Group {$ group.group $}</div>
+    <div class="h2">Group {$ groupNumber $}</div>
     <div class="row panel panel-primary" ng-repeat="table in group.tables">
         <div class="panel-heading">{$ table.name $}</div>
         <table class="table" class="panel-body">
@@ -19,7 +19,7 @@
             </tbody>
         </table>
         <div class="panel-footer">
-            <button type="button" ng-click="saveTable(table)" class="btn btn-primary">Save</button>
+            <button {% if not canEnterScores%}disabled{% endif %} type="button" ng-click="saveTable(table)" class="btn btn-primary">Save</button>
         </div>
     </div>
 </div>
