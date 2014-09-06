@@ -54,11 +54,11 @@ def overview(request):
     return json_response({'rankings': rankings, 'week':week})
 
 def setup_week(request, week):
-    players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player__name', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
+    players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
     groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
     for player in players:
-        print player
-        # groups[player['group__group']].append({'name': player['player__name'], 'id': player['player'], 'league_points': player['points']})
+        real_player = Player.objects.get(id=player['player'])
+        groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points']})
     model = group_players(groups)
     return json_response(model)
 
