@@ -36,7 +36,7 @@ def send_email(email, token):
     # text = "Mandrill speaks plaintext"
     # part1 = MIMEText(text, 'plain')
 
-    html = '<a href="http://como-pinball-league.herokuapp.com/#/confirmAccount/%s">Confirm Account</a>' % token
+    html = '<a href="http://como-pinball-league.herokuapp.com/confirmAccount/%s">Confirm Account</a>' % token
     part2 = MIMEText(html, 'html')
 
     username = os.environ['MANDRILL_USERNAME']

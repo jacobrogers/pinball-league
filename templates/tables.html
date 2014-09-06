@@ -8,6 +8,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">{{ table.name }}</div>
     <div class="panel-body">
+        {% if table.image%}
+        <img src="{{table.image}}" />
+        {% endif %}
         <a href="http://ipdb.org/machine.cgi?id={{ table.ipdb_id }}" target="_blank">IFDB</a>
         <br/>
         <a href="http://pinside.com/pinball/archive/{{ table.pinside_name }}" target="_blank">Pinside</a>

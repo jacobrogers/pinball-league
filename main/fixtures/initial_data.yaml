@@ -25,6 +25,6 @@
 - fields: {ipdb_id: 6028, name: Metallica Pro, pinside_name: metallica, status: Active}
   model: main.table
   pk: 54
-- fields: {ipdb_id: 5938, name: The Avengers Pro, pinside_name: the-avengers, status: Active}
+- fields: {ipdb_id: 5938, name: The Avengers Pro, pinside_name: the-avengers, status: Active, image: http://www.pinballnews.com/games/avengers/001.jpg}
   model: main.table
   pk: 55

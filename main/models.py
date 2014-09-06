@@ -8,6 +8,7 @@ class Table(models.Model):
 	pinside_name = models.CharField(max_length=50)
 	status = models.CharField(max_length=10,choices=( ('Active','Active'), ('Inactive', 'Inactive')), default='Active')
 	created = models.DateField(default=datetime.date.today)
+	image = models.URLField()
 
 	def __unicode__(self):
 		return self.name
