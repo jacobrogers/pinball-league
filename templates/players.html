@@ -15,7 +15,7 @@
         {% for player in players %}
         <tr>
             <td>{{player.name}}</td>
-            <td>{{player.signature}}</td>
+            <td>{% if player.signature %} {{player.signature}} {% endif %}</td>
             <td>
                 {% if player.ifpa_id %}
                 <a href="http://www.ifpapinball.com/player.php?p={{ player.ifpa_id }}" target="_blank">IFDB</a>
