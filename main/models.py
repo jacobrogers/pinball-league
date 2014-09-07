@@ -19,12 +19,14 @@ class Table(models.Model):
 class Player(models.Model):
 	ifpa_id = models.IntegerField(null=True,blank=True)
 	signature = models.CharField(max_length=3,null=True,blank=True)
-	user = models.ForeignKey(User)
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+	user = models.ForeignKey(User,null=True)
 	created = models.DateField(default=datetime.date.today)
 
 	@property
 	def name(self):
-		return '%s %s' % (self.user.first_name, self.user.last_name)
+		return '%s %s' % (self.first_name, self.last_name)
 		
 	def __unicode__(self):
 		return self.name

@@ -196,6 +196,8 @@ class ConfirmAccountView(View):
             user.save()
             
             player = Player()
+            player.first_name = user.first_name
+            player.last_name = user.last_name
             player.signature = form.cleaned_data['signature']
             player.ifpa_id = form.cleaned_data['ifpa_id']
             player.user = user

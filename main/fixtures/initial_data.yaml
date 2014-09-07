@@ -31,3 +31,42 @@
 - fields: {ipdb_id: 2486, name: Swords of Fury, pinside_name: swords-of-fury, status: Active, image: 'http://mirror2.ipdb.org/images/2486/image-7.jpg'}
   model: main.table
   pk: 11
+- fields: {first_name: Jesus, last_name: Quintana, signature: CLK}
+  model: main.player
+  pk: 1
+- fields: {first_name: Walter, last_name: Sobchak, signature: NAM}
+  model: main.player
+  pk: 2
+- fields: {first_name: Jackie, last_name: Treehorn, signature: PRN}
+  model: main.player
+  pk: 3
+- fields: {first_name: Maude, last_name: Lebowski}
+  model: main.player
+  pk: 4
+- fields: {first_name: Bunny, last_name: Lebowski, signature: BNY}
+  model: main.player
+  pk: 5
+- fields: {first_name: Knox, last_name: Harrington}
+  model: main.player
+  pk: 6
+- fields: {first_name: Karl, last_name: Hungus, signature: LOG}
+  model: main.player
+  pk: 7
+- fields: {first_name: Arthur, last_name: Sellers}
+  model: main.player
+  pk: 8
+- fields: {first_name: Donny, last_name: Kerabatsos}
+  model: main.player
+  pk: 9
+- fields: {first_name: Jeffrey, last_name: Lebowski}
+  model: main.player
+  pk: 10
+- fields: {first_name: Jeffrey, last_name: Lebowski}
+  model: main.player
+  pk: 11
+- fields: {first_name: Uli, last_name: Kunkel}
+  model: main.player
+  pk: 12
+- fields: {first_name: Larry, last_name: Sellers}
+  model: main.player
+  pk: 13
