@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div ng-controller="SetupWeekCtrl" ng-init="init({{week}})">
+<div ng-controller="SetupWeekCtrl" ng-init="init({{week}})" ng-cloak>
     <div ng-show="weekSetup" ng-cloak>
         <p class="alert alert-success">Week {{week}} created!</p>
         <div>

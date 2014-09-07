@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div ng-controller="GroupCtrl" ng-init="init({{week}},{{group}})">
+<div ng-controller="GroupCtrl" ng-init="init({{week}},{{group}})" ng-cloak>
     <div class="h2">Group {$ groupNumber $}</div>
     <div class="row panel panel-primary" ng-repeat="table in group.tables">
         <div class="panel-heading">{$ table.name $}</div>
