@@ -58,7 +58,7 @@ class Group(models.Model):
 		db_table = 'groups'
 
 class League_Game(models.Model):
-	player = models.ForeignKey(Player)
+	player = models.ForeignKey(Player, related_name="games")
 	table = models.ForeignKey(Table)
 	group = models.ForeignKey(Group, related_name="games")
 	order = models.IntegerField(max_length=1,null=True,blank=True)

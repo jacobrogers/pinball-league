@@ -59,7 +59,13 @@ def setup_week(request, week):
     for player in players:
         real_player = Player.objects.get(id=player['player'])
         groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points']})
-    model = group_players(groups)
+    def player_has_game(player):
+        for p in players:
+            if p['player'] == player.id:
+                return True
+        return False
+    new_players = [basic_json(player) for player in Player.objects.all() if not player_has_game(player)]
+    model = {'groups': group_players(groups), 'players': new_players}
     return json_response(model)
 
 @ensure_csrf_cookie

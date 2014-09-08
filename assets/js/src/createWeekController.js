@@ -14,9 +14,10 @@ angular.module('controllers')
 			if ($scope.week == 1) {
 				$scope.players = data;
 			} else {
-				for (var i in data) {
-					$scope.groups.push({players: data[i], tables: [], availableTables: tablesCopy()});
+				for (var i in data.groups) {
+					$scope.groups.push({players: data.groups[i], tables: [], availableTables: tablesCopy()});
 				}
+				$scope.players = data.players;
 			}
 		});
 	};
