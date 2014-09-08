@@ -33,6 +33,9 @@
 	            	<li class="dropdown">
 	            		<a href="" class="dropdown-toggle" data-toggle="dropdown" href="#">Weeks <b class="caret"></b></a>
 	            		<ul class="dropdown-menu">
+	            			{% for week in weeks %}
+	            			<li><a href="/week/{{week}}">Week {{ week }}</a></li>
+	            			{% endfor %}
 	            			{% if user.is_superuser %}
 	            			<li class="divider"></li>
 				            <li><a href="/setupWeek">Create Next Week</a></li>

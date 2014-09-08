@@ -132,35 +132,56 @@ def save_games(request):
 
 from django.views.generic import View
 
-class IndexView(View):
-    def get(self, request):
+def addWeeksToModel(model):
+    weeks = [group.week for group in Group.objects.distinct('week')]
+    model['weeks'] = weeks
+    return model
+
+class BaseView(View):
+    template = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        model = self.doGet(request)
+        addWeeksToModel(model)
+        return render(request, self.template, model)
+
+    def doGet(self, request):
+        print 'doGet not overrided'
+
+class IndexView(BaseView):
+    template = 'index.html'
+
+    def doGet(self, request):
         weeks = [group.week for group in Group.objects.distinct('week')]
         maxWeek = max(weeks) if weeks else 1
 
         rankings = [ranking.week for ranking in Ranking.objects.all()]
         week = max(rankings) if rankings else 1
-        print week
         rankings = Ranking.objects.filter(week=week)
-        print rankings
-        return render(request, 'index.html', {'weeks': weeks, 'rankings': rankings})
+        return {'weeks': weeks, 'rankings': rankings}
 
-class TableView(View):
-    def get(self, request):
+class TableView(BaseView):
+    template = 'tables.html'
+
+    def doGet(self, request):
         tables = Table.objects.all()
-        return render(request, 'tables.html', {'tables': tables})
+        return {'tables': tables}
 
-class PlayerView(View):
-    def get(self, request):
+class PlayerView(BaseView):
+    template = 'players.html'
+
+    def doGet(self, request):
         players = Player.objects.all()
-        return render(request, 'players.html', {'players': players})
+        return {'players': players}
 
 from main.forms import SignupForm
-class SignupView(View):
+class SignupView(BaseView):
     form_class = SignupForm
+    template = 'signup.html'
 
-    def get(self, request):
+    def doGet(self, request):
         form = self.form_class()
-        return render(request, 'signup.html', {'form': form})
+        return {'form': form}
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -185,7 +206,9 @@ class ConfirmAccountView(View):
     def get(self, request, token):
         pc = Player_Confirmation.objects.get(confirmation_token=token)
         form = self.form_class()
-        return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
+        model = {'token': token, 'player_confirmation': pc, 'form': form}
+        addWeeksToModel(model)
+        return render(request, 'confirm_account.html', model)
 
     def post(self, request, token):
         form = self.form_class(request.POST)
@@ -214,32 +237,37 @@ class ConfirmAccountView(View):
             pc = Player_Confirmation.objects.get(confirmation_token=token)
             return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
 
-class SetupWeekView(View):
+class SetupWeekView(BaseView):
+    template = 'setup_week.html'
 
-    def get(self, request):
+    def doGet(self, request):
         from django.db.models import Max
         groups = Group.objects.all().aggregate(Max('week'))   
         week = groups['week__max']+1 if groups['week__max'] else 1
-        return render(request, 'setup_week.html', {'week': week})
+        return {'week': week}
 
 class WeekView(View):
 
     def get(self, request, week):
         groups = Group.objects.filter(week=week)
-        return render(request, 'week.html', {'week': week, 'groups': groups})
+        model = {'week': week, 'groups': groups}
+        addWeeksToModel(model)
+        return render(request, 'week.html', model)
 
-class GroupView(View):
+class GroupView(BaseView):
+    template = 'group.html'
 
-    def get(self, request):
+    def doGet(self, request):
         (week, group) = (request.GET.get('week'), request.GET.get('group'))
         canEnterScores = user_can_enter_scores(request.user, week, group) if request.user.is_authenticated() else False
-        return render(request, 'group.html', {'week': week, 'group': group, 'canEnterScores': canEnterScores})
+        return {'week': week, 'group': group, 'canEnterScores': canEnterScores}
 
 from django.contrib.auth import authenticate, login, logout
-class LoginView(View):
+class LoginView(BaseView):
+    template = 'login.html'
 
-    def get(self, request):
-        return render(request, 'login.html', {'confirmed': request.GET.get('confirmed')})
+    def doGet(self, request):
+        return {'confirmed': request.GET.get('confirmed')}
     
     def post(self, request):
         username = request.POST['username']
