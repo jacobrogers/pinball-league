@@ -35,6 +35,8 @@
 	            		<ul class="dropdown-menu">
 	            			{% for week in weeks %}
 	            			<li><a href="/week/{{week}}">Week {{ week }}</a></li>
+	            			{% empty %}
+	            			<li><a href="#">League Not Started</a></li>
 	            			{% endfor %}
 	            			{% if user.is_superuser %}
 	            			<li class="divider"></li>

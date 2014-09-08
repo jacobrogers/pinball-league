@@ -8,15 +8,13 @@
     <div class="panel-heading">Group {{ group.group }}</div>
     <div class="panel-body">
     <ul class="col-sm-6 list-group">
-        {% regroup group.games.all by player as players %}
-        {% for player in players %}
-        <li class="list-group-item">{{ player.grouper }}</li>
+        {% for player in group.players %}
+        <li class="list-group-item">{{ player.name }}</li>
         {% endfor %}
     </ul>
     <ul class="col-sm-6 list-group">
-        {% regroup group.games.all by table as tables %}
-        {% for table in tables %}
-        <li class="list-group-item">{{ table.grouper }}</li>
+        {% for table in group.tables %}
+        <li class="list-group-item">{{ table.name }}</li>
         {% endfor %}
     </ul>
     </div>

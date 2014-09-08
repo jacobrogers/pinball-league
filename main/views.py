@@ -250,7 +250,16 @@ class WeekView(View):
 
     def get(self, request, week):
         groups = Group.objects.filter(week=week)
-        model = {'week': week, 'groups': groups}
+        model_groups = []
+        for g in groups:
+            group = {'tables': [], 'players': []}
+            for game in g.games.all():
+                if game.table not in group['tables']:
+                    group['tables'].append(game.table)
+                if game.player not in group['players']:
+                    group['players'].append(game.player)
+            model_groups.append(group)
+        model = {'week': week, 'groups': model_groups}
         addWeeksToModel(model)
         return render(request, 'week.html', model)
 
