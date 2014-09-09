@@ -167,7 +167,25 @@ class TableView(BaseView):
         tables = Table.objects.all()
         return {'tables': tables}
 
-class PlayerView(BaseView):
+class PlayerView(View):
+
+    template = 'player.html'
+
+    def get(self, request, id):
+        from operator import itemgetter, attrgetter
+        player = Player.objects.get(id=id)
+        games = player.games.all()
+        player_games = []
+        for table in sorted({game.table for game in games}, key=attrgetter('name')):
+            game = {'table': {'name': table.name, 'id': table.id} }
+            
+            game['scores'] = sorted([{'week': g.group.week, 'score': g.score} for g in games if g.table == table], key=itemgetter('score'), reverse=True)
+            player_games.append(game)
+        model = {'player': player, 'games': player_games}
+        addWeeksToModel(model)
+        return render(request, self.template, model)
+
+class PlayersView(BaseView):
     template = 'players.html'
 
     def doGet(self, request):
@@ -252,7 +270,7 @@ class WeekView(View):
         groups = Group.objects.filter(week=week)
         model_groups = []
         for g in groups:
-            group = {'tables': [], 'players': []}
+            group = {'tables': [], 'players': [], 'group': g.group}
             for game in g.games.all():
                 if game.table not in group['tables']:
                     group['tables'].append(game.table)
