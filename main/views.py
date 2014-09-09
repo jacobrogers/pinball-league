@@ -276,6 +276,7 @@ class WeekView(View):
                     group['tables'].append(game.table)
                 if game.player not in group['players']:
                     group['players'].append(game.player)
+                    group['canEnterScores'] = user_can_enter_scores(request.user, week, group['group']) if request.user.is_authenticated() else False
             model_groups.append(group)
         model = {'week': week, 'groups': model_groups}
         addWeeksToModel(model)

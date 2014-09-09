@@ -10,7 +10,7 @@
             <tbody>
                 <tr ng-repeat="game in group.games | filter:table.name">
                     <td>{$ game.player.name $}</td>
-                    <td><input type="number" ng-model="game.score"/></td>
+                    <td><input type="number" {% if not canEnterScores%}disabled{% endif %} ng-model="game.score"/></td>
                     <td>{$ game.league_points $}</td>
                     <td ng-if="game.bonus_points>0">+{$ game.bonus_points $}</td>
                     <td ng-if="game.bonus_points==0"></td>
@@ -18,9 +18,11 @@
                 </tr>
             </tbody>
         </table>
+        {% if canEnterScores %}
         <div class="panel-footer">
-            <button {% if not canEnterScores%}disabled{% endif %} type="button" ng-click="saveTable(table)" class="btn btn-primary">Save</button>
+            <button type="button" ng-click="saveTable(table)" class="btn btn-primary">Save</button>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -18,9 +18,11 @@
         {% endfor %}
     </ul>
     </div>
+    {% if group.canEnterScores %}
     <div class="panel-footer">
         <a href="/group?week={{week}}&group={{group.group}}" class="btn btn-primary">Enter Scores</a>
     </div>
+    {% endif %}
 </div>
 
 {% endfor %}
