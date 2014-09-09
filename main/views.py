@@ -105,10 +105,12 @@ def save_groups(request):
         return HttpResponse(status=400)
 
 def user_can_enter_scores(user, group, week):
+    weeks = [g.week for g in Group.objects.distinct('week')]
+    currentWeek = max(weeks)
     player = Player.objects.filter(user=user)
     modelGroup = Group.objects.filter(group=group, week=week)
     games = League_Game.objects.filter(player=player, group=modelGroup)
-    return True if games or user.is_superuser else False
+    return True if (games or user.is_superuser) and currentWeek == int(week) else False
 
 from django.contrib.auth.decorators import login_required
 @ensure_csrf_cookie 
@@ -178,7 +180,6 @@ class PlayerView(View):
         player_games = []
         for table in sorted({game.table for game in games}, key=attrgetter('name')):
             game = {'table': {'name': table.name, 'id': table.id} }
-            
             game['scores'] = sorted([{'week': g.group.week, 'score': g.score} for g in games if g.table == table], key=itemgetter('score'), reverse=True)
             player_games.append(game)
         model = {'player': player, 'games': player_games}
