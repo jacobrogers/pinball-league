@@ -3,7 +3,7 @@ from django import forms
 input_class = {'class': 'form-control'}
 
 class SignupForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=30, widget=forms.TextInput(attrs=input_class))
+    username = forms.CharField(label='Username', max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus': ''}))
     email = forms.EmailField(label='Email', widget=forms.TextInput(attrs=input_class))
 
 class AccountConfirmationForm(forms.Form):
