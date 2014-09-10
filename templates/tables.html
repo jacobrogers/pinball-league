@@ -6,7 +6,7 @@
 
 {% for table in tables %}
 <div class="row">
-    <div class="col-xs-10 col-md-offset-4 col-md-3">
+    <div class="col-md-offset-2 col-xs-10 col-md-offset-4 col-md-3">
         <a href="{% url 'table' table.id %}" class="thumbnail">
             <img src="{{table.image}}" alt="{{table.name}}"/>
         </a>
