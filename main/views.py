@@ -72,6 +72,7 @@ def setup_week(request, week):
 def save_groups(request):
     if request.method == 'POST':
         payload = json.loads(request.POST.dict().keys()[0])
+        print payload
         week = payload['week']
         for i, g in enumerate(payload['groups']):            
             group = Group()
@@ -269,10 +270,13 @@ class WeekView(View):
 
     def get(self, request, week):
         groups = Group.objects.filter(week=week)
+        print groups
         model_groups = []
         for g in groups:
             group = {'tables': [], 'players': [], 'group': g.group}
+            print g.games.all()
             for game in g.games.all():
+                print game
                 if game.table not in group['tables']:
                     group['tables'].append(game.table)
                 if game.player not in group['players']:
