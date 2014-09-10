@@ -104,13 +104,16 @@ def save_groups(request):
     else:
         return HttpResponse(status=400)
 
-def user_can_enter_scores(user, group, week):
+def user_can_enter_scores(user, week, group):
     weeks = [g.week for g in Group.objects.distinct('week')]
-    currentWeek = max(weeks)
+    isCurrentWeek = max(weeks) == int(week)
+    if user.is_superuser and isCurrentWeek:
+        return True
+    
     player = Player.objects.filter(user=user)
     modelGroup = Group.objects.filter(group=group, week=week)
     games = League_Game.objects.filter(player=player, group=modelGroup)
-    return True if (games or user.is_superuser) and currentWeek == int(week) else False
+    return games and isCurrentWeek
 
 from django.contrib.auth.decorators import login_required
 @ensure_csrf_cookie 
@@ -274,13 +277,15 @@ class WeekView(View):
         model_groups = []
         for g in groups:
             group = {'tables': [], 'players': [], 'group': g.group}
+            group['canEnterScores'] = user_can_enter_scores(request.user, week, group['group']) if request.user.is_authenticated() else False
+
             for game in g.games.all():
                 if game.table not in group['tables']:
                     group['tables'].append(game.table)
                 if game.player not in group['players']:
                     group['players'].append(game.player)
-                    group['canEnterScores'] = user_can_enter_scores(request.user, week, group['group']) if request.user.is_authenticated() else False
             model_groups.append(group)
+
         model = {'week': week, 'groups': model_groups}
         addWeeksToModel(model)
         return render(request, 'week.html', model)
