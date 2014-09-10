@@ -207,14 +207,16 @@ class SignupView(BaseView):
         form = self.form_class(request.POST)
         if form.is_valid():
             pc = Player_Confirmation()
-            pc.username = form.cleaned_data['username']
-            pc.email = form.cleaned_data['email']
+            pc.username = form.cleaned_data['username'].lower()
+            pc.email = form.cleaned_data['email'].lower()
             pc.confirmation_token = binascii.hexlify(os.urandom(16))
             pc.save()
+
             if 'USE_LOCAL_DB' not in os.environ:
                 send_email(pc.email, pc.confirmation_token) 
             else:
                 print pc.confirmation_token
+
             return render(request, 'signup_accepted.html', {'email': pc.email})
         else:
             return render(request, 'signup.html', {'form': form})
@@ -240,14 +242,14 @@ class ConfirmAccountView(View):
                 return HttpResponse(status=404)
 
             user = User.objects.create_user(pc.username, pc.email, form.cleaned_data['password'])
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
+            user.first_name = form.cleaned_data['first_name'].lower()
+            user.last_name = form.cleaned_data['last_name'].lower()
             user.save()
             
             player = Player()
             player.first_name = user.first_name
             player.last_name = user.last_name
-            player.signature = form.cleaned_data['signature']
+            player.signature = form.cleaned_data['signature'].upper()
             player.ifpa_id = form.cleaned_data['ifpa_id']
             player.user = user
             player.save()
@@ -303,7 +305,7 @@ class LoginView(BaseView):
         return {'confirmed': request.GET.get('confirmed')}
     
     def post(self, request):
-        username = request.POST['username']
+        username = request.POST['username'].lower()
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
