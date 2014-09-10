@@ -165,12 +165,24 @@ class IndexView(BaseView):
         rankings = Ranking.objects.filter(week=week)
         return {'week': week, 'weeks': weeks, 'rankings': rankings}
 
-class TableView(BaseView):
+class TablesView(BaseView):
     template = 'tables.html'
 
     def doGet(self, request):
         tables = Table.objects.all()
         return {'tables': tables}
+
+class TableView(View):
+    template = 'table.html'
+
+    def get(self, request, id):
+        from operator import itemgetter, attrgetter
+        table = Table.objects.get(id=id)
+        games = []
+        for game in sorted(table.games.all(), key=attrgetter('score'), reverse=True):
+            games.append({'week': game.group.week, 'player': {'id': game.player.id, 'name': game.player.name}, 'score': game.score})
+        model = {'table': table, 'games': games}
+        return render(request, self.template, model)
 
 class PlayerView(View):
 

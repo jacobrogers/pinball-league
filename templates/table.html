@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block nav-tables %}class="active"{% endblock %}
+
+{% block content %}
+<div class="h1">{{ table.name }}</div>
+
+<div class="row panel panel-primary">
+    <div class="panel-heading">Scores</div>
+    <div class="panel-body">
+        <ul class="col-sm-6 list-group">
+{% for game in games %}
+            <li class="list-group-item">{{game.player.name}} - Week {{ game.week }} - {{ game.score|intcomma}}</li>
+{% empty %}
+<p>No games played yet.</p>
+{% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
