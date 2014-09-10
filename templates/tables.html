@@ -5,11 +5,13 @@
 {% block content %}
 
 {% for table in tables %}
-<div class="row">    
-    <div class="col-md-offset-2 col-md-6">
-        <a href="/table/{{table.id}}"><img style="width: 350px; height: 250px" src="{{table.image}}" /></a>
+<div class="row">
+    <div class="col-xs-6 col-md-offset-4 col-md-3">
+        <a href="{% url 'table' table.id %}" class="thumbnail">
+            <img src="{{table.image}}" alt="{{table.name}}"/>
+        </a>
     </div>
-<div>
+</div>
 {% endfor %}
 
 {% endblock %}

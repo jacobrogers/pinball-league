@@ -15,6 +15,7 @@ class Table(models.Model):
 
 	class Meta:
 		db_table = 'tables'
+		ordering = ['name']
 
 class Player(models.Model):
 	ifpa_id = models.IntegerField(null=True,blank=True)
@@ -33,6 +34,7 @@ class Player(models.Model):
 
 	class Meta:
 		db_table = 'players'
+		ordering = ['last_name']
 
 class Player_Confirmation(models.Model):
 	username = models.CharField(max_length=50,unique=True)
