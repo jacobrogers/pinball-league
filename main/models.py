@@ -27,7 +27,7 @@ class Player(models.Model):
 
 	@property
 	def name(self):
-		return '%s %s' % (self.first_name, self.last_name)
+		return '%s %s' % (self.first_name.capitalize(), self.last_name.capitalize())
 		
 	def __unicode__(self):
 		return self.name
