@@ -87,14 +87,23 @@ angular.module('controllers')
 		return rank;
 	};
 
+	$scope.allTablesAssigned = true;
+
 	$scope.saveGroups = function() {
+
 		for (var i in $scope.groups) {
 			var group = $scope.groups[i];
+			if (group.tables.length === 0) {
+				$scope.allTablesAssigned = false;
+				return;
+			}
+		}
+
+		for (var i in $scope.groups) {
 			delete group.selectedPlayer;
 			delete group.selectedTable;
 			delete group.availableTables;
-		}
-		for (var i in $scope.groups) {
+
 			var group = $scope.groups[i];
 			for (var j in group.players) {
 				var player = group.players[j];

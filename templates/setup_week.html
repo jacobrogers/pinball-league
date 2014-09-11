@@ -10,6 +10,9 @@
             <a href="/week/{{week}}" class="btn btn-primary btn-lg" role="button">View</a>
         </div>
     </div>
+    <div ng-show="!allTablesAssigned" ng-cloak>
+        <p class="alert alert-danger">Please assign tables to all groups.</p>
+    </div>
     <div ng-show="!weekSetup">
         <div ng-show="error" class="alert alert-danger">Error saving groups.</div>
         <div class="h2">Creating Week {$ week $}</div>
