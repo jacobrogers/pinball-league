@@ -10,7 +10,9 @@ class JSONEncoder(json.JSONEncoder):
             return int(mktime(obj.timetuple()))
         else:
             return json.JSONEncoder.default(self, obj)
-
+def basic_json(value):
+    return {'id': value.id, 'name': value.name}
+    
 def to_json(value):
     return json.dumps(value, cls=JSONEncoder)
 

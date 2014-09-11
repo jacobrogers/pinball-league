@@ -34,21 +34,6 @@ def fetch_group(request):
     tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in gameObjs}]
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
 
-def setup_week(request, week):
-    players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
-    groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
-    for player in players:
-        real_player = Player.objects.get(id=player['player'])
-        groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points']})
-    def player_has_game(player):
-        for p in players:
-            if p['player'] == player.id:
-                return True
-        return False
-    new_players = [basic_json(player) for player in Player.objects.all() if not player_has_game(player)]
-    model = {'groups': group_players(groups), 'players': new_players}
-    return json_response(model)
-
 @ensure_csrf_cookie
 def save_groups(request):
     if request.method == 'POST':
@@ -82,25 +67,5 @@ def save_groups(request):
                         ranking.points = total_points
                 ranking.save()
         return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
-
-from django.contrib.auth.decorators import login_required
-@ensure_csrf_cookie 
-@login_required
-def save_games(request):
-    if request.method == 'POST':
-        payload = json.loads(request.POST.dict().keys()[0])
-        games = payload['games']
-        scores = sorted([game['score'] for game in games],reverse=True)
-        points = []
-        for game in games:
-            savedGame = League_Game.objects.get(id=game['id'])
-            savedGame.score = game['score']
-            savedGame.league_points = decide_points(scores, savedGame.score)
-            savedGame.bonus_points = decide_bonus_points(scores, savedGame.score)
-            points.append({'id': game['id'], 'league_points': savedGame.league_points, 'bonus_points': savedGame.bonus_points})
-            savedGame.save()
-        return json_response(points, 201)
     else:
         return HttpResponse(status=400)

@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from main import views
-from main.controllers import table, player, register, login, index, week, group
+from main.controllers import table, player, register, login, index, week, group, setup_week
 admin.autodiscover()
 
 def main_view(path, action):
@@ -14,9 +14,9 @@ api_urls = patterns('',
 	main_view('api/players', 'fetch_players'),
 	main_view('api/tables', 'fetch_tables'),
 	main_view('api/saveGroups', 'save_groups'),
-    main_view('api/setupWeek/(?P<week>.+)', 'setup_week'),
+    url(r'^api/setupWeek/(?P<week>.+)', setup_week.SetupWeekApiView.as_view()),
 	main_view('api/group', 'fetch_group'),
-	main_view('api/saveGames', 'save_games'),
+	url(r'^api/saveGames', group.SaveGamesApiView.as_view()),
 )
 
 urlpatterns = patterns('',
