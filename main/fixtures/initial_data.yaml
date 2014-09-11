@@ -1,16 +1,16 @@
-- fields: {ipdb_id: 1233, name: Hook, pinside_name: hook, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2011/06/Hook_0001_Backglass.jpg'}
+- fields: {ipdb_id: 1233, name: Hook, pinside_name: hook, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2011/06/Hook_0001_Backglass.jpg', tutorial: 'https://www.youtube.com/watch?v=QCRrCGxh3w8'}
   model: main.table
   pk: 1
 - fields: {ipdb_id: 5134, name: World Poker Tour, pinside_name: world-poker-tour, status: Active, image: 'http://www.pinballnews.com/games/worldpokertour/backglass.jpg', tutorial: 'https://www.youtube.com/watch?v=bvKnTJQayRc'}
   model: main.table
   pk: 2
-- fields: {ipdb_id: 2579, name: Tommy, pinside_name: tommy-pinball-wizard, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2012/11/The-Whos-Tommy_0001_Backglass.jpg'}
+- fields: {ipdb_id: 2579, name: Tommy, pinside_name: tommy-pinball-wizard, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2012/11/The-Whos-Tommy_0001_Backglass.jpg', tutorial: 'https://www.youtube.com/watch?v=h5ZO-BFkGtQ'}
   model: main.table
   pk: 3
 - fields: {ipdb_id: 3593, name: Batman Forever, pinside_name: batman-forever, status: Active, image: 'http://galleryplus.ebayimg.com/ws/web/130455293802_1_0_1/1000x1000.jpg'}
   model: main.table
   pk: 4
-- fields: {ipdb_id: 2493, name: Tales From The Crypt, pinside_name: tales-from-the-crypt, status: Active, image: 'http://auctionpinball.com/wp-content/uploads/2014/03/crypta-5.jpg'}
+- fields: {ipdb_id: 2493, name: Tales From The Crypt, pinside_name: tales-from-the-crypt, status: Active, image: 'http://auctionpinball.com/wp-content/uploads/2014/03/crypta-5.jpg', tutorial: 'https://www.youtube.com/watch?v=brK2WDNlYpk'}
   model: main.table
   pk: 5
 - fields: {ipdb_id: 5767, name: AC/DC Pro, pinside_name: ac-dc, status: Active, image: 'http://www.pinballnews.com/games/acdc/backglass1.jpg', tutorial: 'https://www.youtube.com/watch?v=ci7gXjSLq9o'}
@@ -28,7 +28,7 @@
 - fields: {ipdb_id: 1851, name: Popeye Saves The Earth, pinside_name: popeye-saves-the-earth, status: Active, image: 'http://www.ministryofpinball.com/media/catalog/category/Popeye_MoP_1.png'}
   model: main.table
   pk: 10
-- fields: {ipdb_id: 2486, name: Swords of Fury, pinside_name: swords-of-fury, status: Active, image: 'http://mirror2.ipdb.org/images/2486/image-7.jpg'}
+- fields: {ipdb_id: 2486, name: Swords of Fury, pinside_name: swords-of-fury, status: Active, image: 'http://mirror2.ipdb.org/images/2486/image-7.jpg', tutorial: 'https://www.youtube.com/watch?v=0QWueg7FkSI'}
   model: main.table
   pk: 11
 - fields: {ipdb_id: 5800, name: Wizard of Oz, pinside_name: wizard-of-oz, status: Active, image: 'http://www.pinballsales.com/shop/pc/catalog/woztranslite_2052_detail.jpg'}
