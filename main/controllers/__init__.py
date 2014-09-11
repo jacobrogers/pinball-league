@@ -9,3 +9,4 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
 from django.db.models import Max
+from main.util import send_email
