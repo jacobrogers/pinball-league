@@ -10,16 +10,21 @@
             <a href="/week/{{week}}" class="btn btn-primary btn-lg" role="button">View</a>
         </div>
     </div>
-    <div ng-show="!allTablesAssigned" ng-cloak>
-        <p class="alert alert-danger">Please assign tables to all groups.</p>
-    </div>
     <div ng-show="!weekSetup">
         <div ng-show="error" class="alert alert-danger">Error saving groups.</div>
-        <div class="h2">Creating Week {$ week $}</div>
+        <div ng-show="!allTablesAssigned">
+            <p class="alert alert-danger">Please assign tables to all groups.</p>
+        </div>
+        <div ng-show="noGroups">
+            <p class="alert alert-danger">Add groups before saving.</p>
+        </div>
+        <div class="page-header">
+            <div class="h2">Creating Week {$ week $}</div>
+        </div>
         <div ng-repeat="group in groups"> 
-            <div class="page-header">
+            <!-- <div class="page-header"> -->
                     <div class="h3">Group {$ $index+1 $} <a><small ng-click="removeGroup(group)">X</small></a></div>
-            </div>
+            <!-- </div> -->
             <div class="row">
                 <div class="col-md-4">
                     <div>
@@ -59,16 +64,16 @@
 
         <div class="row">
             <button type="button" ng-click="addGroup()" class="btn btn-default" ng-disabled="players.length==0">Add Group</button>
-            <button type="button" ng-click="saveGroups()" class="btn btn-primary">Save</button>
+            <button type="button" ng-click="saveGroups()" ng-disabled="groups.length === 0" class="btn btn-primary">Save</button>
         </div>
     </div>
 </div>
 {% else %}
 <div>
-    <p>The following groups are still open.  Please enter scores before starting the next week.</p>
-    <ul>
+    <p class="alert alert-danger">The following groups are still open.  Please enter scores before starting the next week.</p>
+    <ul class="list-group">
         {% for group in open_groups %}
-            <li><a href="{% url 'group' %}?group={{group.group}}&week={{group.week}}">{{group}}</a>
+            <li class="list-group-item"><a href="{% url 'group' %}?group={{group.group}}&week={{group.week}}">{{group}}</a>
         {% endfor %}
     </ul>
 </div>

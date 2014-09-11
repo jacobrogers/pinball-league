@@ -88,9 +88,14 @@ angular.module('controllers')
 	};
 
 	$scope.allTablesAssigned = true;
+	$scope.noGroups = false;
 
 	$scope.saveGroups = function() {
 
+		if ($scope.groups.length === 0) {
+			$scope.noGroups = true;
+			return;
+		}
 		for (var i in $scope.groups) {
 			var group = $scope.groups[i];
 			if (group.tables.length === 0) {
