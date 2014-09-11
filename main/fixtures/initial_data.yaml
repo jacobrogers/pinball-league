@@ -31,6 +31,9 @@
 - fields: {ipdb_id: 2486, name: Swords of Fury, pinside_name: swords-of-fury, status: Active, image: 'http://mirror2.ipdb.org/images/2486/image-7.jpg'}
   model: main.table
   pk: 11
+- fields: {ipdb_id: 5800, name: Wizard of Oz, pinside_name: wizard-of-oz, status: Active, image: 'http://www.pinballsales.com/shop/pc/catalog/woztranslite_2052_detail.jpg'}
+  model: main.table
+  pk: 12
 - fields: {first_name: Jesus, last_name: Quintana, signature: CLK}
   model: main.player
   pk: 1
