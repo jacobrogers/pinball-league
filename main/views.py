@@ -24,7 +24,7 @@ def fetch_players(request):
     return json_response(players)
 
 def fetch_tables(request):
-    tables = list(Table.objects.all().values())
+    tables = [basic_json(table) for table in Table.objects.all()]
     return json_response(tables)
 
 def fetch_group(request):
