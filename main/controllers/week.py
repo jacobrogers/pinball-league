@@ -1,13 +1,5 @@
 from main.controllers import BaseView, Group, render, Max
 
-class SetupWeekView(BaseView):
-    template = 'setup_week.html'
-
-    def doGet(self, request):
-        groups = Group.objects.all().aggregate(Max('week'))   
-        week = groups['week__max']+1 if groups['week__max'] else 1
-        return {'week': week}
-
 class WeekView(BaseView):
     template = 'week.html'
 

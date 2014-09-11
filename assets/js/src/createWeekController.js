@@ -101,7 +101,7 @@ angular.module('controllers')
 				player.rank = findRank(group, player);
 			}
 		}
-		$http.post('/api/saveGroups', {week: $scope.week, groups: $scope.groups})
+		$http.post('/api/setupWeek/'+$scope.week, {groups: $scope.groups})
 			.success(function(data) {
 				$scope.weekSetup = true;
 			})

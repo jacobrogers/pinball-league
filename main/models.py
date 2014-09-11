@@ -55,7 +55,7 @@ class Group(models.Model):
 		return dict(week=self.week, group=self.group, games=self.games)
 		
 	def __unicode__(self):
-		return 'Week %i Group %i' % (self.week,self.group)
+		return 'Week %s Group %s' % (self.week,self.group)
 
 	class Meta:
 		db_table = 'groups'
@@ -71,7 +71,7 @@ class League_Game(models.Model):
 	created = models.DateField(default=datetime.date.today)
 
 	def __unicode__(self):
-		return 'Week %i Group %i: %s %s' % (self.group.week, self.group.group, self.player.name, self.table.name)
+		return 'Week %s Group %s: %s %s' % (self.group.week, self.group.group, self.player.name, self.table.name)
 
 	class Meta:
 		db_table = 'league_games'
@@ -84,7 +84,7 @@ class Ranking(models.Model):
 	created = models.DateField(default=datetime.date.today)
 
 	def __unicode__(self):
-		return 'Week %i Player %s Rank %i' % (self.week, self.player.name, self.rank)
+		return 'Week %s Player %s Rank %s' % (self.week, self.player.name, self.rank)
 
 	class Meta:
 		db_table = 'rankings'

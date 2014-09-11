@@ -33,39 +33,3 @@ def fetch_group(request):
     games = [json_game(game) for game in gameObjs]
     tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in gameObjs}]
     return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
-
-@ensure_csrf_cookie
-def save_groups(request):
-    if request.method == 'POST':
-        payload = json.loads(request.POST.dict().keys()[0])
-        week = payload['week']
-        for i, g in enumerate(payload['groups']):            
-            group = Group()
-            group.week = week
-            group.group = i+1
-            group.save()
-            players = [Player.objects.get(id=player['id']) for player in g['players']]
-            tables = [Table.objects.get(id=table['id']) for table in g['tables']]
-            for (player, table) in [(player, table) for player in players for table in tables ]:
-                game = League_Game()
-                game.player = player
-                game.table = table
-                game.group = group
-                game.save()
-            for player in players:
-                ranking = Ranking()
-                ranking.player = player
-                ranking.week = week
-                for p in g['players']:
-                    if p['id'] == player.id:
-                        ranking.rank = p['rank']
-                        total_points = 0
-                        for game in League_Game.objects.filter(player=player):
-                            points = game.league_points if game.league_points is not None else 0
-                            bonus_points = game.bonus_points if game.bonus_points is not None else 0
-                            total_points = total_points + (points + bonus_points)
-                        ranking.points = total_points
-                ranking.save()
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
