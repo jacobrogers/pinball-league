@@ -6,8 +6,8 @@ class SetupWeekView(BaseView):
     def doGet(self, request):
         groups = Group.objects.all().aggregate(Max('week'))
         week = groups['week__max']+1 if groups['week__max'] else 1
-        print week
-        return {'week': week}
+        open_groups = Group.objects.filter(games__score=None).distinct('group')
+        return {'week': week, 'open_groups': open_groups}
         
 class SetupWeekApiView(BaseView):
     def get(self,request, week):

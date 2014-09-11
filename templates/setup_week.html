@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% if not open_groups %}
 <div ng-controller="SetupWeekCtrl" ng-init="init({{week}})" ng-cloak>
     <div ng-show="weekSetup" ng-cloak>
         <p class="alert alert-success">Week {{week}} created!</p>
@@ -59,6 +60,16 @@
         </div>
     </div>
 </div>
+{% else %}
+<div>
+    <p>The following groups are still open.  Please enter scores before starting the next week.</p>
+    <ul>
+        {% for group in open_groups %}
+            <li><a href="{% url 'group' %}?group={{group.group}}&week={{group.week}}">{{group}}</a>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block javascript_src %}

@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     url(r'^login', login.LoginView.as_view(), name='login'),
     url(r'^logout', login.LogoutView.as_view(), name='logout'),
     url(r'^week/(?P<week>.+)', week.WeekView.as_view(), name='week'),
-    url(r'^group', group.GroupView.as_view(), name='week'),
+    url(r'^group', group.GroupView.as_view(), name='group'),
     url(r'^$', index.IndexView.as_view(), name='home'),
 )
 
