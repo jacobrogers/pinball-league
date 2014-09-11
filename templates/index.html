@@ -28,8 +28,10 @@
 {% else %}
 
     {% if user.is_superuser %}
-    <div>
-        <a href="/setupWeek" class="btn btn-primary btn-lg" role="button">Start League</a>
+    <div class="row">
+        <div class="col-sm-offset-2 col-md-8">
+            <a href="/setupWeek" class="btn btn-primary btn-lg" role="button">Start League</a>
+        </div>
     </div>
 
     {% endif %}
