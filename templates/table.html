@@ -25,6 +25,11 @@
                     <div class="col-xs-3 col-md-1">
                         <a href="https://pinside.com/pinball/archive/{{table.pinside_name}}" target="_blank">Pinside</a>
                     </div>
+                    {% if table.tutorial %}
+                    <div class="col-xs-3 col-md-1">
+                        <a href="{{table.tutorial}}" target="_blank">Tutorial</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

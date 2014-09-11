@@ -1,7 +1,7 @@
 - fields: {ipdb_id: 1233, name: Hook, pinside_name: hook, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2011/06/Hook_0001_Backglass.jpg'}
   model: main.table
   pk: 1
-- fields: {ipdb_id: 5134, name: World Poker Tour, pinside_name: world-poker-tour, status: Active, image: 'http://www.pinballnews.com/games/worldpokertour/backglass.jpg'}
+- fields: {ipdb_id: 5134, name: World Poker Tour, pinside_name: world-poker-tour, status: Active, image: 'http://www.pinballnews.com/games/worldpokertour/backglass.jpg', tutorial: 'https://www.youtube.com/watch?v=bvKnTJQayRc'}
   model: main.table
   pk: 2
 - fields: {ipdb_id: 2579, name: Tommy, pinside_name: tommy-pinball-wizard, status: Active, image: 'http://www.pinballnyc.com/wp-content/uploads/2012/11/The-Whos-Tommy_0001_Backglass.jpg'}
@@ -13,13 +13,13 @@
 - fields: {ipdb_id: 2493, name: Tales From The Crypt, pinside_name: tales-from-the-crypt, status: Active, image: 'http://auctionpinball.com/wp-content/uploads/2014/03/crypta-5.jpg'}
   model: main.table
   pk: 5
-- fields: {ipdb_id: 5767, name: AC/DC Pro, pinside_name: ac-dc, status: Active, image: 'http://www.pinballnews.com/games/acdc/backglass1.jpg'}
+- fields: {ipdb_id: 5767, name: AC/DC Pro, pinside_name: ac-dc, status: Active, image: 'http://www.pinballnews.com/games/acdc/backglass1.jpg', tutorial: 'https://www.youtube.com/watch?v=ci7gXjSLq9o'}
   model: main.table
   pk: 6
 - fields: {ipdb_id: 4054, name: Star Wars Trilogy, pinside_name: star-wars-trilogy, status: Active, image: 'http://www.manitouspringspennyarcade.com/wp-content/uploads/2013/01/star-wars-trilogy-illuminate-backglass.jpg'}
   model: main.table
   pk: 7
-- fields: {ipdb_id: 6028, name: Metallica Pro, pinside_name: metallica, status: Active, image: 'http://www.pingamejournal.com/stern/metPREphoto.jpg'}
+- fields: {ipdb_id: 6028, name: Metallica Pro, pinside_name: metallica, status: Active, image: 'http://www.pingamejournal.com/stern/metPREphoto.jpg', tutorial: 'http://www.youtube.com/watch?v=npKSo6Y-D_A'}
   model: main.table
   pk: 8
 - fields: {ipdb_id: 5938, name: Avengers Pro, pinside_name: the-avengers, status: Active, image: 'http://www.pinballnews.com/games/avengers/001.jpg'}
