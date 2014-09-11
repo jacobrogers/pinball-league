@@ -4,18 +4,58 @@
 {% block nav-tables %}class="active"{% endblock %}
 
 {% block content %}
-<div class="h1">{{ table.name }}</div>
-
-<div class="row panel panel-primary">
-    <div class="panel-heading">Scores</div>
-    <div class="panel-body">
-        <ul class="col-sm-6 list-group">
-{% for game in games %}
-            <li class="list-group-item">{{game.player.name}} - Week {{ game.week }} - {{ game.score|intcomma}}</li>
-{% empty %}
-<p>No games played yet.</p>
-{% endfor %}
-        </ul>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="" class="thumbnail">
+                    <img src="{{table.image}}" alt="{{table.name}}"/>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="h1">{{ table.name }}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-1">
+                        <a href="http://ipdb.org/machine.cgi?id={{table.ipdb_id}}" target="_blank">IPDB</a>
+                    </div>
+                    <div class="col-xs-3 col-md-1">
+                        <a href="https://pinside.com/pinball/archive/{{table.pinside_name}}" target="_blank">Pinside</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% if games %}
+<div class="row">
+    <div class="col-md-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Week</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{game.player.name}}</td>
+                    <td>{{game.score|intcomma}}</td>
+                    <td>{{game.week}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+{% else %}
+<p>No scores yet.</p>
+{% endif %}
+
+</div></div>
 {% endblock %}
