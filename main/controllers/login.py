@@ -4,7 +4,7 @@ class LoginView(BaseView):
     template = 'login.html'
 
     def doGet(self, request):
-        return {'confirmed': request.GET.get('confirmed')}
+        return {'confirmed': request.GET.get('confirmed'), 'next': request.GET.get('next')}
     
     def post(self, request):
         username = request.POST['username'].lower()
@@ -13,7 +13,10 @@ class LoginView(BaseView):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return redirect('/')
+                redirect_url = request.POST['next']
+                if ( redirect_url == ''):
+                    redirect_url = '/'
+                return redirect(redirect_url)
             else:
                 return render(request, 'login.html', {'status': 'notActive'})
         else:

@@ -9,6 +9,8 @@ from django.db.models import Max, Sum
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import json, datetime, os, binascii
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
 
 from main.models import Table, Player, Player_Confirmation, Group, Ranking, League_Game
 from main.util import send_email, json_response, basic_json

@@ -3,7 +3,6 @@
 {% block nav-login %}class="active"{% endblock %}
 
 {% block content %}
-
 <div class="row">
   <div class="col-sm-offset-2 col-md-8">
     {% if confirmed %}
@@ -23,6 +22,7 @@
     {% endif %}
     <form action="/login" method="POST" class="form-horizontal" role="form">
       {% csrf_token %}
+      <input type="hidden" value="{{ next }}" name="next" />
       <div class="form-group">
         <label for="username" class="col-sm-2 control-label">Username</label>
         <div class="col-sm-4">

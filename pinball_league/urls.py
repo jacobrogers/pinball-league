@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from main import views
 from main.controllers import table, player, register, login, index, week, group, setup_week
+from django.contrib.auth.decorators import login_required
+
 admin.autodiscover()
 
 def main_view(path, action):
@@ -26,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^table/(?P<id>.+)', table.TableView.as_view(), name='table'),
     url(r'^register', register.SignupView.as_view(), name='register'),
     url(r'^confirmAccount/(?P<token>.+)', register.ConfirmAccountView.as_view()),
-    url(r'^setupWeek', setup_week.SetupWeekView.as_view()),
+    url(r'^setupWeek', login_required(setup_week.SetupWeekView.as_view())),
     url(r'^login', login.LoginView.as_view(), name='login'),
     url(r'^logout', login.LogoutView.as_view(), name='logout'),
     url(r'^week/(?P<week>.+)', week.WeekView.as_view(), name='week'),
