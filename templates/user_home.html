@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block nav-home %}class="active"{% endblock %}
+
+{% block content %}
+    
+<div class="h1">{{ player.name }} [{{ player.signature }}]</div>
+
+<div class="row panel panel-primary">
+    <div class="panel-heading">Group {{ group.group }}</div>
+    <div class="panel-body">
+    <ul class="col-sm-6 list-group">
+        {% for player in group.players %}
+        <li class="list-group-item">{{ player.name }}</li>
+        {% endfor %}
+    </ul>
+    <ul class="col-sm-6 list-group">
+        {% for table in group.tables %}
+        <li class="list-group-item">{{ table.name }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div class="panel-footer">
+        <a href="/group?week={{group.week}}&group={{group.group}}" class="btn btn-primary">Enter Scores</a>
+    </div>
+</div>
+
+{% endblock %}

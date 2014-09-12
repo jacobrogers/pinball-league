@@ -22,7 +22,9 @@
     {% endif %}
     <form action="/login" method="POST" class="form-horizontal" role="form">
       {% csrf_token %}
+      {% if next %}
       <input type="hidden" value="{{ next }}" name="next" />
+      {% endif %}
       <div class="form-group">
         <label for="username" class="col-sm-2 control-label">Username</label>
         <div class="col-sm-4">

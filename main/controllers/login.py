@@ -13,9 +13,7 @@ class LoginView(BaseView):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                redirect_url = request.POST['next']
-                if ( redirect_url == ''):
-                    redirect_url = '/'
+                redirect_url = request.POST['next'] if 'next' in request.POST else '/'
                 return redirect(redirect_url)
             else:
                 return render(request, 'login.html', {'status': 'notActive'})
