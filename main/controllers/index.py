@@ -1,4 +1,4 @@
-from main.controllers import BaseView, Group, Ranking
+from main.controllers import *
 
 class IndexView(BaseView):
     template = 'index.html'

@@ -1,6 +1,4 @@
-from main.models import Group, Player, League_Game
-from django.views.generic import View
-from django.shortcuts import render
+from main.controllers import * 
 
 class BaseView(View):
     template = 'index.html'

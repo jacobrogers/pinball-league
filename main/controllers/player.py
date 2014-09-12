@@ -1,4 +1,4 @@
-from main.controllers import BaseView, render, Player, attrgetter, itemgetter
+from main.controllers import *
 
 class PlayerView(BaseView):
     template = 'player.html'

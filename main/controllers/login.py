@@ -1,4 +1,4 @@
-from main.controllers import BaseView, render, redirect, authenticate, django_login, logout
+from main.controllers import * 
 
 class LoginView(BaseView):
     template = 'login.html'

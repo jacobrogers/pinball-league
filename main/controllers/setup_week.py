@@ -1,4 +1,4 @@
-from main.controllers import BaseView, Player, Group, League_Game, Table, Ranking, render, Max, Sum, basic_json, group_players, json_response, json, HttpResponse
+from main.controllers import *
 
 class SetupWeekView(BaseView):
     template = 'setup_week.html'

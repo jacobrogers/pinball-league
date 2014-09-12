@@ -1,4 +1,4 @@
-from main.controllers import BaseView, SignupForm, Player_Confirmation, render, HttpResponse, Player, redirect, AccountConfirmationForm, binascii, os, User, send_email
+from main.controllers import *
 
 class SignupView(BaseView):
     form_class = SignupForm

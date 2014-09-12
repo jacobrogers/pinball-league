@@ -1,4 +1,4 @@
-from main.controllers import BaseView, json, League_Game, json_response, decide_points, decide_bonus_points
+from main.controllers import *
 
 class GroupView(BaseView):
     template = 'group.html'
