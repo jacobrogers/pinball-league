@@ -51,6 +51,13 @@ class Group(models.Model):
 	group = models.IntegerField()
 	created = models.DateField(default=datetime.date.today)
 
+	@property
+	def is_open(self):
+		for game in self.games.all():
+			if game.score == None:
+				return True
+		return False
+
 	def as_json(self):
 		return dict(week=self.week, group=self.group, games=self.games)
 		
@@ -69,6 +76,10 @@ class League_Game(models.Model):
 	league_points = models.IntegerField(null=True,blank=True)
 	bonus_points = models.IntegerField(null=True,blank=True)
 	created = models.DateField(default=datetime.date.today)
+
+	@property
+	def total_points(self):
+		return self.league_points + self.bonus_points if self.league_points != None else None
 
 	def __unicode__(self):
 		return 'Week %s Group %s: %s %s' % (self.group.week, self.group.group, self.player.name, self.table.name)
