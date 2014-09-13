@@ -102,7 +102,7 @@ class AddPlayerView(BaseView):
 
     def get(self, request):
         form = self.form_class()
-        return render(request, self.template, {'form': form, 'action': action})
+        return render(request, self.template, {'form': form, 'action': self.action})
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -111,4 +111,4 @@ class AddPlayerView(BaseView):
             create_player(form.cleaned_data['username'], form.cleaned_data['password'], form)
             return render(request, 'added_player.html', {})
         else:
-            return render(request, self.template, {'form': form, 'action': action})
+            return render(request, self.template, {'form': form, 'action': self.action})
