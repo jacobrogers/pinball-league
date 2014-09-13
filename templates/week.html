@@ -9,7 +9,10 @@
     <div class="panel-body">
     <ul class="col-sm-6 list-group">
         {% for player in group.players %}
-        <li class="list-group-item"><a href="{% url 'player' player.id %}">{{ player.name }}</a> {% if player.points %} {{ player.points }} points {% endif %}</li>
+        <li class="list-group-item row">
+            <span class="col-md-4"><a href="{% url 'player' player.id %}">{{ player.name }}</a></span> 
+            {% if player.points %}<span class="col-md-8" style="text-align: right;">{{ player.points }} points {% endif %}</span>
+        </li>
         {% endfor %}
     </ul>
     <ul class="col-sm-6 list-group">
