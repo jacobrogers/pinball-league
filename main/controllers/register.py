@@ -55,7 +55,7 @@ class SignupView(BaseView):
         s.quit()
         return HttpResponse(status=200)
 
-def create_account(username, email, form):
+def create_player(username, email, form):
     user = User.objects.create_user(username, email, form.cleaned_data['password'])
     user.first_name = form.cleaned_data['first_name'].lower()
     user.last_name = form.cleaned_data['last_name'].lower()
@@ -76,9 +76,8 @@ class ConfirmAccountView(BaseView):
     def get(self, request, token):
         pc = Player_Confirmation.objects.get(confirmation_token=token)
         form = self.form_class()
-        model = {'token': token, 'player_confirmation': pc, 'form': form}
+        model = {'token': token, 'player_confirmation': pc, 'form': form, 'action': '/confirmAccount/%s' % (token)}
         self.addWeeksToModel(model)
-        action = '/confirmAccount/%s' % (token)
         return render(request, self.template, model)
 
     def post(self, request, token):
@@ -89,7 +88,7 @@ class ConfirmAccountView(BaseView):
                 pc = Player_Confirmation.objects.get(confirmation_token=token)
             except Player_Confirmation.DoesNotExist:
                 return HttpResponse(status=404)
-            create_user(pc.username, pc.email, form)
+            create_player(pc.username, pc.email, form)
             pc.delete()
             return redirect('/login?confirmed=true')
         else:
@@ -109,7 +108,7 @@ class AddPlayerView(BaseView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            create_user(form.cleaned_data['username'], form.cleaned_data['password'], form)
+            create_player(form.cleaned_data['username'], form.cleaned_data['password'], form)
             return render(request, 'added_player.html', {})
         else:
             return render(request, self.template, {'form': form, 'action': action})
