@@ -9,6 +9,9 @@
       {% csrf_token %}
       {{ form.non_field_errors }}
       <div class="form-group">
+        {% if not player_confirmation %}
+        {{ form.username.errors }}
+        {% endif %}
         <label for="username" class="col-sm-3 control-label">Username:</label>
         <div class="col-sm-5">
           {% if player_confirmation %}
@@ -21,11 +24,14 @@
       <div class="form-group">
         <label for="email" class="col-sm-3 control-label">Email:</label>
         <div class="col-sm-5">
-            {% if player_confirmation %}
-            <input type="text" class="form-control" id="email" disabled value="{{player_confirmation.email}}"/>
-            {% else %}
-            {{ form.email }}
-            {% endif %}
+          {% if not player_confirmation %}
+          {{ form.email.errors }}
+          {% endif %}
+          {% if player_confirmation %}
+          <input type="text" class="form-control" id="email" disabled value="{{player_confirmation.email}}"/>
+          {% else %}
+          {{ form.email }}
+          {% endif %}
         </div>
       </div>
       <div class="form-group">

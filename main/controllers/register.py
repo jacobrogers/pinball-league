@@ -68,6 +68,7 @@ def create_player(username, email, form):
     player.ifpa_id = form.cleaned_data['ifpa_id']
     player.user = user
     player.save()
+    return player
 
 class ConfirmAccountView(BaseView):
     form_class = AccountConfirmationForm
@@ -108,7 +109,7 @@ class AddPlayerView(BaseView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            create_player(form.cleaned_data['username'], form.cleaned_data['password'], form)
-            return render(request, 'added_player.html', {})
+            player = create_player(form.cleaned_data['username'], form.cleaned_data['password'], form)
+            return render(request, 'player_added.html', {'player': player})
         else:
             return render(request, self.template, {'form': form, 'action': self.action})
