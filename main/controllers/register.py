@@ -55,15 +55,31 @@ class SignupView(BaseView):
         s.quit()
         return HttpResponse(status=200)
 
+def create_account(username, email, form):
+    user = User.objects.create_user(username, email, form.cleaned_data['password'])
+    user.first_name = form.cleaned_data['first_name'].lower()
+    user.last_name = form.cleaned_data['last_name'].lower()
+    user.save()
+    
+    player = Player()
+    player.first_name = user.first_name
+    player.last_name = user.last_name
+    player.signature = form.cleaned_data['signature'].upper()
+    player.ifpa_id = form.cleaned_data['ifpa_id']
+    player.user = user
+    player.save()
+
 class ConfirmAccountView(BaseView):
     form_class = AccountConfirmationForm
+    template = 'confirm_account.html'
 
     def get(self, request, token):
         pc = Player_Confirmation.objects.get(confirmation_token=token)
         form = self.form_class()
         model = {'token': token, 'player_confirmation': pc, 'form': form}
         self.addWeeksToModel(model)
-        return render(request, 'confirm_account.html', model)
+        action = '/confirmAccount/%s' % (token)
+        return render(request, self.template, model)
 
     def post(self, request, token):
         form = self.form_class(request.POST)
@@ -73,21 +89,27 @@ class ConfirmAccountView(BaseView):
                 pc = Player_Confirmation.objects.get(confirmation_token=token)
             except Player_Confirmation.DoesNotExist:
                 return HttpResponse(status=404)
-
-            user = User.objects.create_user(pc.username, pc.email, form.cleaned_data['password'])
-            user.first_name = form.cleaned_data['first_name'].lower()
-            user.last_name = form.cleaned_data['last_name'].lower()
-            user.save()
-            
-            player = Player()
-            player.first_name = user.first_name
-            player.last_name = user.last_name
-            player.signature = form.cleaned_data['signature'].upper()
-            player.ifpa_id = form.cleaned_data['ifpa_id']
-            player.user = user
-            player.save()
+            create_user(pc.username, pc.email, form)
             pc.delete()
             return redirect('/login?confirmed=true')
         else:
             pc = Player_Confirmation.objects.get(confirmation_token=token)
-            return render(request, 'confirm_account.html', {'token': token, 'player_confirmation': pc, 'form': form})
+            return render(request, self.template, {'token': token, 'player_confirmation': pc, 'form': form})
+
+class AddPlayerView(BaseView):
+    form_class = AddPlayerForm
+    template = 'confirm_account.html'
+    action = 'addPlayer'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template, {'form': form, 'action': action})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            create_user(form.cleaned_data['username'], form.cleaned_data['password'], form)
+            return render(request, 'added_player.html', {})
+        else:
+            return render(request, self.template, {'form': form, 'action': action})

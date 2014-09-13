@@ -1,10 +1,5 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
-import json, datetime, os, binascii
-from main.models import Player, Group, Table, League_Game, Ranking, Player_Confirmation
-from main.util import json_response, send_email, json_payload
-from main.domain import decide_points, decide_bonus_points, group_players
-from django.db.models import Sum
+from main.models import Player, Group, Table, Ranking
+from main.util import json_response
 
 def basic_json(value):
     return {'id': value.id, 'name': value.name}

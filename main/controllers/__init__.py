@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 
 from main.models import Table, Player, Player_Confirmation, Group, Ranking, League_Game
-from main.util import send_email, json_response, basic_json
+from main.util import json_response, basic_json
 from main.domain import group_players, decide_points, decide_bonus_points
-from main.forms import SignupForm, AccountConfirmationForm
+from main.forms import SignupForm, AccountConfirmationForm, AddPlayerForm
 from base import BaseView

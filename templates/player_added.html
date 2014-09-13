@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block nav-addplayer %}class="active"{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-offset-2 col-md-6">
+        <p class="alert alert-success">
+            Thank you for signing up!<br/>An email has been sent to <b>{{email}}</b>.  <br/>Please click on the confirmation link to finish creating your account.
+        </p>
+    </div>
+</div>
+
+{% endblock %}
