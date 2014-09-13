@@ -19,7 +19,7 @@
             {% for ranking in rankings %}
             <tr>
                 <td>{{ ranking.rank }}</td>
-                <td>{{ ranking.player.name }}</td>
+                <td><a href="{% url 'player' ranking.player.id %}">{{ ranking.player.name }}</a></td>
                 <td>{{ ranking.points }}</td>
             </tr>
             {% endfor %}
