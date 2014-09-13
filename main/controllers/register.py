@@ -18,13 +18,42 @@ class SignupView(BaseView):
             pc.save()
 
             if 'USE_LOCAL_DB' not in os.environ:
-                send_email(pc.email, pc.confirmation_token) 
+                self.send_email(pc.email, pc.confirmation_token) 
             else:
                 print pc.confirmation_token
 
             return render(request, 'signup_accepted.html', {'email': pc.email})
         else:
             return render(request, 'signup.html', {'form': form})
+
+    def send_email(self, email, token):
+        import os
+        import smtplib
+
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+
+        msg = MIMEMultipart('alternative')
+
+        msg['Subject'] = "Finish registration."
+        msg['From']    = "Como Pinball League <como.pinball.league@gmail.com>" # Your from name and email address
+        msg['To']      = email
+
+        html = '<p>Thank you for signing up for the Columbia Pinball League.  <p><a href="http://como-pinball-league.herokuapp.com/confirmAccount/%s">Click here</a> to finish creating your account.' % token
+        part2 = MIMEText(html, 'html')
+
+        username = os.environ['MANDRILL_USERNAME']
+        password = os.environ['MANDRILL_APIKEY']
+
+        msg.attach(part2)
+
+        s = smtplib.SMTP('smtp.mandrillapp.com', 587)
+
+        s.login(username, password)
+        s.sendmail(msg['From'], msg['To'], msg.as_string())
+
+        s.quit()
+        return HttpResponse(status=200)
 
 class ConfirmAccountView(BaseView):
     form_class = AccountConfirmationForm
