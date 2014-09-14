@@ -53,5 +53,5 @@ def group_players(groups):
             elif player['direction'] == 'same':
                 new_groups[group].append(player)
     for group in new_groups.keys():
-        new_groups[group] = sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points'])
+        new_groups[group] = {'players': sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points'])}
     return new_groups

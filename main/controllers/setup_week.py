@@ -12,9 +12,9 @@ class SetupWeekView(BaseView):
 class SetupWeekApiView(BaseView):
     def get(self,request, week):
         model = {}
-        model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
         if int(week) == 1:
             model['players'] = [basic_json(player) for player in Player.objects.all()]
+            model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
         else:
             players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
             groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
@@ -22,6 +22,7 @@ class SetupWeekApiView(BaseView):
                 real_player = Player.objects.get(id=player['player'])
                 groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points']})
             model['groups'] = group_players(groups)
+            self.assign_tables(model['groups'])
             model['players'] = [basic_json(player) for player in Player.objects.all() if not self.player_has_game(players, player)]
         return json_response(model)
 
@@ -55,6 +56,22 @@ class SetupWeekApiView(BaseView):
                         ranking.points = total_points
                 ranking.save()
         return HttpResponse(status=201)
+
+    def assign_tables(self, groups):
+        from random import randint
+        tables = Table.objects.filter(status='Active')
+        table_cnt = len(tables)
+        for key in groups.iterkeys():
+            group = groups[key]
+            group_tables = []
+            for i in range(0,3):
+                index = randint(0,table_cnt-1)
+                while tables[index] in group_tables:
+                    index = randint(0,table_cnt-1)
+                group_tables.append(tables[index])
+            group['tables'] = [basic_json(table) for table in group_tables]
+            group['availableTables'] = [basic_json(table) for table in tables if table not in group_tables]
+            
 
     def player_has_game(self, players, player):
         for p in players:

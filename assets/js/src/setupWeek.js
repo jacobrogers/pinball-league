@@ -13,7 +13,8 @@ angular.module('controllers')
 			} else {
 				console.log(data.groups);
 				for (var i in data.groups) {
-					$scope.groups.push({players: data.groups[i], tables: []	, availableTables: tablesCopy()});
+					var group = data.groups[i];
+					$scope.groups.push({players: group.players, tables: group.tables, availableTables: group.availableTables});
 				}
 				$scope.players = data.players;
 			}
