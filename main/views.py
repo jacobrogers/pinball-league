@@ -19,7 +19,7 @@ def fetch_players(request):
     return json_response(players)
 
 def fetch_tables(request):
-    tables = [basic_json(table) for table in Table.objects.all()]
+    tables = [basic_json(table) for table in Table.objects.filter(status='Active')]
     return json_response(tables)
 
 def fetch_group(request):
