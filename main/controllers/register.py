@@ -78,7 +78,8 @@ class ConfirmAccountView(BaseView):
         try:
             pc = Player_Confirmation.objects.get(confirmation_token=token)
         except Player_Confirmation.DoesNotExist:
-            return render(request, 'player_confirmation_not_found.html', {})
+            message = 'Account not found.  Please try signing up again <a href="/register">here</a>.'
+            return self.error_page(request, message)
         form = self.form_class()
         model = {'token': token, 'player_confirmation': pc, 'form': form, 'action': '/confirmAccount/%s' % (token)}
         self.addWeeksToModel(model)

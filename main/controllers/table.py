@@ -12,7 +12,11 @@ class TableView(BaseView):
 
     def get(self, request, id):
         from operator import itemgetter, attrgetter
-        table = Table.objects.get(id=id)
+        try:
+            table = Table.objects.get(id=id)
+        except Table.DoesNotExist:
+            message = 'Table not found. Find tables <a href="/tables">here</a>'
+            return self.error_page(request, message)
         games = []
         for game in sorted(table.games.all(), key=attrgetter('score'), reverse=True):
             games.append({'week': game.group.week, 'player': {'id': game.player.id, 'name': game.player.name}, 'score': game.score})

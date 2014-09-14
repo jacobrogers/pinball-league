@@ -12,6 +12,9 @@ class BaseView(View):
     def doGet(self, request):
         print 'doGet not overrided'
 
+    def error_page(self, request, message):
+         return render(request, 'error.html', {'message': message})
+
     def addWeeksToModel(self, model):
         weeks = [group.week for group in Group.objects.distinct('week')]
         model['weeks'] = weeks
