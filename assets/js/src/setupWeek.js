@@ -6,26 +6,19 @@ angular.module('controllers')
 
 	$scope.init = function(week) {
 		$scope.week = week;
-	};
-
-	var loadPlayers = function() {
-		var playersPath = ($scope.week == 1) ? '/api/players' : '/api/setupWeek/'+$scope.week;	
-		$http.get(playersPath).success(function(data) {
+		$http.get('/api/setupWeek/'+week).success(function(data) {
+			$scope.tables = data.tables;
 			if ($scope.week == 1) {
-				$scope.players = data;
+				$scope.players = data.players;
 			} else {
+				console.log(data.groups);
 				for (var i in data.groups) {
-					$scope.groups.push({players: data.groups[i], tables: [], availableTables: tablesCopy()});
+					$scope.groups.push({players: data.groups[i], tables: []	, availableTables: tablesCopy()});
 				}
 				$scope.players = data.players;
 			}
 		});
 	};
-
-	$http.get('/api/tables').success(function(data) {
-		$scope.tables = data;
-		loadPlayers();
-	});
 
 	var tablesCopy = function() {
 		var availableTables = [];

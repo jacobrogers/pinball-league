@@ -9,11 +9,6 @@ def json_game(game):
     player = basic_json(game.player)
     return {'id': game.id, 'table': table, 'player': player, 'score': game.score, 'league_points': game.league_points, 'bonus_points': game.bonus_points}
 
-def json_group(group, games):
-    tables = [basic_json(table) for table in {game.table for game in games}]
-    players = [basic_json(player) for player in {game.player for game in games}]
-    return {'group': group, 'tables': tables, 'players': players}
-
 def fetch_players(request):
     players = [basic_json(player) for player in Player.objects.all()]
     return json_response(players)
