@@ -6,6 +6,7 @@ class BaseView(View):
     def get(self, request, *args, **kwargs):
         model = self.doGet(request)
         self.addWeeksToModel(model)
+        self.addTutorials(model)
         return render(request, self.template, model)
 
     def doGet(self, request):
@@ -15,6 +16,10 @@ class BaseView(View):
         weeks = [group.week for group in Group.objects.distinct('week')]
         model['weeks'] = weeks
         return model
+
+    def addTutorials(self, model):
+        tutorials = Table.objects.exclude(tutorial='')
+        model['tutorials'] = tutorials
 
     def user_can_enter_scores(self, user, week, group):
         weeks = [g.week for g in Group.objects.distinct('week')]
