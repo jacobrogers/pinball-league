@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block nav-home %}class="active"{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-offset-2 col-md-6">
+        <p class="alert alert-danger">
+            Account not found.  Please try signing up again <a href="{% url 'register' %}">here</a>.
+        </p>
+    </div>
+</div>
+
+{% endblock %}

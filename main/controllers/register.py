@@ -75,7 +75,10 @@ class ConfirmAccountView(BaseView):
     template = 'confirm_account.html'
 
     def get(self, request, token):
-        pc = Player_Confirmation.objects.get(confirmation_token=token)
+        try:
+            pc = Player_Confirmation.objects.get(confirmation_token=token)
+        except Player_Confirmation.DoesNotExist:
+            return render(request, 'player_confirmation_not_found.html', {})
         form = self.form_class()
         model = {'token': token, 'player_confirmation': pc, 'form': form, 'action': '/confirmAccount/%s' % (token)}
         self.addWeeksToModel(model)
