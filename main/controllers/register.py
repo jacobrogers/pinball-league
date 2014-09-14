@@ -35,7 +35,7 @@ class SignupView(BaseView):
 
         msg = MIMEMultipart('alternative')
 
-        msg['Subject'] = "Finish registration."
+        msg['Subject'] = "Welcome to the Columbia Pinball League."
         msg['From']    = "Como Pinball League <como.pinball.league@gmail.com>" # Your from name and email address
         msg['To']      = email
 
