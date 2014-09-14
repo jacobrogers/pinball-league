@@ -4,7 +4,11 @@ class PlayerView(BaseView):
     template = 'player.html'
 
     def get(self, request, id):
-        player = Player.objects.get(id=id)
+        try:
+            player = Player.objects.get(id=id)
+        except Player.DoesNotExist:
+            message = 'Player not found.  Find players <a href="/players">here</a>.'
+            return self.error_page(request, message)
         games = player.games.all()
         player_games = []
         for table in sorted({game.table for game in games}, key=attrgetter('name')):
