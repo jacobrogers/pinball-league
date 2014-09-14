@@ -5,6 +5,11 @@ class WeekView(BaseView):
 
     def get(self, request, week):
         groups = Group.objects.filter(week=week)
+
+        if not groups:
+            message = 'Week %s has not started yet.' % week
+            return self.error_page(request, message)
+
         model_groups = []
         for g in groups:
             group = {'tables': [], 'players': [], 'group': g.group}
