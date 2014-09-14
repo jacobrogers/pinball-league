@@ -76,6 +76,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					{% if user.is_authenticated %}
 						{% if user.is_superuser %}
+						<li><a href="{% url 'reset' %}">Reset</a></li>
 						<li {% block nav-addplayer %}{% endblock %}><a href="{% url 'addPlayer' %}">Add Player</a></li>
 						<li><a href="/admin">Admin</a></li>
 						{% endif %}
