@@ -57,7 +57,6 @@ ROOT_URLCONF = 'pinball_league.urls'
 
 WSGI_APPLICATION = 'pinball_league.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
@@ -90,6 +89,9 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = '/login'
+
+SCORING = 'THREE'
+# SCORING = 'SEVEN'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

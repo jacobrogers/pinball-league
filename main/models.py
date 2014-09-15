@@ -72,7 +72,7 @@ class League_Game(models.Model):
 	table = models.ForeignKey(Table, related_name="games")
 	group = models.ForeignKey(Group, related_name="games")
 	order = models.IntegerField(max_length=1,null=True,blank=True)
-	score = models.IntegerField(null=True,blank=True)
+	score = models.BigIntegerField(null=True,blank=True)
 	league_points = models.IntegerField(null=True,blank=True)
 	bonus_points = models.IntegerField(null=True,blank=True)
 	created = models.DateField(default=datetime.date.today)
