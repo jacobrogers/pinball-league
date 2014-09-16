@@ -1,0 +1,15 @@
+{
+  "name": "pinball-league",
+  "version": "1.0.0",
+  "description": "Pinball League Manager",
+  "main": "/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jacob Rogers",
+  "license": "ISC",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-uglify": "^0.5.1"
+  }
+}

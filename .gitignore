@@ -2,3 +2,6 @@
 *.swp
 staticfiles
 *.pyc
+build
+node_modules/
+
