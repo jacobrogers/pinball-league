@@ -11,7 +11,6 @@ angular.module('controllers')
 			if ($scope.week == 1) {
 				$scope.players = data.players;
 			} else {
-				console.log(data.groups);
 				for (var i in data.groups) {
 					var group = data.groups[i];
 					$scope.groups.push({players: group.players, tables: group.tables, availableTables: group.availableTables});
