@@ -1,7 +1,6 @@
-Django==1.6.6
+Django==1.6.7
 PyYAML==3.11
 dj-database-url==0.3.0
-djangorestframework==2.4.0
 docopt==0.4.0
 gunicorn==18.0
 mandrill==1.0.56
