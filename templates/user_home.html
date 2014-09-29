@@ -3,11 +3,11 @@
 {% block nav-home %}class="active"{% endblock %}
 
 {% block content %}
-    
+
 <div class="h1">{{ player.name }} [{{ player.signature }}]</div>
 
 <div class="row panel panel-primary">
-    <div class="panel-heading">Group {{ group.group }}</div>
+    <div class="panel-heading">Week {{ group.week }} - Group {{ group.group }}</div>
     <div class="panel-body">
     <ul class="col-sm-6 list-group">
         {% for player in group.players %}
