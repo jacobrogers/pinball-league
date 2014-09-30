@@ -18,7 +18,7 @@ class SignupView(BaseView):
             pc.save()
 
             if 'USE_LOCAL_DB' not in os.environ:
-                self.send_email(pc.email, pc.confirmation_token) 
+                self.send_email(pc.email, pc.confirmation_token)
             else:
                 print pc.confirmation_token
 
@@ -60,7 +60,7 @@ def create_player(username, email, form):
     user.first_name = form.cleaned_data['first_name'].lower()
     user.last_name = form.cleaned_data['last_name'].lower()
     user.save()
-    
+
     player = Player()
     player.first_name = user.first_name
     player.last_name = user.last_name
@@ -113,7 +113,7 @@ class AddPlayerView(BaseView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            player = create_player(form.cleaned_data['username'], form.cleaned_data['password'], form)
+            player = create_player(form.cleaned_data['username'], form.cleaned_data['email'], form)
             return render(request, 'player_added.html', {'player': player})
         else:
             return render(request, self.template, {'form': form, 'action': self.action})
