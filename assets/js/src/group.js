@@ -15,7 +15,8 @@ angular.module('controllers')
 		var gamesToSave = $scope.group.games.filter(function(game) { return game.table.name === table.name });
 		var scoresAreValid = true;
 		_.each(gamesToSave, function(game) {
-			if (!_.isNumber(game.score)) {
+			var score = parseInt(game.score);
+			if (!_.isNumber(score)) {
 				scoresAreValid = false;
 				game.status = 'invalidScore';
 			}
@@ -38,4 +39,22 @@ angular.module('controllers')
 				});
 		}
 	};
+}])
+.directive('formatScore', ['$filter', function ($filter) {
+    return {
+        require: '?ngModel',
+        link: function (scope, elem, attrs, ctrl) {
+            if (!ctrl) return;
+
+            ctrl.$formatters.unshift(function (a) {
+                return $filter('number')(ctrl.$modelValue)
+            });
+
+            ctrl.$parsers.unshift(function (viewValue) {
+                var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+                elem.val($filter('number')(plainNumber));
+                return plainNumber;
+            });
+        }
+    };
 }]);
