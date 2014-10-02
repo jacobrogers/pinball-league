@@ -10,7 +10,7 @@
             <tbody>
                 <tr ng-repeat="game in group.games | filter:table.name">
                     <td>{$ game.player.name $}</td>
-                    <td><input format="number" type="text" ng-model="game.score" {% if not canEnterScores%}disabled{% endif %}/></td>
+                    <td><input format-score type="text" ng-model="game.score" {% if not canEnterScores%}disabled{% endif %}/></td>
                     <td>{$ game.league_points $}</td>
                     <td ng-if="game.bonus_points>0">+{$ game.bonus_points $}</td>
                     <td ng-if="game.bonus_points==0"></td>
