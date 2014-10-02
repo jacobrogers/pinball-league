@@ -25,9 +25,8 @@ class IndexView(BaseView):
                 None
             except League_Game.DoesNotExist:
                 None
-        
+
         rankings = [ranking.week for ranking in Ranking.objects.all()]
         week = max(rankings) if rankings else 1
-        rankings = Ranking.objects.filter(week=week)
+        rankings = Ranking.objects.filter(week=week, 'rank')
         return {'week': week, 'weeks': weeks, 'rankings': rankings}
-        
