@@ -28,5 +28,5 @@ class IndexView(BaseView):
 
         rankings = [ranking.week for ranking in Ranking.objects.all()]
         week = max(rankings) if rankings else 1
-        rankings = Ranking.objects.filter(week=week, 'rank')
+        rankings = Ranking.objects.filter(week=week).order_by('rank')
         return {'week': week, 'weeks': weeks, 'rankings': rankings}
