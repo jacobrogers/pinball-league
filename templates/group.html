@@ -13,7 +13,7 @@
                     <td><input format-score type="text" ng-model="game.score" {% if not canEnterScores%}disabled{% endif %}/></td>
                     <td>{$ game.league_points $}</td>
                     <td ng-if="game.bonus_points>0">+{$ game.bonus_points $}</td>
-                    <td ng-if="game.bonus_points==0"></td>
+                    <td ng-if="game.bonus_points==0" colspan="1"></td>
                     <td>{$ game.league_points + game.bonus_points $}</td>
                 </tr>
             </tbody>

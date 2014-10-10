@@ -18,9 +18,14 @@ def decide_points(scores, score):
             return 2
         return 1
 
-def decide_bonus_points(scores, score):
+def decide_bonus_points(player_scores, score):
     if settings.SCORING == 'SEVEN':
         return 0
+
+    if score == 0:
+        return 0
+        
+    scores = [x for x in player_scores if x > 0]
 
     if len(scores) == 2:
         if score == scores[0]:
@@ -67,5 +72,5 @@ def group_players(groups):
             elif player['direction'] == 'same':
                 new_groups[group].append(player)
     for group in new_groups.keys():
-        new_groups[group] = {'players': sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points'])}
+        new_groups[group] = {'players': sorted(sorted(new_groups[group], reverse=True,key=lambda (player): player['league_points']), reverse=True,key=lambda (player): player['total_points'])}
     return new_groups

@@ -20,7 +20,8 @@ class SetupWeekApiView(BaseView):
             groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
             for player in players:
                 real_player = Player.objects.get(id=player['player'])
-                groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points']})
+                total_points = sum([p.league_points + p.bonus_points for p in real_player.games.all()])
+                groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points'], 'total_points': total_points})
             model['groups'] = group_players(groups)
             self.assign_tables(model['groups'])
             model['players'] = [basic_json(player) for player in Player.objects.all() if not self.player_has_game(players, player)]

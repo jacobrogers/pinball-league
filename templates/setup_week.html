@@ -31,7 +31,7 @@
                         <ol>
                             <li ng-repeat="player in group.players">
                                 <span>{$ player.name $}</span>
-                                <span ng-if="player.league_points >= 0">- {$ player.league_points $} points</span>
+                                <span ng-if="player.league_points >= 0">- {$ player.league_points $} points ({$ player.total_points $})</span>
                                 <span ng-if="player.direction == 'up'" class="glyphicon glyphicon-arrow-up"></span>
                                 <span ng-if="player.direction == 'down'" class="glyphicon glyphicon-arrow-down"></span>
                                 <span ng-if="player.direction == 'same'" class="glyphicon glyphicon-minus"></span>

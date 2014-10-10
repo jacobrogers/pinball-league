@@ -25,6 +25,7 @@ class PointSystemTestCase(unittest.TestCase):
         self.assertEqual(3, decide_points(scores, 4))
         self.assertEqual(0, decide_points(scores, 3))
 
+class BonusPointSystemTest(unittest.TestCase):
     def test_two_players_bonus_point_to_second_player(self):
         scores = [9,3]
 
@@ -36,6 +37,19 @@ class PointSystemTestCase(unittest.TestCase):
 
         self.assertEqual(0, decide_bonus_points(scores, 3))
         self.assertEqual(1, decide_bonus_points(scores, 10))
+
+    def test_four_player_two_actual_bonus_points(self):
+        scores = [9,3,0,0]
+
+        self.assertEqual(1, decide_bonus_points(scores, 3))
+        self.assertEqual(0, decide_bonus_points(scores, 9))
+        self.assertEqual(0, decide_bonus_points(scores, 0))
+
+        scores = [10,3,0,0]
+
+        self.assertEqual(0, decide_bonus_points(scores, 3))
+        self.assertEqual(1, decide_bonus_points(scores, 10))
+        self.assertEqual(0, decide_bonus_points(scores, 0))
 
     def test_three_players_bonus_point_to_first_player(self):
         scores = [9,5,3]
@@ -50,6 +64,21 @@ class PointSystemTestCase(unittest.TestCase):
         self.assertEqual(1, decide_bonus_points(scores, 3))
         self.assertEqual(0, decide_bonus_points(scores, 6))
         self.assertEqual(0, decide_bonus_points(scores, 9))
+
+    def test_four_players_three_actualbonus_points(self):
+        scores = [9,5,3,0]
+
+        self.assertEqual(0, decide_bonus_points(scores, 5))
+        self.assertEqual(0, decide_bonus_points(scores, 3))
+        self.assertEqual(1, decide_bonus_points(scores, 9))
+        self.assertEqual(0, decide_bonus_points(scores, 0))
+
+        scores = [9,6,3,0]
+
+        self.assertEqual(1, decide_bonus_points(scores, 3))
+        self.assertEqual(0, decide_bonus_points(scores, 6))
+        self.assertEqual(0, decide_bonus_points(scores, 9))
+        self.assertEqual(0, decide_bonus_points(scores, 0))
 
     def test_four_players_bonus_point_to_first_player(self):
         scores = [9,3,2,1]
@@ -115,8 +144,8 @@ class SetupWeekTestCase(unittest.TestCase):
         new_group = group_players(groups)
 
         self.assertEqual(2, len(new_group))
-        self.assertItemsEqual(new_group[1], [group1[0], group1[2], group2[2]])
-        self.assertItemsEqual(new_group[2], [group1[1], group2[0], group2[1]])
+        self.assertItemsEqual(new_group[1]['players'], [group1[0], group1[2], group2[2]])
+        self.assertItemsEqual(new_group[2]['players'], [group1[1], group2[0], group2[1]])
 
     def test_decide_groups_four_players(self):
         group1 = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12), self.player(1,'m',6)]
@@ -126,5 +155,5 @@ class SetupWeekTestCase(unittest.TestCase):
         new_group = group_players(groups)
 
         self.assertEqual(2, len(new_group))
-        self.assertItemsEqual(new_group[1], [group1[0], group1[2], group2[0], group2[2]])
-        self.assertItemsEqual(new_group[2], [group1[1], group1[3], group2[1], group2[3]])
+        self.assertItemsEqual(new_group[1]['players'], [group1[0], group1[2], group2[0], group2[2]])
+        self.assertItemsEqual(new_group[2]['players'], [group1[1], group1[3], group2[1], group2[3]])
