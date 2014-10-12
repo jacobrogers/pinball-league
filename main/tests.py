@@ -107,7 +107,7 @@ class BonusPointSystemTest(unittest.TestCase):
 class SetupWeekTestCase(unittest.TestCase):
 
     def player(self, group, name, points):
-        return {'name': name, 'league_points': points}
+        return {'name': name, 'league_points': points, 'total_points': 0}
 
     def test_decide_movement_in_four_player_group(self):
         players = [self.player(1,'j',10), self.player(1,'k',8), self.player(1,'l',12), self.player(1,'m',6)]
