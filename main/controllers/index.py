@@ -35,6 +35,6 @@ class IndexView(BaseView):
 
     def rankings_page(self):
         weeks = [group.week for group in Group.objects.distinct('week')]
-        week = max(weeks) if rankings else 1
+        week = max(weeks) if weeks else 1
         rankings = Ranking.objects.filter(week=week).order_by('rank')
         return {'week': week, 'weeks': weeks, 'rankings': rankings}
