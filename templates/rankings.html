@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block nav-rankings %}class="active"{% endblock %}
+
+{% block content %}
+
+<div>
+    <h1>Week {{ week }}</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ranking in rankings %}
+            <tr>
+                <td>{{ ranking.rank }}</td>
+                <td><a href="{% url 'player' ranking.player.id %}">{{ ranking.player.name }}</a></td>
+                <td>{{ ranking.points }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</div>
+
+{% endblock %}

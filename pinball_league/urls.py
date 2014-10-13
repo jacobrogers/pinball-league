@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from main import views
-from main.controllers import table, player, register, login, index, week, group, setup_week, reset
+from main.controllers import table, player, register, login, index, week, group, setup_week, reset, rankings
 from django.contrib.auth.decorators import login_required
 
 admin.autodiscover()
@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     url(r'^logout', login.LogoutView.as_view(), name='logout'),
     url(r'^week/(?P<week>.+)', week.WeekView.as_view(), name='week'),
     url(r'^group', group.GroupView.as_view(), name='group'),
+    url(r'^rankings', rankings.RankingsView.as_view(), name='rankings'),
     url(r'^$', index.IndexView.as_view(), name='home'),
 )
 

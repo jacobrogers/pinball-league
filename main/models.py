@@ -89,7 +89,7 @@ class League_Game(models.Model):
 
 class Ranking(models.Model):
 	week = models.IntegerField()
-	player = models.ForeignKey(Player)
+	player = models.ForeignKey(Player, related_name="rankings")
 	rank = models.IntegerField()
 	points = models.IntegerField(default=0)
 	created = models.DateField(default=datetime.date.today)
