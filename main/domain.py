@@ -32,6 +32,8 @@ def decide_bonus_points(player_scores, score):
             return 1 if score > scores[1]*3 else 0
         if score == scores[1]:
             return 0 if scores[0] > scores[1]*3 else 1
+    elif len(scores) == 1:
+        return 0
     else:
         if score == scores[0]:
             return 1 if score > scores[1]+scores[2] else 0
