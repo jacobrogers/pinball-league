@@ -6,8 +6,21 @@ from django.conf.urls.static import static
 from main import views
 from main.controllers import table, player, register, login, index, week, group, setup_week, reset, rankings
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 
 admin.autodiscover()
+
+class DirectTemplateView(TemplateView):
+    extra_context = None
+    def get_context_data(self, **kwargs):
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        if self.extra_context is not None:
+            for key, value in self.extra_context.items():
+                if callable(value):
+                    context[key] = value()
+                else:
+                    context[key] = value
+        return context
 
 def main_view(path, action):
 	return url(r'^%s' % (path), 'main.views.%s' % (action))
@@ -36,6 +49,7 @@ urlpatterns = patterns('',
     url(r'^week/(?P<week>.+)', week.WeekView.as_view(), name='week'),
     url(r'^group', group.GroupView.as_view(), name='group'),
     url(r'^rankings', rankings.RankingsView.as_view(), name='rankings'),
+    url(r'^flipOffHunger', DirectTemplateView.as_view(template_name='flip_off_hunger.html')),
     url(r'^$', index.IndexView.as_view(), name='home'),
 )
 
