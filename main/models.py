@@ -9,7 +9,7 @@ class Table(models.Model):
 	status = models.CharField(max_length=10,choices=( ('Active','Active'), ('Inactive', 'Inactive')), default='Active')
 	created = models.DateField(default=datetime.date.today)
 	image = models.URLField()
-	tutorial = models.URLField()
+	tutorial = models.URLField(null=True,blank=True)
 
 	def __unicode__(self):
 		return self.name
