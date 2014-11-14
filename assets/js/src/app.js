@@ -10,6 +10,6 @@ angular.module('app', ['ngCookies','controllers'])
 }])
 .run(['$http', '$cookies', function( $http, $cookies ){
     $http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
-}]);;
+}]);
 
 angular.module('controllers', []);

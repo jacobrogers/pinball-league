@@ -25,6 +25,7 @@ class SetupWeekApiView(BaseView):
             model['groups'] = group_players(groups)
             self.assign_tables(model['groups'])
             model['players'] = [basic_json(player) for player in Player.objects.all() if not self.player_has_game(players, player)]
+            model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
         return json_response(model)
 
     def post(self, request, week):

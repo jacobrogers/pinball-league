@@ -25,8 +25,8 @@ angular.module('controllers')
 		for (var i in $scope.tables)
 			availableTables.push($scope.tables[i]);
 		return availableTables;
-
 	}
+	
 	var remove = function(array, value) {
 		var i = array.indexOf(value);
 		if(i != -1) array.splice(i, 1);
@@ -57,6 +57,7 @@ angular.module('controllers')
 	};
 
 	$scope.addGroup = function() {
+		console.log(tablesCopy());
 		$scope.groups.push({players: [], tables: [], availableTables: tablesCopy()});
 	};
 
