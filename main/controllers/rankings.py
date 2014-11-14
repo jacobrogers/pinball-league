@@ -11,6 +11,6 @@ class RankingsView(BaseView):
 				bonus_points = game.bonus_points if game.bonus_points is not None else 0
 				total_points = total_points + (points + bonus_points)	
 			player.total_points = total_points
-		weeks = [game.week for game in League_Game.objects.all()]
+		weeks = [game.group.week for game in League_Game.objects.all()]
 		week = max(weeks) if weeks else 1
 		return {'week': week, 'players': players}
