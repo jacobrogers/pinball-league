@@ -8,7 +8,7 @@
     <div class="panel-heading"><a href="/group?week={{week}}&group={{group.group}}">Group {{ group.group }}</a></div>
     <div class="panel-body">
     <ul class="col-sm-6 list-group">
-        {% for player in group.players %}
+        {% for player in group.players|dictsortreversed:'total_points' %}
         <li class="list-group-item row">
             <span class="col-md-4"><a href="{% url 'player' player.id %}">{{ player.name }}</a></span>
             {% if player.points %}<span class="col-md-8" style="text-align: right;">{{ player.points }} points {% endif %}</span>
