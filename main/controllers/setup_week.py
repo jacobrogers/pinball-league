@@ -36,26 +36,31 @@ class SetupWeekApiView(BaseView):
             group.save()
             players = [Player.objects.get(id=player['id']) for player in g['players']]
             tables = [Table.objects.get(id=table['id']) for table in g['tables']]
-            for (player, table) in [(player, table) for player in players for table in tables ]:
+            for (player, table) in [(player, table) for player in players for table in tables]:
                 game = League_Game()
                 game.player = player
                 game.table = table
                 game.group = group
                 game.save()
-            for player in players:
-                ranking = Ranking()
-                ranking.player = player
-                ranking.week = week
-                for p in g['players']:
-                    if p['id'] == player.id:
-                        ranking.rank = p['rank']
-                        total_points = 0
-                        for game in League_Game.objects.filter(player=player):
-                            points = game.league_points if game.league_points is not None else 0
-                            bonus_points = game.bonus_points if game.bonus_points is not None else 0
-                            total_points = total_points + (points + bonus_points)
-                        ranking.points = total_points
-                ranking.save()
+        # for player in Player.objects.all():
+        #     total_points = 0
+        #     for game in League_Game.objects.filter(player=player):
+        #         points = game.league_points if game.league_points is not None else 0
+        #         bonus_points = game.bonus_points if game.bonus_points is not None else 0
+        #         total_points = total_points + (points + bonus_points)
+        #     ranking = Ranking()
+        #     ranking.player = player
+        #     ranking.week = week
+        #     for p in g['players']:
+        #         if p['id'] == player.id:
+        #             ranking.rank = p['rank']
+        #             total_points = 0
+        #             for game in League_Game.objects.filter(player=player):
+        #                 points = game.league_points if game.league_points is not None else 0
+        #                 bonus_points = game.bonus_points if game.bonus_points is not None else 0
+        #                 total_points = total_points + (points + bonus_points)
+        #             ranking.points = total_points
+        #     ranking.save()
         return HttpResponse(status=201)
 
     def assign_tables(self, groups):

@@ -4,7 +4,13 @@ class RankingsView(BaseView):
 	template = 'rankings.html'
 
 	def doGet(self, request):
-		rankings = [ranking.week for ranking in Ranking.objects.all()]
-		week = max(rankings) if rankings else 1
-		rankings = Ranking.objects.filter(week=week).order_by('rank')
-		return {'week': week, 'rankings': rankings}
+		for player in Player.objects.all():
+			total_points = 0
+			for game in League_Game.objects.filter(player=player):
+				points = game.league_points if game.league_points is not None else 0
+				bonus_points = game.bonus_points if game.bonus_points is not None else 0
+				total_points = total_points + (points + bonus_points)	
+			player.total_points = total_points
+		weeks = [game.week for game in League_Game.objects.all()]
+		week = max(weeks) if weeks else 1
+		return {'week': week, 'players': players}
