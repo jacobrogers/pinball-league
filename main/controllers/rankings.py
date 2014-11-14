@@ -4,7 +4,8 @@ class RankingsView(BaseView):
 	template = 'rankings.html'
 
 	def doGet(self, request):
-		for player in Player.objects.all():
+		players = Player.objects.all()
+		for player in players:
 			total_points = 0
 			for game in League_Game.objects.filter(player=player):
 				points = game.league_points if game.league_points is not None else 0
