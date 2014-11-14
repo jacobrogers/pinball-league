@@ -35,7 +35,14 @@ class IndexView(BaseView):
             None
 
     def rankings_page(self):
-        weeks = [group.week for group in Group.objects.distinct('week')]
+        players = Player.objects.all()
+        for player in players:
+            total_points = 0
+            for game in League_Game.objects.filter(player=player):
+                points = game.league_points if game.league_points is not None else 0
+                bonus_points = game.bonus_points if game.bonus_points is not None else 0
+                total_points = total_points + (points + bonus_points)   
+            player.total_points = total_points
+        weeks = [game.group.week for game in League_Game.objects.all()]
         week = max(weeks) if weeks else 1
-        rankings = Ranking.objects.filter(week=week).order_by('rank')
-        return {'week': week, 'rankings': rankings}
+        return {'week': week, 'players': players}
