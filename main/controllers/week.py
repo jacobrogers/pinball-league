@@ -21,7 +21,6 @@ class WeekView(BaseView):
                 if game.player not in group['players']:
                     group['players'].append(game.player)
                     game.player.points = 0
-            
             if not g.is_open:
                 for game in g.games.all():
                     game.player.points = game.total_points if game.total_points != None else None
@@ -29,7 +28,6 @@ class WeekView(BaseView):
                         if player == game.player and game.total_points != None:
                             player.points = player.points + game.total_points
                             break
-
             model_groups.append(group)
 
         model = {'week': week, 'groups': model_groups}

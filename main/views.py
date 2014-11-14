@@ -7,6 +7,7 @@ def basic_json(value):
 def json_game(game):
     table = basic_json(game.table)
     player = basic_json(game.player)
+    player['total_points'] = game.player.total_points
     return {'id': game.id, 'table': table, 'player': player, 'score': game.score, 'league_points': game.league_points, 'bonus_points': game.bonus_points}
 
 def fetch_players(request):

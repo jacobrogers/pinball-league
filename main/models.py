@@ -29,7 +29,11 @@ class Player(models.Model):
 	@property
 	def name(self):
 		return '%s %s' % (self.first_name.capitalize(), self.last_name.capitalize())
-		
+
+	@property
+	def total_points(self):
+		return sum([game.total_points for game in self.games.all()])
+
 	def __unicode__(self):
 		return self.name
 
@@ -79,7 +83,7 @@ class League_Game(models.Model):
 
 	@property
 	def total_points(self):
-		return self.league_points + self.bonus_points if self.league_points != None else None
+		return self.league_points + self.bonus_points if self.league_points != None else 0
 
 	def __unicode__(self):
 		return 'Week %s Group %s: %s %s' % (self.group.week, self.group.group, self.player.name, self.table.name)
