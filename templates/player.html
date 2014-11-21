@@ -6,12 +6,12 @@
 {% block content %}
 <div class="h1">{{ player.name }} [{{ player.signature }}]</div>
 
-{% for game in games %}
+{% for game in games%}
 <div class="row panel panel-primary">
     <div class="panel-heading"><a href="{% url 'table' game.table.id %}">{{game.table.name}}</a></div>
     <div class="panel-body">
         <ul class="col-sm-6 list-group">
-            {% for score in game.scores %}
+            {% for score in game.scores%}
             <li class="list-group-item">Week {{ score.week }} - {{ score.score|intcomma}}</li>
             {% endfor %}
         </ul>

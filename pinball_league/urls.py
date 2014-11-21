@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from main import views
-from main.controllers import table, player, register, login, index, week, group, setup_week, reset, rankings
+from main.controllers import table, player, register, login, index, week, group, setup_week, reset, rankings, divisions
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
@@ -50,6 +50,7 @@ urlpatterns = patterns('',
     url(r'^group', group.GroupView.as_view(), name='group'),
     url(r'^rankings', rankings.RankingsView.as_view(), name='rankings'),
     url(r'^flipOffHunger', DirectTemplateView.as_view(template_name='flip_off_hunger.html')),
+    url(r'^divisions', divisions.DivisionsView.as_view(), name='divisions'),
     url(r'^$', index.IndexView.as_view(), name='home'),
 )
 

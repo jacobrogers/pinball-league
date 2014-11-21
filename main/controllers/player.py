@@ -9,13 +9,22 @@ class PlayerView(BaseView):
         except Player.DoesNotExist:
             message = 'Player not found.  Find players <a href="/players">here</a>.'
             return self.error_page(request, message)
+            
         games = player.games.all()
         player_games = []
         for table in sorted({game.table for game in games}, key=attrgetter('name')):
             game = {'table': {'name': table.name, 'id': table.id} }
             game['scores'] = sorted([{'week': g.group.week, 'score': g.score} for g in games if g.table == table], key=itemgetter('score'), reverse=True)
             player_games.append(game)
-        model = {'player': player, 'games': player_games}
+
+        week_points = {}
+        for game in games:
+            if game.group.week in week_points:
+                week_points[game.group.week] = game.total_points + week_points[game.group.week]
+            else:
+                week_points[game.group.week] = game.total_points
+
+        model = {'player': player, 'games': player_games, 'week_points': week_points}
         self.addWeeksToModel(model)
         return render(request, self.template, model)
 

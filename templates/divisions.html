@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block nav-rankings %}class="active"{% endblock %}
+
+{% block content %}
+
+<div>
+    <h1>Divisions</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Average Group</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players|dictsortreversed:'average_group'%}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'player' player.id %}">{{ player.name }}</a></td>
+                <td>{{ player.average_group }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</div>
+
+{% endblock %}
