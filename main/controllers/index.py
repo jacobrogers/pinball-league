@@ -17,7 +17,7 @@ class IndexView(BaseView):
             currentWeek = max(weeks) if weeks else 1
             player = Player.objects.get(user=request.user)
             group_model = League_Game.objects.filter(player=player, group__week=currentWeek).distinct('group__group')
-            ranking = player.rankings.filter(week=currentWeek)
+            # ranking = player.rankings.filter(week=currentWeek)
             if (group_model):
                 group_model = group_model[0].group
                 group = {'group': group_model.group, 'week': currentWeek, 'tables': [], 'players': []}
@@ -26,7 +26,7 @@ class IndexView(BaseView):
                         group['tables'].append(game.table)
                     if game.player not in group['players']:
                         group['players'].append(game.player)
-                return {'player': player, 'group': group, 'rank': ranking[0].rank}
+                return {'player': player, 'group': group, 'rank': '~'}
             else:
                 return rankings_page
         except Player.DoesNotExist:
