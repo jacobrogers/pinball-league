@@ -4,14 +4,14 @@
 {% block nav-players %}class="active"{% endblock %}
 
 {% block content %}
-<div class="h1">{{ player.name }} [{{ player.signature }}]</div>
+<div class="h1"><a href="{% url 'player' player.id %}">{{ player.name }}</a> [{{ player.signature }}]</div>
 
 <div class="row panel panel-primary">
     <div class="panel-heading">Points By Week</div>
     <div class="panel-body">
         <ul class="col-sm-12 list-group">
             {% for key, value in week_points.items %}
-            <li class="list-group-item"><a href="{% url 'week' forloop.counter %}">Week {{ key }}</a> - {{ value }} points</li>
+            <li class="list-group-item"><a href="{% url 'week' key %}">Week {{ key }}</a> - <a href="/group?week={{key}}&group={{value.group.group}}">Group {{value.group.group}}</a> - {{ value.total_points }} points</li>
             {% endfor %}
         </ul>
     </div>

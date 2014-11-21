@@ -20,9 +20,10 @@ class PlayerView(BaseView):
         week_points = {}
         for game in games:
             if game.group.week in week_points:
-                week_points[game.group.week] = game.total_points + week_points[game.group.week]
+                week_points[game.group.week]['total_points'] = game.total_points + week_points[game.group.week]['total_points']
             else:
-                week_points[game.group.week] = game.total_points
+                week_points[game.group.week] = {'group': game.group, 'total_points': game.total_points}
+        print week_points
         model = {'player': player, 'games': player_games, 'week_points': week_points}
         self.addWeeksToModel(model)
         return render(request, self.template, model)
