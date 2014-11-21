@@ -12,6 +12,7 @@
                 <th>Rank</th>
                 <th>Player</th>
                 <th>Average Group</th>
+                <th>Total Points</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'player' player.id %}">{{ player.name }}</a></td>
                 <td>{{ player.average_group }}</td>
+                <td>{{ player.total_points }}</td>
             </tr>
             {% endfor %}
         </tbody>
