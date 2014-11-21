@@ -24,6 +24,7 @@ class Player(models.Model):
 	first_name = models.CharField(max_length=30)
 	last_name = models.CharField(max_length=30)
 	user = models.ForeignKey(User,null=True)
+	status = models.CharField(max_length=10,choices=( ('Active','Active'), ('Inactive', 'Inactive')), default='Active')
 	created = models.DateField(default=datetime.date.today)
 
 	@property
