@@ -23,7 +23,6 @@ class PlayerView(BaseView):
                 week_points[game.group.week] = game.total_points + week_points[game.group.week]
             else:
                 week_points[game.group.week] = game.total_points
-
         model = {'player': player, 'games': player_games, 'week_points': week_points}
         self.addWeeksToModel(model)
         return render(request, self.template, model)
