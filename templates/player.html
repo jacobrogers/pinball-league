@@ -6,11 +6,22 @@
 {% block content %}
 <div class="h1">{{ player.name }} [{{ player.signature }}]</div>
 
+<div class="row panel panel-primary">
+    <div class="panel-heading">Points By Week</div>
+    <div class="panel-body">
+        <ul class="col-sm-12 list-group">
+            {% for points in week_points%}
+            <li class="list-group-item"><a href="{% url 'week' forloop.counter %}">Week {{ forloop.counter }}</a> - {{ points }} points</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 {% for game in games%}
 <div class="row panel panel-primary">
     <div class="panel-heading"><a href="{% url 'table' game.table.id %}">{{game.table.name}}</a></div>
     <div class="panel-body">
-        <ul class="col-sm-6 list-group">
+        <ul class="col-sm-12 list-group">
             {% for score in game.scores%}
             <li class="list-group-item">Week {{ score.week }} - {{ score.score|intcomma}}</li>
             {% endfor %}
