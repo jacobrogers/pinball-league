@@ -35,6 +35,10 @@ class Player(models.Model):
 	def total_points(self):
 		return sum([game.total_points for game in self.games.all()])
 
+	@property
+	def total_bonus_points(self):
+		return sum([game.bonus_points for game in self.games.all()])
+
 	def __unicode__(self):
 		return self.name
 
