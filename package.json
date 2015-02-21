@@ -1,0 +1,28 @@
+{
+  "name": "pinball-league",
+  "version": "1.0.0",
+  "description": "Pinball League tracking website",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.1"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacobrogers/pinball-league.git"
+  },
+  "author": "Jacob Rogers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobrogers/pinball-league/issues"
+  },
+  "homepage": "https://github.com/jacobrogers/pinball-league"
+}

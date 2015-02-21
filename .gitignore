@@ -4,4 +4,6 @@ staticfiles
 *.pyc
 build
 node_modules/
-
+bower_components/
+dist/
+npm-debug.log

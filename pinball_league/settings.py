@@ -10,11 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from os.path import join
 import dj_database_url
-
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from . import *
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -70,10 +67,24 @@ DATABASES = {
     }
 }
 
-if 'USE_LOCAL_DB' not in os.environ:
+if not is_local_development():
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
 
+
+if is_local_development():
+    DEBUG = TEMPLATE_DEBUG = True
+else:
+    DEBUG = TEMPLATE_DEBUG = False    
+
+    ADMINS = (
+        ('Jacob Rogers', 'intervicker@gmail.com'),
+    )
+
+    SEND_BROKEN_LINK_EMAILS = True
+    MANAGERS = (
+        ('Jacob Rogers', 'intervicker@gmail.com'),
+    )
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -113,6 +124,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     join(BASE_DIR, 'assets'),
+    join(BASE_DIR, 'dist'),
 )
 
 # List of finder classes that know how to find static files in
