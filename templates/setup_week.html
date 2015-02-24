@@ -12,9 +12,6 @@
     </div>
     <div ng-show="!weekSetup">
         <div ng-show="error" class="alert alert-danger">Error saving groups.</div>
-        <div ng-show="!allTablesAssigned">
-            <p class="alert alert-danger">Please assign tables to all groups.</p>
-        </div>
         <div ng-show="noGroups">
             <p class="alert alert-danger">Add groups before saving.</p>
         </div>
@@ -23,7 +20,7 @@
         </div>
         <div ng-repeat="group in groups"> 
             <!-- <div class="page-header"> -->
-                    <div class="h3">Group {$ $index+1 $} <a><small ng-click="removeGroup(group)">X</small></a></div>
+                    <div class="h3">Group {$ $index+1 $} <a class="remove" ng-click="removeGroup(group)">X</a></div>
             <!-- </div> -->
             <div class="row">
                 <div class="col-md-4">
@@ -38,26 +35,13 @@
                                 <a href="" class="remove" ng-click="removePlayer(group, player)">X</a>
                             </li>
                         <ol>
+                    </div>
+                    <div>
                         <select ng-model="group.selectedPlayer" ng-options="player.name for player in players">
                             <option value="">Select Player</option>
                         </select>
-                    </div>
-                    <div>
                         <button type="button" ng-click="addPlayer(group)" class="btn btn-default" ng-disabled="!group.selectedPlayer || group.players.length >= 4">Add Player</button>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <ul>
-                        <li ng-repeat="table in group.tables">
-                            <span>{$ table.name $}</span>
-                            <a href="" class="remove" ng-click="removeTable(group, table)">X</a>
-                        </li>
-                    <ul>
-                    <select ng-model="group.selectedTable" ng-options="table.name for table in group.availableTables">
-                        <option value="">Select Table</option>
-                    </select>
-                    <br/>
-                    <button type="button" ng-click="addTable(group)" class="btn btn-default" ng-disabled="!group.selectedTable || group.tables.length >= 3">Add Table</button>  
                 </div>
             </div>
         </div>

@@ -7,25 +7,17 @@ angular.module('controllers')
 	$scope.init = function(week) {
 		$scope.week = week;
 		$http.get('/api/setupWeek/'+week).success(function(data) {
-			$scope.tables = data.tables;
 			if ($scope.week == 1) {
 				$scope.players = data.players;
 			} else {
 				for (var i in data.groups) {
 					var group = data.groups[i];
-					$scope.groups.push({players: group.players, tables: group.tables, availableTables: group.availableTables});
+					$scope.groups.push({players: group.players});
 				}
 				$scope.players = data.players;
 			}
 		});
 	};
-
-	var tablesCopy = function() {
-		var availableTables = [];
-		for (var i in $scope.tables)
-			availableTables.push($scope.tables[i]);
-		return availableTables;
-	}
 	
 	var remove = function(array, value) {
 		var i = array.indexOf(value);
@@ -43,22 +35,8 @@ angular.module('controllers')
 		$scope.players.push(player);
 	};
 
-	$scope.addTable = function(group) {
-		if (group.tables.indexOf(group.selectedTable) < 0) {
-			group.tables.push(group.selectedTable);
-			remove(group.availableTables, group.selectedTable);
-			group.selectedTable = null;
-		}
-	};	
-
-	$scope.removeTable = function(group, table) {
-		remove(group.tables, table);
-		group.availableTables.push(table);
-	};
-
 	$scope.addGroup = function() {
-		console.log(tablesCopy());
-		$scope.groups.push({players: [], tables: [], availableTables: tablesCopy()});
+		$scope.groups.push({players: []});
 	};
 
 	$scope.removeGroup = function(group) {
@@ -81,7 +59,6 @@ angular.module('controllers')
 		return rank;
 	};
 
-	$scope.allTablesAssigned = true;
 	$scope.noGroups = false;
 
 	$scope.saveGroups = function() {
@@ -90,20 +67,12 @@ angular.module('controllers')
 			$scope.noGroups = true;
 			return;
 		}
-		for (var i in $scope.groups) {
-			var group = $scope.groups[i];
-			if (group.tables.length === 0) {
-				$scope.allTablesAssigned = false;
-				return;
-			}
-		}
 
 		for (var i in $scope.groups) {
+			var group = $scope.groups[i];
+			
 			delete group.selectedPlayer;
-			delete group.selectedTable;
-			delete group.availableTables;
 
-			var group = $scope.groups[i];
 			for (var j in group.players) {
 				var player = group.players[j];
 				player.rank = findRank(group, player);

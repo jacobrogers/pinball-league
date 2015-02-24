@@ -10,11 +10,11 @@ class SetupWeekView(BaseView):
         return {'week': week, 'open_groups': open_groups}
         
 class SetupWeekApiView(BaseView):
-    def get(self,request, week):
+    
+    def get(self, request, week):
         model = {}
         if int(week) == 1:
             model['players'] = [basic_json(player) for player in Player.objects.all()]
-            model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
         else:
             players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
             groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
@@ -25,63 +25,42 @@ class SetupWeekApiView(BaseView):
             model['groups'] = group_players(groups)
             self.assign_tables(model['groups'])
             model['players'] = [basic_json(player) for player in Player.objects.all() if not self.player_has_game(players, player)]
-            model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
         return json_response(model)
 
     def post(self, request, week):
         payload = json.loads(request.POST.dict().keys()[0])
-        for i, g in enumerate(payload['groups']):            
+        self.saveGroups(week, payload['groups'])
+        self.assignRanks(week, payload['groups'])
+
+        return HttpResponse(status=201)        
+
+    def saveGroups(self, week, groups):
+        for i, g in enumerate(groups):            
             group = Group()
             group.week = week
             group.group = i+1
             group.save()
             players = [Player.objects.get(id=player['id']) for player in g['players']]
-            tables = [Table.objects.get(id=table['id']) for table in g['tables']]
-            for (player, table) in [(player, table) for player in players for table in tables]:
+            for player in players:
                 game = League_Game()
                 game.player = player
-                game.table = table
                 game.group = group
                 game.save()
-        # for player in Player.objects.all():
-        #     total_points = 0
-        #     for game in League_Game.objects.filter(player=player):
-        #         points = game.league_points if game.league_points is not None else 0
-        #         bonus_points = game.bonus_points if game.bonus_points is not None else 0
-        #         total_points = total_points + (points + bonus_points)
-        #     ranking = Ranking()
-        #     ranking.player = player
-        #     ranking.week = week
-        #     for p in g['players']:
-        #         if p['id'] == player.id:
-        #             ranking.rank = p['rank']
-        #             total_points = 0
-        #             for game in League_Game.objects.filter(player=player):
-        #                 points = game.league_points if game.league_points is not None else 0
-        #                 bonus_points = game.bonus_points if game.bonus_points is not None else 0
-        #                 total_points = total_points + (points + bonus_points)
-        #             ranking.points = total_points
-        #     ranking.save()
-        return HttpResponse(status=201)
 
-    def assign_tables(self, groups):
-        from random import randint
-        tables = Table.objects.filter(status='Active')
-        table_cnt = len(tables)
-        for key in groups.iterkeys():
-            group = groups[key]
-            group_tables = []
-            for i in range(0,3):
-                index = randint(0,table_cnt-1)
-                while tables[index] in group_tables:
-                    index = randint(0,table_cnt-1)
-                group_tables.append(tables[index])
-            group['tables'] = [basic_json(table) for table in group_tables]
-            group['availableTables'] = [basic_json(table) for table in tables if table not in group_tables]
-            
-
-    def player_has_game(self, players, player):
-        for p in players:
-            if p['player'] == player.id:
-                return True
-        return False
+    def assignRanks(self, week, groups):
+        for player in Player.objects.all():
+            total_points = 0
+            for game in League_Game.objects.filter(player=player):
+                points = game.league_points if game.league_points is not None else 0
+                bonus_points = game.bonus_points if game.bonus_points is not None else 0
+                total_points = total_points + (points + bonus_points)
+            ranking = Ranking()
+            ranking.player = player
+            ranking.week = week
+            ranking.points = total_points
+            for p in [player for group in groups for player in group['players']]:
+                if p['id'] == player['id']:
+                    ranking.rank = int(p['rank'])
+                    break
+            print ranking
+            ranking.save()
