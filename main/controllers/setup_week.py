@@ -28,39 +28,26 @@ class SetupWeekApiView(BaseView):
         return json_response(model)
 
     def post(self, request, week):
-        payload = json.loads(request.POST.dict().keys()[0])
+        payload = json.loads(request.body) 
         self.saveGroups(week, payload['groups'])
-        self.assignRanks(week, payload['groups'])
-
         return HttpResponse(status=201)        
 
     def saveGroups(self, week, groups):
         for i, g in enumerate(groups):            
-            group = Group()
-            group.week = week
-            group.group = i+1
+            group = Group(week=week, group=i+1)
             group.save()
-            players = [Player.objects.get(id=player['id']) for player in g['players']]
-            for player in players:
-                game = League_Game()
-                game.player = player
-                game.group = group
+            for player in [Player.objects.get(id=player['id']) for player in g['players']]:
+                game = League_Game(player=player, group=group)
                 game.save()
+                rank = next( (p['rank'] for p in g['players'] if p['id'] == player.id), None )
+                self.assignRank(player, week, rank)
 
-    def assignRanks(self, week, groups):
-        for player in Player.objects.all():
-            total_points = 0
-            for game in League_Game.objects.filter(player=player):
-                points = game.league_points if game.league_points is not None else 0
-                bonus_points = game.bonus_points if game.bonus_points is not None else 0
-                total_points = total_points + (points + bonus_points)
-            ranking = Ranking()
-            ranking.player = player
-            ranking.week = week
-            ranking.points = total_points
-            for p in [player for group in groups for player in group['players']]:
-                if p['id'] == player['id']:
-                    ranking.rank = int(p['rank'])
-                    break
-            print ranking
-            ranking.save()
+    def assignRank(self, player, week, rank):
+        total_points = 0
+        for game in League_Game.objects.filter(player=player):
+            points = game.league_points if game.league_points is not None else 0
+            bonus_points = game.bonus_points if game.bonus_points is not None else 0
+            total_points = total_points + (points + bonus_points)
+        
+        ranking = Ranking(player=player, week=week, points=total_points, rank=rank)
+        ranking.save()

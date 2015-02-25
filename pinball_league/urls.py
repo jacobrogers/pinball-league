@@ -28,7 +28,7 @@ def main_view(path, action):
 api_urls = patterns('',
 	main_view('api/players', 'fetch_players'),
 	main_view('api/tables', 'fetch_tables'),
-    url(r'^api/setupWeek/(?P<week>.+)', setup_week.SetupWeekApiView.as_view()),
+    url(r'^api/setupWeek/(?P<week>.+)', setup_week.SetupWeekApiView.as_view(), name='api_setup_week'),
 	main_view('api/group', 'fetch_group'),
 	url(r'^api/saveGames', group.SaveGamesApiView.as_view()),
 )
