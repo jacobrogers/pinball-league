@@ -1,14 +1,12 @@
-from main.models import Player, Group, Table, Ranking
+from main.models import Player, Group, Table, Ranking, League_Game
 from main.util import json_response
 
 def basic_json(value):
     return {'id': value.id, 'name': value.name}
 
 def json_game(game):
-    table = basic_json(game.table)
     player = basic_json(game.player)
-    player['total_points'] = game.player.total_points
-    return {'id': game.id, 'table': table, 'player': player, 'score': game.score, 'league_points': game.league_points, 'bonus_points': game.bonus_points}
+    return {'id': game.id, 'player': player, 'score': game.score, 'league_points': game.league_points}
 
 def fetch_players(request):
     players = [basic_json(player) for player in Player.objects.all()]
@@ -20,7 +18,19 @@ def fetch_tables(request):
 
 def fetch_group(request):
     group = Group.objects.get(week=request.GET.get('week'), group=request.GET.get('group'))
-    gameObjs = group.games.all()
-    games = [json_game(game) for game in gameObjs]
-    tables = [{'id': table.id, 'name': table.name} for table in {game.table for game in gameObjs}]
-    return json_response({'group': group.group, 'week': group.week, 'games': games, 'tables': tables})
+
+    tables = [game.table for game in group.games.distinct('table')]
+    matches = []
+    for table in tables:
+        games = [{'id': game.id, 'player': {'id': game.player.id, 'name': game.player.name}, 'league_points': game.league_points} for game in group.games.filter(table=table)]
+        matches.append({'games': games, 'table': {'id': table.id, 'name': table.name}})
+    model = {'matches': matches}
+    model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
+    model['players'] = [basic_json(player) for player in group.players.all()]
+    model['week'] = group.week
+    model['group'] = group.group
+    # players = []
+    # # for player in group.players.all()
+        
+    # model = {'group': group.group, 'week': group.week}
+    return json_response(model)

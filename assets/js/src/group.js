@@ -7,37 +7,52 @@ angular.module('controllers')
 		$scope.week = week;
 		$http.get('/api/group', {params: {'group': group, 'week': week}})
 		.success(function(data) {
-			$scope.group = data;
+			$scope.matches = data.matches;
+			$scope.tables = data.tables;
+			
+			if (0 == $scope.matches.length) {
+				$scope.matches = []
+				for (var i=0; i<3; i++) {
+					var games = [];
+					for (var j=0; j<data.players.length; j++) {
+						games.push({player: {id: data.players[j].id, name: data.players[j].name}});
+					}
+					$scope.matches.push(games);
+				}
+			}
 		});
 	};
 
-	$scope.saveTable = function(table) {
-		var gamesToSave = $scope.group.games.filter(function(game) { return game.table.name === table.name });
+	$scope.saveGame = function(match) {
+		var players = [];
 		var scoresAreValid = true;
-		_.each(gamesToSave, function(game) {
-			var score = parseInt(game.score);
-			if (!_.isNumber(score)) {
+		for (var i=0; i < match.games.length; i++) {
+			var player = match.games[i].player;
+			if (isNaN(Number(player.score))) {
 				scoresAreValid = false;
-				game.status = 'invalidScore';
+				player.status = 'invalidScore';
+			} else {
+				players.push(player);
 			}
-		});
+		};
 
-		if (scoresAreValid) {
-			$http.post('/api/saveGames', {games: gamesToSave, week: $scope.week, group: $scope.groupNumber})
-				.success(function(data) {
-					for (var i in data) {
-						var gamePoints = data[i];
-						for (var j in gamesToSave) {
-							var gameToSave = gamesToSave[j];
-							if (gameToSave.id == gamePoints.id) {
-								gameToSave.league_points = gamePoints.league_points;
-								gameToSave.bonus_points = gamePoints.bonus_points;
-								gameToSave.status = 'saved';
-							}
+		if (!scoresAreValid) return;
+
+		var data = {players: players, week: $scope.week, group: $scope.groupNumber, table: match.table}
+		$http.post('/api/saveGame', data)
+			.success(function(data) {
+				for (var i in data) {
+					var gamePoints = data[i];
+					for (var j in match.games) {
+						var gameToSave = match.games[j];
+						// fix returned data
+						if (gameToSave.player.id == gamePoints.id) {
+							gameToSave.league_points = gamePoints.league_points;
+							gameToSave.status = 'saved';
 						}
 					}
-				});
-		}
+				}
+			});
 	};
 }])
 .directive('formatScore', ['$filter', function ($filter) {

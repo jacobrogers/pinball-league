@@ -15,11 +15,6 @@
         </li>
         {% endfor %}
     </ul>
-    <ul class="col-sm-6 list-group">
-        {% for table in group.tables %}
-        <li class="list-group-item"><a href="{% url 'table' table.id %}">{{ table.name }}</a></li>
-        {% endfor %}
-    </ul>
     </div>
     {% if group.canEnterScores %}
     <div class="panel-footer">

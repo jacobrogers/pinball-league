@@ -58,6 +58,7 @@ class Player_Confirmation(models.Model):
 class Group(models.Model):
 	week = models.IntegerField()
 	group = models.IntegerField()
+	players = models.ManyToManyField(Player)
 	created = models.DateField(default=datetime.date.today)
 
 	@property
@@ -83,12 +84,7 @@ class League_Game(models.Model):
 	order = models.IntegerField(max_length=1,null=True,blank=True)
 	score = models.BigIntegerField(null=True,blank=True)
 	league_points = models.IntegerField(null=True,blank=True)
-	bonus_points = models.IntegerField(null=True,blank=True)
 	created = models.DateField(default=datetime.date.today)
-
-	@property
-	def total_points(self):
-		return self.league_points + self.bonus_points if self.league_points != None else 0
 
 	def __unicode__(self):
 		return 'Week %s Group %s: %s %s' % (self.group.week, self.group.group, self.player.name, self.table.name)

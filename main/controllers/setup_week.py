@@ -37,8 +37,7 @@ class SetupWeekApiView(BaseView):
             group = Group(week=week, group=i+1)
             group.save()
             for player in [Player.objects.get(id=player['id']) for player in g['players']]:
-                game = League_Game(player=player, group=group)
-                game.save()
+                group.players.add(player)
                 rank = next( (p['rank'] for p in g['players'] if p['id'] == player.id), None )
                 self.assignRank(player, week, rank)
 

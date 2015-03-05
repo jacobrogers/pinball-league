@@ -1,22 +1,13 @@
 from django.conf import settings
 
-def decide_points(scores, score):
-    if settings.SCORING == 'SEVEN':
-        if score == scores[0]:
-            return 7
-        if score == scores[-1]:
-            return 1
-        if score == scores[1]:
-            return 5
-        return 3
-    else:
-        if score == scores[0]:
-            return 3
-        if score == scores[-1]:
-            return 0
-        if score == scores[1]:
-            return 2
-        return 1
+def decide_points(scores, score):    
+    if score == scores[0]:
+        return 4
+    if score == scores[-1]:
+        return 0
+    if score == scores[1]:
+        return 2
+    return 1
 
 def decide_bonus_points(player_scores, score):
     if settings.SCORING == 'SEVEN':

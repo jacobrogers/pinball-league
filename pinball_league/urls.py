@@ -29,8 +29,8 @@ api_urls = patterns('',
 	main_view('api/players', 'fetch_players'),
 	main_view('api/tables', 'fetch_tables'),
     url(r'^api/setupWeek/(?P<week>.+)', setup_week.SetupWeekApiView.as_view(), name='api_setup_week'),
-	main_view('api/group', 'fetch_group'),
-	url(r'^api/saveGames', group.SaveGamesApiView.as_view()),
+	url(r'^api/group', 'main.views.fetch_group', name='api_group'),
+	url(r'^api/saveGame', group.SaveGamesApiView.as_view(), name='api_save_game'),
 )
 
 urlpatterns = patterns('',
