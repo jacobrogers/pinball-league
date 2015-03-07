@@ -45,7 +45,7 @@ class FetchGroupTestCase(TestCase):
 		self.assertEquals({'id': acdc.id, 'name': acdc.name}, actual_json['matches'][0]['table'])
 		
 		for i, player in enumerate(players):
-			game = {'id': i+1, 'player': {'id': player.id, 'name': player.name}, 'league_points': i+5}
+			game = {'id': i+1, 'player': {'id': player.id, 'name': player.name}, 'league_points': i+5, 'score': i}
 			self.assertTrue(0<=actual_json['matches'][0]['games'].index(game))
 
 	def test_fetch_group_three_games(self):
@@ -80,7 +80,7 @@ class FetchGroupTestCase(TestCase):
 			expected_match = [expected for expected in expected_matches if actual['table']['id'] == expected['table'].id][0]
 			for expected_game in expected_match['games']:
 				player = expected_game.player
-				expected = {'id': expected_game.id, 'player': {'id': player.id, 'name': player.name}, 'league_points': expected_game.league_points}
+				expected = {'id': expected_game.id, 'player': {'id': player.id, 'name': player.name}, 'score': expected_game.score, 'league_points': expected_game.league_points}
 
 	def create_group(self, week, group):
 		group = Group(week=week, group=group)

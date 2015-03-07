@@ -18,8 +18,8 @@
                 </tr>
                 <tr ng-repeat="game in match.games">
                     <td>{$ game.player.name $}</td>
-                    <td><input format-score type="text" ng-model="game.player.score" {% if not canEnterScores%}disabled{% endif %}/></td>
-                    <td>{$ game.player.league_points $}</td>
+                    <td><input format-score type="text" ng-model="game.score" {% if not canEnterScores%}disabled{% endif %}/></td>
+                    <td>{$ game.league_points $}</td>
                 </tr>
             </tbody>
         </table>

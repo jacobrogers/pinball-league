@@ -22,15 +22,11 @@ def fetch_group(request):
     tables = [game.table for game in group.games.distinct('table')]
     matches = []
     for table in tables:
-        games = [{'id': game.id, 'player': {'id': game.player.id, 'name': game.player.name}, 'league_points': game.league_points} for game in group.games.filter(table=table)]
+        games = [{'id': game.id, 'player': {'id': game.player.id, 'name': game.player.name}, 'score': game.score, 'league_points': game.league_points} for game in group.games.filter(table=table)]
         matches.append({'games': games, 'table': {'id': table.id, 'name': table.name}})
     model = {'matches': matches}
     model['tables'] = [basic_json(table) for table in Table.objects.filter(status='Active')]
     model['players'] = [basic_json(player) for player in group.players.all()]
     model['week'] = group.week
     model['group'] = group.group
-    # players = []
-    # # for player in group.players.all()
-        
-    # model = {'group': group.group, 'week': group.week}
     return json_response(model)

@@ -10,15 +10,22 @@ angular.module('controllers')
 			$scope.matches = data.matches;
 			$scope.tables = data.tables;
 			
-			if (0 == $scope.matches.length) {
-				$scope.matches = []
-				for (var i=0; i<3; i++) {
-					var games = [];
-					for (var j=0; j<data.players.length; j++) {
-						games.push({player: {id: data.players[j].id, name: data.players[j].name}});
+			for (var i=0; i<$scope.matches.length; i++) {
+				for (var j=0; j<$scope.tables.length; j++) {
+					if ($scope.matches[i].table.id === $scope.tables[j].id) {
+						$scope.matches[i].table = $scope.tables[j];
+						break;
 					}
-					$scope.matches.push(games);
 				}
+			}
+
+			var matchesToCreate = 3-$scope.matches.length;
+			for (var i=0; i<matchesToCreate; i++) {
+				var games = [];
+				for (var j=0; j<data.players.length; j++) {
+					games.push({player: {id: data.players[j].id, name: data.players[j].name}});
+				}
+				$scope.matches.push({games: games});
 			}
 		});
 	};
@@ -27,11 +34,14 @@ angular.module('controllers')
 		var players = [];
 		var scoresAreValid = true;
 		for (var i=0; i < match.games.length; i++) {
-			var player = match.games[i].player;
-			if (isNaN(Number(player.score))) {
+			var game = match.games[i];
+			var player = {id: game.player.id, name: game.player.name};
+			if (isNaN(Number(game.score))) {
 				scoresAreValid = false;
 				player.status = 'invalidScore';
 			} else {
+				player.score = game.score;
+				if (game.id) player.gameId = game.id;
 				players.push(player);
 			}
 		};
@@ -42,12 +52,11 @@ angular.module('controllers')
 		$http.post('/api/saveGame', data)
 			.success(function(data) {
 				for (var i in data) {
-					var gamePoints = data[i];
+					var game = data[i];
 					for (var j in match.games) {
 						var gameToSave = match.games[j];
-						// fix returned data
-						if (gameToSave.player.id == gamePoints.id) {
-							gameToSave.league_points = gamePoints.league_points;
+						if (gameToSave.player.id == game.player) {
+							gameToSave.league_points = game.league_points;
 							gameToSave.status = 'saved';
 						}
 					}
