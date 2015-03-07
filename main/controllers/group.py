@@ -29,7 +29,7 @@ class SaveGamesApiView(BaseView):
                 game = League_Game(player=playerModel, group=groupModel)
 
             game.table = tableModel
-            game.score = player['score']
+            game.score = int(player['score'])
             game.league_points = decide_points(scores, game.score)
             game.save()
             response.append(self.create_game_response(game))
