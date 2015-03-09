@@ -11,7 +11,7 @@
     <div class="panel-body">
         <ul class="col-sm-12 list-group">
             {% for key, value in week_points.items %}
-            <li class="list-group-item"><a href="{% url 'week' key %}">Week {{ key }}</a> - <a href="/group?week={{key}}&group={{value.group.group}}">Group {{value.group.group}}</a> - {{ value.total_points }} points</li>
+            <li class="list-group-item"><a href="{% url 'week' key %}">Week {{ key }}</a> - <a href="/group?week={{key}}&group={{value.group.group}}">Group {{value.group.group}}</a> - {{ value.league_points }} points</li>
             {% endfor %}
         </ul>
     </div>
