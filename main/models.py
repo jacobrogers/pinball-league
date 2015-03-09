@@ -26,14 +26,15 @@ class Player(models.Model):
 	user = models.ForeignKey(User,null=True)
 	status = models.CharField(max_length=10,choices=( ('Active','Active'), ('Inactive', 'Inactive')), default='Active')
 	created = models.DateField(default=datetime.date.today)
-
+	week_points = 0
+	
 	@property
 	def name(self):
 		return '%s %s' % (self.first_name.capitalize(), self.last_name.capitalize())
 
 	@property
 	def total_points(self):
-		return sum([game.total_points for game in self.games.all()])
+		return sum([game.league_points for game in self.games.all()])
 
 	@property
 	def total_bonus_points(self):

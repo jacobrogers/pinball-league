@@ -11,7 +11,14 @@
         {% for player in group.players|dictsortreversed:'total_points' %}
         <li class="list-group-item row">
             <span class="col-md-4"><a href="{% url 'player' player.id %}">{{ player.name }}</a></span>
-            {% if player.points %}<span class="col-md-8" style="text-align: right;">{{ player.points }} points {% endif %}</span>
+            {% if player.week_points %}<span class="col-md-8" style="text-align: right;">{{ player.week_points }} points {% endif %}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <ul class="col-sm-6 list-group">
+        {% for table in group.tables %}
+        <li class="list-group-item">
+            <a href="{% url 'table' table.id %}">{{ table.name }}</a>
         </li>
         {% endfor %}
     </ul>
