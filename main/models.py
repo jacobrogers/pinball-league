@@ -82,9 +82,10 @@ class League_Game(models.Model):
 	player = models.ForeignKey(Player, related_name="games")
 	table = models.ForeignKey(Table, related_name="games", null=True, blank=True)
 	group = models.ForeignKey(Group, related_name="games")
-	order = models.IntegerField(max_length=1,null=True,blank=True)
 	score = models.BigIntegerField(null=True,blank=True)
 	league_points = models.IntegerField(null=True,blank=True)
+	is_pre_play = models.BooleanField(default=False)
+	is_post_play = models.BooleanField(default=False)
 	created = models.DateField(default=datetime.date.today)
 
 	def __unicode__(self):
