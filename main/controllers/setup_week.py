@@ -16,14 +16,13 @@ class SetupWeekApiView(BaseView):
         if int(week) == 1:
             model['players'] = [basic_json(player) for player in Player.objects.all()]
         else:
-            players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points', field='league_points+bonus_points'))
+            players = League_Game.objects.filter(group__week=int(week)-1).values('group__group', 'player').annotate(points=Sum('league_points'))
             groups = {group+1: [] for group in range(len({player['group__group'] for player in players}))}
             for player in players:
                 real_player = Player.objects.get(id=player['player'])
-                total_points = sum([p.league_points + p.bonus_points for p in real_player.games.all()])
+                total_points = sum([p.league_points for p in real_player.games.all()])
                 groups[player['group__group']].append({'name': real_player.name, 'id': real_player.id, 'league_points': player['points'], 'total_points': total_points})
             model['groups'] = group_players(groups)
-            self.assign_tables(model['groups'])
             model['players'] = [basic_json(player) for player in Player.objects.all() if not self.player_has_game(players, player)]
         return json_response(model)
 
@@ -40,13 +39,17 @@ class SetupWeekApiView(BaseView):
                 group.players.add(player)
                 rank = next( (p['rank'] for p in g['players'] if p['id'] == player.id), None )
                 self.assignRank(player, week, rank)
-
+    def player_has_game(self, players, player):
+        for p in players:
+            if p['player'] == player.id:
+                return True
+        return False
+        
     def assignRank(self, player, week, rank):
         total_points = 0
         for game in League_Game.objects.filter(player=player):
             points = game.league_points if game.league_points is not None else 0
-            bonus_points = game.bonus_points if game.bonus_points is not None else 0
-            total_points = total_points + (points + bonus_points)
+            total_points = total_points + points
         
         ranking = Ranking(player=player, week=week, points=total_points, rank=rank)
         ranking.save()
