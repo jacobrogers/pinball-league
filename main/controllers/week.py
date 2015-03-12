@@ -24,6 +24,9 @@ class WeekView(BaseView):
                         if player == game.player and game.league_points != None:
                             player.week_points = player.week_points + game.league_points
                             break
+            for player in group['players']:
+                rank = player.rankings.get(week=week)
+                player.rank = rank.rank
             model_groups.append(group)
 
         model = {'week': week, 'groups': model_groups}
