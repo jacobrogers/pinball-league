@@ -72,19 +72,19 @@ if not is_local_development():
     DATABASES['default'] =  dj_database_url.config()
 
 
-if is_local_development():
+# if is_local_development():
     DEBUG = TEMPLATE_DEBUG = True
-else:
-    DEBUG = TEMPLATE_DEBUG = False    
+# else:
+#     DEBUG = TEMPLATE_DEBUG = False    
 
-    ADMINS = (
-        ('Jacob Rogers', 'intervicker@gmail.com'),
-    )
+#     ADMINS = (
+#         ('Jacob Rogers', 'intervicker@gmail.com'),
+#     )
 
-    SEND_BROKEN_LINK_EMAILS = True
-    MANAGERS = (
-        ('Jacob Rogers', 'intervicker@gmail.com'),
-    )
+#     SEND_BROKEN_LINK_EMAILS = True
+#     MANAGERS = (
+#         ('Jacob Rogers', 'intervicker@gmail.com'),
+#     )
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
