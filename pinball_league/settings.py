@@ -124,7 +124,6 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     join(BASE_DIR, 'assets'),
-    join(BASE_DIR, 'dist'),
 )
 
 # List of finder classes that know how to find static files in

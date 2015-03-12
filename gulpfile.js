@@ -5,22 +5,22 @@ var gulp = require('gulp')
 gulp.task('scripts', function() {
 	return gulp.src(['bower_components/angular/*.min.js','bower_components/**/*.min.js'])
 		.pipe(concat('lib.js'))
-		.pipe(gulp.dest('dist/js'));
+		.pipe(gulp.dest('assets/js/lib'));
 });
 
 gulp.task('styles', function() {
 	return gulp.src('bower_components/**/*.min.css')
 		.pipe(concat('lib.css'))
-		.pipe(gulp.dest('dist/css'));
+		.pipe(gulp.dest('assets/css'));
 });
 
 gulp.task('fonts', function() {
 	return gulp.src('bower_components/bootstrap/fonts/*')
-		.pipe(gulp.dest('dist/css/fonts'));
+		.pipe(gulp.dest('assets/css/fonts'));
 });
 
 gulp.task('clean', function(cb) {
-    del(['dist/css', 'dist/js', 'dist/img'], cb)
+    del(['assets/css', 'dist/js/lib'], cb)
 });
 
 gulp.task('default', ['clean'], function() {
