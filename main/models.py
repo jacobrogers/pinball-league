@@ -59,7 +59,7 @@ class Player_Confirmation(models.Model):
 class Group(models.Model):
 	week = models.IntegerField()
 	group = models.IntegerField()
-	players = models.ManyToManyField(Player)
+	players = models.ManyToManyField(Player, related_name="groups")
 	created = models.DateField(default=datetime.date.today)
 
 	@property
