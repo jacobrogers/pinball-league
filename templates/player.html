@@ -37,7 +37,7 @@
     <div class="panel-body">
         <ul class="col-sm-12 list-group">
             {% for opponent, results in opponents.items %}
-            <li class="list-group-item"><a href="">{{ opponent.name }}</a> - wins: {{ results.wins }} losses: {{results.losses}}</li>
+            <li class="list-group-item"><a href="">{{ opponent.name }}</a> - ({{ results.wins }} - {{results.losses}})</li>
             {% endfor %}
         </ul>
     </div>
