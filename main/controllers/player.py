@@ -34,16 +34,14 @@ class PlayerView(BaseView):
         for group in player.groups.all():
             for opponent in group.players.all():
                 if opponent != player:
-                    if opponent not in opponents:
-                        opponents[opponent] = {'wins': 0, 'losses': 0}
                     for opponent_game in League_Game.objects.filter(group=group, player=opponent):
+                        if opponent not in opponents:
+                            opponents[opponent] = {'wins': 0, 'losses': 0}
+                            
                         player_game = League_Game.objects.get(group=group, player=player, table=opponent_game.table)
                     
-                        if player_game.score > opponent_game.score:
-                            opponents[opponent]['wins'] = opponents[opponent]['wins'] + 1
-                        else:
-                            opponents[opponent]['losses'] = opponents[opponent]['losses'] + 1
-                
+                        field = 'wins' if player_game.score > opponent_game.score else 'losses'
+                        opponents[opponent][field] = opponents[opponent][field] + 1
         return opponents
 
 class PlayersView(BaseView):

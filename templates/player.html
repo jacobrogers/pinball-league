@@ -37,7 +37,7 @@
     <div class="panel-body">
         <ul class="col-sm-12 list-group">
             {% for opponent, results in opponents.items %}
-            <li class="list-group-item"><a href="">{{ opponent.name }}</a> - ({{ results.wins }} - {{results.losses}})</li>
+            <li class="list-group-item"><a href="{% url 'player' opponent.id %}">{{ opponent.name }}</a> - <span class="{% if results.wins > results.losses %}winrec{% else %}loserec{% endif %}">({{ results.wins }} - {{results.losses}})</span></li>
             {% endfor %}
         </ul>
     </div>
