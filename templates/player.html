@@ -28,6 +28,9 @@
         </ul>
     </div>
 </div>
+{% empty %}
+<p>No games played yet.</p>
+{% endfor %}
 
 <div class="row panel panel-primary">
     <div class="panel-heading">Head to Head</div>
@@ -39,7 +42,4 @@
         </ul>
     </div>
 </div>
-{% empty %}
-<p>No games played yet.</p>
-{% endfor %}
 {% endblock %}
