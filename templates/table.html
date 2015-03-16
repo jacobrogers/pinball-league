@@ -49,7 +49,7 @@
                 {% for game in games %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{game.player.name}}</td>
+                    <td><a href="{% url 'player' game.player.id %}">{{game.player.name}}</a></td>
                     <td>{{game.score|intcomma}}</td>
                     <td>{{game.week}}</td>
                 </tr>
