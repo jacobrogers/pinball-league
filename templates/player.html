@@ -23,7 +23,7 @@
     <div class="panel-body">
         <ul class="col-sm-12 list-group">
             {% for score in game.scores%}
-            <li class="list-group-item">Week {{ score.week }} - {{ score.score|intcomma}} {% if score.league_points == 4 %}<span class="glyphicon glyphicon-star"></span>{% endif %}</li>
+            <li class="list-group-item">Week {{ score.week }} - {{ score.score|intcomma}} {% if score.league_points == 4 %}<span class="glyphicon glyphicon-star" title="Group winning score"></span>{% endif %}</li>
             {% endfor %}
         </ul>
     </div>
