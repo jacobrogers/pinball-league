@@ -5,23 +5,15 @@
 {% block content %}
 
 <div class="h1">{{ player.name }}</div>
-<div>
-    <span>Current Rank: {{ rank }}</span><br/>
-</div>
 
 <div class="row panel panel-primary">
     <div class="panel-heading">Week {{ group.week }} - Group {{ group.group }}</div>
     <div class="panel-body">
-    <ul class="col-sm-6 list-group">
-        {% for player in group.players %}
-        <li class="list-group-item"><a href="{% url 'player' player.id %}">{{ player.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <ul class="col-sm-6 list-group">
-        {% for table in group.tables %}
-        <li class="list-group-item"><a href="{% url 'table' table.id %}">{{ table.name }}</a></li>
-        {% endfor %}
-    </ul>
+        <ul class="col-sm-6 list-group">
+            {% for player in group.players %}
+            <li class="list-group-item"><a href="{% url 'player' player.id %}">{{ player.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="panel-footer">
         <a href="/group?week={{group.week}}&group={{group.group}}" class="btn btn-primary">Enter Scores</a>
