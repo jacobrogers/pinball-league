@@ -16,7 +16,7 @@ class SaveGamesApiView(BaseView):
         group = payload['group']
         week = payload['week']
         tableModel = Table.objects.get(id=payload['table']['id'])
-        groupModel = Group.objects.get(group=group)
+        groupModel = Group.objects.get(group=group, week=week)
 
         scores = sorted([int(player['score']) for player in players],reverse=True)
         response = []
