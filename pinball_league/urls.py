@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     url(r'^group', group.GroupView.as_view(), name='group'),
     url(r'^rankings', rankings.RankingsView.as_view(), name='rankings'),
     url(r'^flipOffHunger', DirectTemplateView.as_view(template_name='flip_off_hunger.html')),
-    url(r'^divisions', divisions.DivisionsView.as_view(), name='divisions'),
+    url(r'^seedings', divisions.DivisionsView.as_view(), name='divisions'),
     url(r'^$', index.IndexView.as_view(), name='home'),
 )
 
