@@ -7,7 +7,7 @@ class DivisionsView(BaseView):
 	def doGet(self, request):
 		players = []
 		for player in Player.objects.filter(status='Active'):
-			games = [game for game in player.games.all() if game.group.week >= 3 and game.group.week <=9]
+			games = [game for game in player.games.all() if game.group.week >= 3 and game.group.week <=10]
 			avg_group = -1
 			if games:
 				avg_group = Decimal(sum([game.group.group for game in games])) / Decimal(len(games))
