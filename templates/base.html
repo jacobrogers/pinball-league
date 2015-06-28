@@ -89,6 +89,7 @@
           				</ul>
 	            	</li>
 					{% else %}
+					<li {% block nav-about %}{% endblock %}><a href="{% url 'about' %}">About</a></li>
 					<li {% block nav-register %}{% endblock %}><a href="{% url 'register' %}">Register</a></li>
 					<li {% block nav-login %}{% endblock %}><a href="{% url 'login' %}">Login</a></li>
 					{% endif %}
